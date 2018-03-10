@@ -1,7 +1,36 @@
-@import "~@blueprintjs/core/dist/blueprint.css";
+@import "~@blueprintjs/core/lib/css/blueprint.css";
 @import "~normalize.css/normalize.css";
+.container {
+  display: flex; /* or inline-flex */
+  flex-direction: row;
+}
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+.app-toolbar-icon {
+  padding-left: 10px;
+  margin-left: 5px;
+}
+.App {
+  width: 100%;
+}
+.content {
+  width: 100%;
+}
+.event-table {
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 50px;
+}
+.app-icon-button {
+  margin-left: 5px;
+}
+.event-content {
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 50px;
 }
