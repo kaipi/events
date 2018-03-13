@@ -46,3 +46,12 @@ body {
   padding-right: 5%;
   padding-top: 50px;
 }
+.new-event-create-buttons {
+  padding-top: 20px;
+}
+.new-event-group-row {
+  padding-top: 10px;
+}
+.event-enroll-button {
+  padding-top: 30px;
+}

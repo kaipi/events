@@ -3,7 +3,7 @@ import Navigation from "./Navigation";
 import { Tab, Tabs } from "@blueprintjs/core";
 import EventInfo from "./EventInfo";
 import Participants from "./Participants";
-
+import Results from "./Results";
 class SingleEvent extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +26,7 @@ class SingleEvent extends Component {
           <Tabs id="event-tabs" onChange={this.handleTabChange} selectedTabId={this.state.currentTab}>
             <Tab id="event-info" title="Tapahtuma ja Ilmoittautuminen" panel={<EventInfo />} />
             <Tab id="participants" title="Osallistujat" panel={<Participants />} />
+            <Tab id="results" title="Tulokset" panel={<Results />} />
             <Tabs.Expander />
           </Tabs>
         </div>

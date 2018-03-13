@@ -6,6 +6,7 @@ parserOptions:
   ecmaFeatures:
     experimentalObjectRestSpread: true
     jsx: true
+    modules: true
   sourceType: module
 plugins:
   - react

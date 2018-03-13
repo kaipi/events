@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Navigation from "./Navigation";
 import EventTable from "./EventTable";
+import { Card, Elevation } from "@blueprintjs/core";
+
 class Events extends Component {
   constructor(props) {
     super(props);
@@ -26,12 +28,16 @@ class Events extends Component {
         <div className="navigation">
           <Navigation loggedIn={this.state.loggedin} addEvent={this.addEvent} />
         </div>
-        <EventTable
-          events={this.state.events}
-          removeEvent={this.removeEvent}
-          editEvent={this.editEvent}
-          showDetails={this.showDetails}
-        />
+        <div className="event-content">
+          <Card interactive={false} elevation={Elevation.TWO}>
+            <EventTable
+              events={this.state.events}
+              removeEvent={this.removeEvent}
+              editEvent={this.editEvent}
+              showDetails={this.showDetails}
+            />
+          </Card>
+        </div>
       </div>
     );
     return result;

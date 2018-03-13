@@ -5,10 +5,25 @@ class EventInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      eventdata: {}
+      eventdata: {
+        firstname: "",
+        lastname: "",
+        streetaddress: "",
+        zip: "",
+        telephone: "",
+        email: "",
+        club: "",
+        allowDisplay: false
+      }
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
+  handleChange(evt) {
+    let e = Object.assign({}, this.state.eventdata);
+    e[evt.target.id] = evt.target.value;
+    this.setState({ eventdata: e });
+  }
   render() {
     let result = (
       <Card interactive={false} elevation={Elevation.TWO}>
@@ -22,28 +37,79 @@ class EventInfo extends Component {
         <p>{this.state.eventdata.groupsdescriptions}</p>
         <h5>Ilmoittautuminen</h5>
         <p>
-          <input className="pt-input .modifier" type="text" placeholder="Etunimi" dir="auto" />
-          <input className="pt-input .modifier" type="text" placeholder="Sukunimi" dir="auto" />
-          <input className="pt-input .modifier" type="text" placeholder="Katuosoite" dir="auto" />
+          <input
+            className="pt-input .modifier"
+            type="text"
+            placeholder="Etunimi"
+            dir="auto"
+            id="firstname"
+            value={this.state.eventdata.firstname}
+            onChange={this.handleChange}
+          />
+          <input
+            className="pt-input .modifier"
+            type="text"
+            placeholder="Sukunimi"
+            dir="auto"
+            id="lastname"
+            onChange={this.handleChange}
+          />
+          <input
+            className="pt-input .modifier"
+            type="text"
+            placeholder="Katuosoite"
+            dir="auto"
+            id="streetaddress"
+            onChange={this.handleChange}
+          />
         </p>
         <p>
-          <input className="pt-input .modifier" type="text" placeholder="Postinumero" dir="auto" />
-          <input className="pt-input .modifier" type="text" placeholder="Puhelinnumero" dir="auto" />
-          <input className="pt-input .modifier" type="text" placeholder="Sähköposti" dir="auto" />
+          <input
+            className="pt-input .modifier"
+            type="text"
+            placeholder="Postinumero"
+            dir="auto"
+            id="zip"
+            onChange={this.handleChange}
+          />
+          <input
+            className="pt-input .modifier"
+            type="text"
+            placeholder="Puhelinnumero"
+            dir="auto"
+            id="telephone"
+            onChange={this.handleChange}
+          />
+          <input
+            className="pt-input .modifier"
+            type="text"
+            placeholder="Sähköposti"
+            dir="auto"
+            id="email"
+            onChange={this.handleChange}
+          />
         </p>
         <p>
-          <input className="pt-input .modifier" type="text" placeholder="Seura" dir="auto" />
+          <input
+            className="pt-input .modifier"
+            type="text"
+            placeholder="Seura"
+            dir="auto"
+            id="club"
+            onChange={this.handleChange}
+          />
         </p>
         <p>
           <Switch
             checked={this.state.isPublic}
-            label="Tietoni saa näyttää osallistujalistalla"
-            onChange={this.handlePublicChange}
+            id="allowDisplay"
+            label="Tapahtuman järjestäjät saavat julkaista tietojani sekä kisan aikana tuotettua materiaalia nettisivuilla"
+            onChange={this.handleChange}
           />
         </p>
 
         <div className="pt-select">
-          <select defaultValue="1">
+          <select defaultValue="1" onChange={this.handleChange}>
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
@@ -51,14 +117,15 @@ class EventInfo extends Component {
           </select>
         </div>
         <div className="pt-select">
-          <select defaultValue="2">
+          <select defaultValue="2" onChange={this.handleChange}>
             <option value="1">Liikuntasetelit</option>
             <option value="2">Verkkomaksu</option>
             <option value="3">Käteinen</option>
           </select>
         </div>
-
-        <Button>Ilmoittaudu</Button>
+        <div className="event-enroll-button">
+          <Button>Ilmoittaudu</Button>
+        </div>
       </Card>
     );
     return result;
