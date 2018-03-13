@@ -34,3 +34,15 @@ body {
   padding-right: 5%;
   padding-top: 50px;
 }
+.pt-navbar-heading a {
+  color: white;
+}
+.pt-navbar-heading a:hover {
+  color: white;
+}
+.newevent-content {
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 50px;
+}

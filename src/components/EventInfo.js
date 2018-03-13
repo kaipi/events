@@ -43,8 +43,7 @@ class EventInfo extends Component {
         </p>
 
         <div className="pt-select">
-          <select>
-            <option selected>Sarja</option>
+          <select defaultValue="1">
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
@@ -52,8 +51,7 @@ class EventInfo extends Component {
           </select>
         </div>
         <div className="pt-select">
-          <select>
-            <option selected>Maksutapa</option>
+          <select defaultValue="2">
             <option value="1">Liikuntasetelit</option>
             <option value="2">Verkkomaksu</option>
             <option value="3">Käteinen</option>
