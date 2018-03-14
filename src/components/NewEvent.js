@@ -16,16 +16,17 @@ class NewEvent extends Component {
         sportVouchers: false,
         groupsDescription: "",
         groups: []
-      }
+      },
+      groups: []
     };
     this.addGroup = this.addGroup.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   addGroup() {
-    let newevent = Object.assign([], this.state.eventdata);
-    newevent.groups.push(<Group key={newevent.groups.length} />);
-    this.setState({ eventdata: newevent });
+    let g = Object.assign([], this.state.g);
+    g.push(<Group key={g.length} />);
+    this.setState({ groups: g });
   }
   handleChange(evt) {
     let newevent = Object.assign({}, this.state.eventdata);
@@ -124,7 +125,7 @@ class NewEvent extends Component {
                 id="groupsDescription"
               />{" "}
             </p>
-            {this.state.eventdata.groups}
+            {this.state.groups}
             <div className="new-event-create-buttons">
               <Button className="app-icon-button" onClick={this.addGroup} icon="add">
                 Lisää sarja
