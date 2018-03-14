@@ -24,7 +24,7 @@ class NewEvent extends Component {
   }
 
   addGroup() {
-    let g = Object.assign([], this.state.g);
+    let g = Object.assign([], this.state.groups);
     g.push(<Group key={g.length} />);
     this.setState({ groups: g });
   }
