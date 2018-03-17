@@ -7,8 +7,13 @@ class Participants extends Component {
     this.state = {
       pariticipantrows: ""
     };
+    this.getParticipants = this.getParticipants.bind(this);
   }
 
+  componentWillMount() {
+    this.getParticipants(this.props.id);
+  }
+  getParticipants() {}
   render() {
     let result = (
       <Card interactive={false} elevation={Elevation.TWO}>

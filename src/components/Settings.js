@@ -33,6 +33,7 @@ class Settings extends Component {
               {" "}
               <input className="pt-input .modifier" type="text" placeholder="Sähköpostin lähettäjä" dir="auto" />
             </p>
+            <h5>API avain</h5> <pre>APIKEY</pre>
             <Button>Tallenna asetukset</Button>
           </Card>
         </div>

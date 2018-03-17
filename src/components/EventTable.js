@@ -11,12 +11,12 @@ class EventTable extends Component {
     };
     this.getEventsRows = this.getEventsRows.bind(this);
   }
-  componentDidMount() {
-    this.getEventsRows();
+  componentWillReceiveProps(nextProps) {
+    this.getEventsRows(nextProps.events);
   }
-  getEventsRows() {
+  getEventsRows(prop) {
     let eventrows = [];
-    this.props.events.forEach(item => {
+    prop.forEach(item => {
       eventrows.push(
         <tr key={item.id}>
           <td>{item.name}</td>
@@ -27,7 +27,14 @@ class EventTable extends Component {
             </Link>
           </td>
           <td>
-            <Button className="app-icon-button" onClick={this.props.removeEvent} icon="trash" />
+            <Button
+              id={item.id}
+              className="app-icon-button"
+              onClick={() => {
+                this.props.removeEvent(item.id);
+              }}
+              icon="trash"
+            />
             <Button className="app-icon-button" onClick={this.props.editEvent} icon="edit" />
             <Link to={"/event/" + item.id}>
               <Button className="app-icon-button" icon="plus">

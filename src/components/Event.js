@@ -24,7 +24,11 @@ class SingleEvent extends Component {
         </div>
         <div className="event-content">
           <Tabs id="event-tabs" onChange={this.handleTabChange} selectedTabId={this.state.currentTab}>
-            <Tab id="event-info" title="Tapahtuma ja Ilmoittautuminen" panel={<EventInfo />} />
+            <Tab
+              id="event-info"
+              title="Tapahtuma ja Ilmoittautuminen"
+              panel={<EventInfo id={this.props.match.params.id} />}
+            />
             <Tab id="participants" title="Osallistujat" panel={<Participants />} />
             <Tab id="results" title="Tulokset" panel={<Results />} />
             <Tabs.Expander />

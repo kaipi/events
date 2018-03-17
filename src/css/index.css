@@ -55,3 +55,9 @@ body {
 .event-enroll-button {
   padding-top: 30px;
 }
+.pt-input {
+  margin-left: 5px;
+}
+.event-enroll-total {
+  padding-top: 10px;
+}

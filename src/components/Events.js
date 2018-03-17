@@ -8,18 +8,43 @@ class Events extends Component {
     super(props);
     this.state = {
       loggedin: false,
-      events: [
-        { id: 1, name: "TestiEventti", date: "2018-01-01", location: "Laajavuori" },
-        { id: 2, name: "ToinenTestiEventti", date: "2018-01-01", location: "Tikkakoski" }
-      ]
+      events: []
     };
     this.removeEvent = this.removeEvent.bind(this);
     this.addEvent = this.addEvent.bind(this);
     this.showDetails = this.showDetails.bind(this);
+    this.getEvents = this.getEvents.bind(this);
   }
-
+  componentDidMount() {
+    this.getEvents();
+  }
+  getEvents() {
+    fetch("http://localhost:5000/api/data/v1/events/allevents", {
+      method: "GET"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(r => {
+        this.setState({ events: r });
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
   addEvent() {}
-  removeEvent() {}
+  removeEvent(id) {
+    let payload = JSON.stringify({ id: id });
+    fetch("http://localhost:5000/api/data/v1/events/auth/deleteevent", {
+      method: "DELETE",
+      body: payload,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(response => {
+      this.getEvents();
+    });
+  }
   editEvent() {}
   showDetails() {}
   render() {
