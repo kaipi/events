@@ -55,7 +55,7 @@ class EventTable extends Component {
             <th>Tapahtuma</th>
             <th>Aika</th>
             <th>Paikka</th>
-            <th>Toiminnot</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>{this.state.eventrows}</tbody>

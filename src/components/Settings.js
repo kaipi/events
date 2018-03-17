@@ -6,10 +6,10 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      eventdata: {}
+      settings: {}
     };
   }
-
+  componentDidMount() {}
   render() {
     let result = (
       <div className="content">

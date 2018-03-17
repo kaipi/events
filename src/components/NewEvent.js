@@ -32,10 +32,11 @@ class NewEvent extends Component {
     let newevent = Object.assign({}, this.state.eventdata);
     newevent.groups.push({
       name: "",
-      distance: "",
+      distance: 0.0,
       price_prepay: 0,
       price: 0,
       product_code: "",
+      number_prefix: "",
       tagrange_start: 0,
       tagrange_end: 0,
       current_tag: 0,
@@ -65,7 +66,7 @@ class NewEvent extends Component {
     this.setState({ eventdata: newevent });
   }
   updateData() {
-    fetch("http://localhost:5000/api/data/v1/events/auth/createevent", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/auth/createevent", {
       method: "POST",
       body: JSON.stringify(this.state.eventdata),
       headers: {
@@ -149,29 +150,7 @@ class NewEvent extends Component {
                 id="paymentDescription"
               />{" "}
             </p>
-            <p>
-              <Switch
-                checked={this.state.isPublic}
-                value={this.state.eventdata.paytrail}
-                label="Paytrail"
-                onChange={this.handleChange}
-                id="paytrail"
-              />
-              <Switch
-                checked={this.state.isPublic}
-                label="Käteinen"
-                value={this.state.eventdata.cash}
-                onChange={this.handleChange}
-                id="cash"
-              />
-              <Switch
-                checked={this.state.isPublic}
-                label="Liikuntasetelit"
-                value={this.state.eventdata.sportVoucher}
-                onChange={this.handleChange}
-                id="sportVoucher"
-              />
-            </p>
+            
             <h5>Sarjat ja matkat</h5>
             <p>
               {" "}

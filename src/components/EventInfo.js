@@ -11,30 +11,33 @@ class EventInfo extends Component {
         id: "",
         location: "",
         general_description: "",
-        name: ""
+        name: "",
+        groups: []
       },
       participantdata: {
         firstname: "",
         lastname: "",
         streetaddress: "",
-        zipcode: "",
         telephone: "",
         email: "",
         club: "",
-        groupid: "",
-        paymentmethod: "1",
-        public: true
-      }
+        groupid: 0,
+        paymentmethod: 1,
+        public: true,
+        zip:""
+      },
+      select_groups: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.getEventData = this.getEventData.bind(this);
     this.addParticipant = this.addParticipant.bind(this);
+    this.getGroups = this.getGroups.bind(this);
   }
-  componentWillMount() {
+  componentDidMount() {
     this.getEventData(this.props.id);
   }
   getEventData(id) {
-    fetch("http://localhost:5000/api/data/v1/events/" + id, {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/" + id, {
       method: "GET"
     })
       .then(response => {
@@ -42,12 +45,14 @@ class EventInfo extends Component {
       })
       .then(response => {
         this.setState({ eventdata: response });
+        this.getGroups();
+        let p = Object.assign({}, this.state.participantdata);
+        p.groupid = this.state.eventdata.groups[0].id;
+        this.setState({ participantdata: p });
       });
   }
   addParticipant() {
-    console.log(this.state.participantdata);
-
-    fetch("http://localhost:5000/api/data/v1/events/addparticipant", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/addparticipant", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -57,15 +62,44 @@ class EventInfo extends Component {
       .then(response => {
         return response.json();
       })
-      .then(response => {})
+      .then(response => {
+        //response ok => direct to payment OR participant 
+        if(response.errorCode !== undefined) {
+          console.warn(response);
+        } else {
+          window.location = response.url;
+        }
+      })
       .catch(error => {
-        console.log(error);
+        console.warn(error);
       });
   }
   handleChange(evt) {
     let e = Object.assign({}, this.state.participantdata);
-    e[evt.target.id] = evt.target.value;
-    this.setState({ participantdata: e });
+    if (evt.target.id === "public") {
+      e[evt.target.id] = !this.state.participantdata.public;
+      this.setState({ participantdata: e });
+    } else {
+      e[evt.target.id] = evt.target.value;
+      this.setState({ participantdata: e });
+    }
+  }
+  getGroups() {
+    let g = [];
+    this.state.eventdata.groups.forEach(group => {
+      g.push(
+        <option key={group.id} value={group.id}>
+          {group.name}
+        </option>
+      );
+    });
+    this.setState({
+      select_groups: (
+        <select id="groupid" defaultValue="2" onChange={this.handleChange}>
+          {g}
+        </select>
+      )
+    });
   }
   render() {
     let result = (
@@ -149,33 +183,27 @@ class EventInfo extends Component {
         <p>
           <Switch
             checked={this.state.participantdata.public}
+            value={this.state.participantdata.public}
             id="public"
             label="Tapahtuman järjestäjät saavat julkaista tietojani sekä kisan aikana tuotettua materiaalia nettisivuilla"
             onChange={this.handleChange}
           />
         </p>
 
-        <div className="pt-select">
-          <select id="groupid" defaultValue="1" onChange={this.handleChange}>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-            <option value="4">Four</option>
-          </select>
-        </div>
-        <div className="pt-select">
-          <select id="paymentmethod" defaultValue="2" onChange={this.handleChange}>
-            <option value="1">Liikuntasetelit</option>
-            <option value="2">Verkkomaksu</option>
-            <option value="3">Käteinen</option>
+        <div>{this.state.select_groups}</div>
+        <div>
+          <select id="paymentmethod" defaultValue={1} onChange={this.handleChange}>
+            <option value={1}>Verkkomaksu</option>
+            <option value={2}>Liikuntasetelit</option>
+            <option value={3}>Käteinen</option>
           </select>
         </div>
         <div className="event-enroll-total">
           <h5>Maksun yhteenveto</h5>
           <pre>
-            Sarja: Naiset Yleinen <br />
-            Hintasi: 20e <br />
-            Maksutapa: Liikuntasetelit paikanpäällä
+            Sarja: {this.state.participantdata.groupid} <br />
+            Hintasi: <br />
+            Maksutapa: {this.state.participantdata.paymentmethod}
           </pre>
         </div>
         <div className="event-enroll-button">

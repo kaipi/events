@@ -8,7 +8,7 @@ class SingleEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTab: "event-info"
+      currentTab: "eventinfo"
     };
     this.handleTabChange = this.handleTabChange.bind(this);
   }
@@ -25,11 +25,11 @@ class SingleEvent extends Component {
         <div className="event-content">
           <Tabs id="event-tabs" onChange={this.handleTabChange} selectedTabId={this.state.currentTab}>
             <Tab
-              id="event-info"
+              id="eventinfo"
               title="Tapahtuma ja Ilmoittautuminen"
               panel={<EventInfo id={this.props.match.params.id} />}
             />
-            <Tab id="participants" title="Osallistujat" panel={<Participants />} />
+            <Tab id="participants" title="Osallistujat" panel={<Participants id={this.props.match.params.id} />} />
             <Tab id="results" title="Tulokset" panel={<Results />} />
             <Tabs.Expander />
           </Tabs>

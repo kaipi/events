@@ -82,7 +82,17 @@ class Group extends Component {
             this.props.handleGroupChange(this.props.id, e);
           }}
         />
-
+        <input
+          className="pt-input .modifier"
+          type="text"
+          id="racenumber_prefix"
+          placeholder="Kisanumero prefixi"
+          size="5"
+          dir="auto"
+          onChange={e => {
+            this.props.handleGroupChange(this.props.id, e);
+          }}
+        />
         <Button
           className="app-icon-button"
           onClick={() => {

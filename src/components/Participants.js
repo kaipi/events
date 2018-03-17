@@ -1,19 +1,59 @@
 import React, { Component } from "react";
-import { Card, Elevation } from "@blueprintjs/core";
+import { Card, Elevation, Button } from "@blueprintjs/core";
 
 class Participants extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pariticipantrows: ""
+      pariticipantrows: []
     };
     this.getParticipants = this.getParticipants.bind(this);
+    this.getRowElements = this.getRowElements.bind(this);
+    this.removeParticipant = this.removeParticipant.bind(this);
   }
 
   componentWillMount() {
     this.getParticipants(this.props.id);
   }
-  getParticipants() {}
+  getParticipants(id) {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/" + id + "/participants", {
+      method: "GET"
+    })
+      .then(result => {
+        return result.json();
+      })
+      .then(r => {
+        this.setState({ participantrows: this.getRowElements(r) });
+      });
+  }
+  removeParticipant() {}
+  getRowElements(json) {
+    let arr = [];
+    json.forEach(item => {
+      arr.push(
+        <tr key={item.id}>
+          <td>
+            {item.firstname} {item.lastname}
+          </td>
+          <td>{item.club}</td>
+          <td>{item.group}</td>
+          <td>0</td>
+          <td>
+            {" "}
+            <Button
+              id={item.id}
+              className="app-icon-button"
+              onClick={() => {
+                this.removeParticipant(item.id);
+              }}
+              icon="trash"
+            />
+          </td>
+        </tr>
+      );
+    });
+    return arr;
+  }
   render() {
     let result = (
       <Card interactive={false} elevation={Elevation.TWO}>
@@ -23,7 +63,8 @@ class Participants extends Component {
               <th>Nimi</th>
               <th>Seura</th>
               <th>Sarja</th>
-              <th>Numero</th>
+              <th>Alustava kilpailunumero</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>{this.state.participantrows}</tbody>

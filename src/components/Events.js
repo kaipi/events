@@ -19,7 +19,7 @@ class Events extends Component {
     this.getEvents();
   }
   getEvents() {
-    fetch("http://localhost:5000/api/data/v1/events/allevents", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/allevents", {
       method: "GET"
     })
       .then(response => {
@@ -35,7 +35,7 @@ class Events extends Component {
   addEvent() {}
   removeEvent(id) {
     let payload = JSON.stringify({ id: id });
-    fetch("http://localhost:5000/api/data/v1/events/auth/deleteevent", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/auth/deleteevent", {
       method: "DELETE",
       body: payload,
       headers: {
