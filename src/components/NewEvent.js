@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Button, Card, Elevation, TextArea, Intent } from "@blueprintjs/core";
+import { Button, Card, Elevation, TextArea, Intent } from "@blueprintjs/core";
 import Navigation from "./Navigation";
 import Group from "./Group";
 
