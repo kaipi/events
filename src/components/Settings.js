@@ -6,15 +6,22 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      settings: {}
+      settings: {},
+      loggedin: false
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    let loginboolean = false;
+    if (localStorage.getItem("loggedin") === "true") {
+      loginboolean = true;
+    }
+    this.setState({ loggedin: loginboolean });
+  }
   render() {
     let result = (
       <div className="content">
         <div className="navigation">
-          <Navigation loggedIn={this.state.loggedin} addEvent={this.addEvent} />
+          <Navigation loggedin={this.state.loggedin} addEvent={this.addEvent} />
         </div>
         <div className="event-content">
           <Card interactive={false} elevation={Elevation.TWO}>

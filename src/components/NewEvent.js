@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, Elevation, TextArea, Intent } from "@blueprintjs/core";
+import { Button, Card, Elevation, Intent } from "@blueprintjs/core";
 import Navigation from "./Navigation";
 import Group from "./Group";
 
@@ -12,14 +12,15 @@ class NewEvent extends Component {
         date: "",
         location: "",
         paymentDescription: "",
-        paytrail: false,
-        cash: false,
-        sportVouchers: false,
         groupsDescription: "",
         groups: [],
-        name: ""
+        name: "",
+        googlemaps_link: "",
+        paytrail_product: "",
+        email_template: ""
       },
-      groups: []
+      groups: [],
+      loggedin: false
     };
     this.addGroup = this.addGroup.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -27,7 +28,13 @@ class NewEvent extends Component {
     this.removeGroup = this.removeGroup.bind(this);
     this.handleGroupChange = this.handleGroupChange.bind(this);
   }
-
+  componentDidMount() {
+    let loginboolean = false;
+    if (localStorage.getItem("loggedin") === "true") {
+      loginboolean = true;
+    }
+    this.setState({ loggedin: loginboolean });
+  }
   addGroup() {
     let newevent = Object.assign({}, this.state.eventdata);
     newevent.groups.push({
@@ -40,6 +47,9 @@ class NewEvent extends Component {
       tagrange_start: 0,
       tagrange_end: 0,
       current_tag: 0,
+      racenumberrange_start: 0,
+      racenumberrange_end: 0,
+      current_racenumber: 0,
       group_id: newevent.groups.length
     });
     let g = Object.assign([], this.state.groups);
@@ -77,14 +87,14 @@ class NewEvent extends Component {
         this.props.history.push("/");
       })
       .catch(error => {
-        console.log(error);
+        console.warn(error);
       });
   }
   render() {
     let result = (
       <div className="content">
         <div className="navigation">
-          <Navigation loggedIn={this.state.loggedin} addEvent={this.addEvent} />
+          <Navigation loggedin={this.state.loggedin} addEvent={this.addEvent} />
         </div>
         <div className="event-content">
           <Card interactive={false} elevation={Elevation.TWO}>
@@ -96,24 +106,11 @@ class NewEvent extends Component {
                 type="text"
                 placeholder="Tapahtuman nimi"
                 dir="auto"
-                size="47"
+                size="50"
                 id="name"
                 onChange={this.handleChange}
                 value={this.state.eventdata.name}
               />
-            </p>
-            <h5>Tapahtuman kuvaus</h5>
-            <p>
-              {" "}
-              <TextArea
-                large={true}
-                intent={Intent.PRIMARY}
-                onChange={this.handleChange}
-                value={this.state.eventdata.description}
-                rows="10"
-                cols="40"
-                id="description"
-              />{" "}
             </p>
             <h5>Aika ja paikka</h5>
             <p>
@@ -132,35 +129,83 @@ class NewEvent extends Component {
                 type="text"
                 placeholder="Paikka"
                 dir="auto"
+                size="25"
                 id="location"
                 onChange={this.handleChange}
                 value={this.state.eventdata.location}
               />
             </p>
-            <h5>Maksutavat</h5>
+            <p>
+              <input
+                className="pt-input .modifier"
+                type="text"
+                placeholder="Google maps linkki"
+                dir="auto"
+                size="50"
+                id="googlemaps_link"
+                onChange={this.handleChange}
+                value={this.state.eventdata.googlemaps_link}
+              />
+            </p>
+            <h5>Tapahtuman kuvaus</h5>
             <p>
               {" "}
-              <TextArea
-                large={true}
+              <textarea
                 intent={Intent.PRIMARY}
                 onChange={this.handleChange}
-                value={this.state.value}
-                rows={10}
-                cols={40}
+                value={this.state.eventdata.description}
+                rows="5"
+                cols="50"
+                id="description"
+              />{" "}
+            </p>
+
+            <h5>Maksutavat</h5>
+            <p>
+              <input
+                className="pt-input .modifier"
+                type="text"
+                placeholder="Paytrail tuote"
+                dir="auto"
+                size="50"
+                id="paytrail_product"
+                onChange={this.handleChange}
+                value={this.state.eventdata.paytrail_product}
+              />
+            </p>
+
+            <p>
+              {" "}
+              <textarea
+                intent={Intent.PRIMARY}
+                onChange={this.handleChange}
+                value={this.state.eventdata.paymentDescription}
+                rows={5}
+                cols={50}
                 id="paymentDescription"
               />{" "}
             </p>
-            
+            <h5>Vahvistussähköposti</h5>
+            <p>
+              {" "}
+              <textarea
+                intent={Intent.PRIMARY}
+                onChange={this.handleChange}
+                value={this.state.eventdata.email_template}
+                rows={5}
+                cols={50}
+                id="email_template"
+              />{" "}
+            </p>
             <h5>Sarjat ja matkat</h5>
             <p>
               {" "}
-              <TextArea
-                large={true}
+              <textarea
                 intent={Intent.PRIMARY}
                 onChange={this.handleChange}
-                value={this.state.value}
-                rows={10}
-                cols={40}
+                value={this.state.eventdata.groupsDescription}
+                rows={5}
+                cols={50}
                 id="groupsDescription"
               />{" "}
             </p>

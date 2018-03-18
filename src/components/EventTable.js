@@ -6,7 +6,6 @@ class EventTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showInfo: false,
       eventrows: []
     };
     this.getEventsRows = this.getEventsRows.bind(this);
@@ -14,6 +13,7 @@ class EventTable extends Component {
   componentWillReceiveProps(nextProps) {
     this.getEventsRows(nextProps.events);
   }
+
   getEventsRows(prop) {
     let eventrows = [];
     prop.forEach(item => {
@@ -22,25 +22,37 @@ class EventTable extends Component {
           <td>{item.name}</td>
           <td>{item.date}</td>
           <td>
-            <Link to={"https://www.google.com/maps/search/?api=1&query=" + item.location} target="_blank">
+            <a href={item.googlemaps_link} target="_blank">
               {item.location}
-            </Link>
+            </a>
           </td>
           <td>
-            <Button
-              id={item.id}
-              className="app-icon-button"
-              onClick={() => {
-                this.props.removeEvent(item.id);
-              }}
-              icon="trash"
-            />
-            <Button className="app-icon-button" onClick={this.props.editEvent} icon="edit" />
-            <Link to={"/event/" + item.id}>
-              <Button className="app-icon-button" icon="plus">
-                Ilmoittaudu
-              </Button>
-            </Link>
+            {this.props.loggedin ? (
+              <div>
+                <Button
+                  id={item.id}
+                  className="app-icon-button"
+                  onClick={() => {
+                    this.props.removeEvent(item.id);
+                  }}
+                  icon="trash"
+                />
+                <Button className="app-icon-button" onClick={this.props.editEvent} icon="edit" />
+                <Link to={"/event/" + item.id}>
+                  <Button className="app-icon-button" icon="plus">
+                    Ilmoittaudu
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <div>
+                <Link to={"/event/" + item.id}>
+                  <Button className="app-icon-button" icon="plus">
+                    Ilmoittaudu
+                  </Button>
+                </Link>
+              </div>
+            )}
           </td>
         </tr>
       );
@@ -55,7 +67,7 @@ class EventTable extends Component {
             <th>Tapahtuma</th>
             <th>Aika</th>
             <th>Paikka</th>
-            <th></th>
+            <th />
           </tr>
         </thead>
         <tbody>{this.state.eventrows}</tbody>

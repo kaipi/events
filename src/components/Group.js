@@ -17,7 +17,7 @@ class Group extends Component {
         />
         <input
           className="pt-input .modifier"
-          type="text"
+          type="number"
           id="distance"
           placeholder="Matka"
           size="5"
@@ -28,7 +28,7 @@ class Group extends Component {
         />
         <input
           className="pt-input .modifier"
-          type="text"
+          type="number"
           id="price_prepay"
           placeholder="Hinta ennakkoon (verkkomaksu)"
           size="20"
@@ -40,7 +40,7 @@ class Group extends Component {
 
         <input
           className="pt-input .modifier"
-          type="text"
+          type="number"
           id="price"
           placeholder="Hinta kisapäivänä (käteinen/liikuntasetelit)"
           size="20"
@@ -62,7 +62,7 @@ class Group extends Component {
         />
         <input
           className="pt-input .modifier"
-          type="text"
+          type="number"
           id="tagrange_start"
           placeholder="Tagirange alku"
           size="5"
@@ -73,7 +73,7 @@ class Group extends Component {
         />
         <input
           className="pt-input .modifier"
-          type="text"
+          type="number"
           id="tagrange_end"
           placeholder="Tagirange loppu"
           size="5"
@@ -85,8 +85,30 @@ class Group extends Component {
         <input
           className="pt-input .modifier"
           type="text"
-          id="racenumber_prefix"
+          id="number_prefix"
           placeholder="Kisanumero prefixi"
+          size="5"
+          dir="auto"
+          onChange={e => {
+            this.props.handleGroupChange(this.props.id, e);
+          }}
+        />
+        <input
+          className="pt-input .modifier"
+          type="number"
+          id="racenumberrange_start"
+          placeholder="Kisanumerosarja alku"
+          size="5"
+          dir="auto"
+          onChange={e => {
+            this.props.handleGroupChange(this.props.id, e);
+          }}
+        />
+        <input
+          className="pt-input .modifier"
+          type="number"
+          id="racenumberrange_end"
+          placeholder="Kisanumerosarja loppu"
           size="5"
           dir="auto"
           onChange={e => {

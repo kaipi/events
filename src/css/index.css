@@ -61,3 +61,10 @@ body {
 .event-enroll-total {
   padding-top: 10px;
 }
+.login-prompt {
+  text-align: center;
+}
+.login-errormessage {
+  color: red;
+  padding-top: 10px;
+}

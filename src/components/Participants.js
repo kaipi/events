@@ -10,6 +10,7 @@ class Participants extends Component {
     this.getParticipants = this.getParticipants.bind(this);
     this.getRowElements = this.getRowElements.bind(this);
     this.removeParticipant = this.removeParticipant.bind(this);
+    this.movePariticipant = this.movePariticipant.bind(this);
   }
 
   componentWillMount() {
@@ -27,6 +28,7 @@ class Participants extends Component {
       });
   }
   removeParticipant() {}
+  movePariticipant() {}
   getRowElements(json) {
     let arr = [];
     json.forEach(item => {
@@ -37,17 +39,20 @@ class Participants extends Component {
           </td>
           <td>{item.club}</td>
           <td>{item.group}</td>
-          <td>0</td>
+          <td>{item.number}</td>
           <td>
-            {" "}
-            <Button
-              id={item.id}
-              className="app-icon-button"
-              onClick={() => {
-                this.removeParticipant(item.id);
-              }}
-              icon="trash"
-            />
+            {this.props.loggedin ? (
+              <Button
+                id={item.id}
+                className="app-icon-button"
+                onClick={() => {
+                  this.removeParticipant(item.id);
+                }}
+                icon="trash"
+              />
+            ) : (
+              ""
+            )}
           </td>
         </tr>
       );
@@ -64,7 +69,7 @@ class Participants extends Component {
               <th>Seura</th>
               <th>Sarja</th>
               <th>Alustava kilpailunumero</th>
-              <th></th>
+              <th />
             </tr>
           </thead>
           <tbody>{this.state.participantrows}</tbody>

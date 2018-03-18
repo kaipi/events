@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, Elevation, Switch } from "@blueprintjs/core";
+import { Button, Card, Elevation, Switch, Radio, RadioGroup } from "@blueprintjs/core";
 
 class EventInfo extends Component {
   constructor(props) {
@@ -24,9 +24,9 @@ class EventInfo extends Component {
         groupid: 0,
         paymentmethod: 1,
         public: true,
-        zip:""
+        zip: ""
       },
-      select_groups: ""
+      registration: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.getEventData = this.getEventData.bind(this);
@@ -45,7 +45,6 @@ class EventInfo extends Component {
       })
       .then(response => {
         this.setState({ eventdata: response });
-        this.getGroups();
         let p = Object.assign({}, this.state.participantdata);
         p.groupid = this.state.eventdata.groups[0].id;
         this.setState({ participantdata: p });
@@ -63,9 +62,10 @@ class EventInfo extends Component {
         return response.json();
       })
       .then(response => {
-        //response ok => direct to payment OR participant 
-        if(response.errorCode !== undefined) {
-          console.warn(response);
+        //response ok => direct to payment OR participant
+        if (response.type === "normal") {
+          this.setState({ registration: true });
+          //his.props.showNotification("Ilmoittautuminen onnistui!");
         } else {
           window.location = response.url;
         }
@@ -87,20 +87,12 @@ class EventInfo extends Component {
   getGroups() {
     let g = [];
     this.state.eventdata.groups.forEach(group => {
-      g.push(
-        <option key={group.id} value={group.id}>
-          {group.name}
-        </option>
-      );
+      g.push(<Radio key={group.id} label={group.name} id="groupid" value={group.id} />);
     });
-    this.setState({
-      select_groups: (
-        <select id="groupid" defaultValue="2" onChange={this.handleChange}>
-          {g}
-        </select>
-      )
-    });
+
+    return g;
   }
+
   render() {
     let result = (
       <Card interactive={false} elevation={Elevation.TWO}>
@@ -116,99 +108,137 @@ class EventInfo extends Component {
         <p>{this.state.eventdata.payment_description}</p>
         <h5>Sarjat ja matkat</h5>
         <p>{this.state.eventdata.groups_description}</p>
-        <h5>Ilmoittautuminen</h5>
-        <p>
-          <input
-            className="pt-input .modifier"
-            type="text"
-            placeholder="Etunimi"
-            dir="auto"
-            id="firstname"
-            value={this.state.eventdata.firstname}
-            onChange={this.handleChange}
-          />
-          <input
-            className="pt-input .modifier"
-            type="text"
-            placeholder="Sukunimi"
-            dir="auto"
-            id="lastname"
-            onChange={this.handleChange}
-          />
-          <input
-            className="pt-input .modifier"
-            type="text"
-            placeholder="Katuosoite"
-            dir="auto"
-            id="streetaddress"
-            onChange={this.handleChange}
-          />
-        </p>
-        <p>
-          <input
-            className="pt-input .modifier"
-            type="text"
-            placeholder="Postinumero"
-            dir="auto"
-            id="zip"
-            onChange={this.handleChange}
-          />
-          <input
-            className="pt-input .modifier"
-            type="text"
-            placeholder="Puhelinnumero"
-            dir="auto"
-            id="telephone"
-            onChange={this.handleChange}
-          />
-          <input
-            className="pt-input .modifier"
-            type="text"
-            placeholder="Sähköposti"
-            dir="auto"
-            id="email"
-            onChange={this.handleChange}
-          />
-        </p>
-        <p>
-          <input
-            className="pt-input .modifier"
-            type="text"
-            placeholder="Seura"
-            dir="auto"
-            id="club"
-            onChange={this.handleChange}
-          />
-        </p>
-        <p>
-          <Switch
-            checked={this.state.participantdata.public}
-            value={this.state.participantdata.public}
-            id="public"
-            label="Tapahtuman järjestäjät saavat julkaista tietojani sekä kisan aikana tuotettua materiaalia nettisivuilla"
-            onChange={this.handleChange}
-          />
-        </p>
+        {this.state.registration ? (
+          <div className="pt-callout pt-intent-success">
+            <h4 className="pt-callout-title ">Ilmoittautuminen onnistui!</h4>
+            Tervetuloa mukaan, saat sähköpostiisi vielä vahvistuksen kisamaksusta ja lisäohjeita!
+          </div>
+        ) : (
+          <div>
+            <h5>Ilmoittautuminen</h5>
+            <p>
+              <input
+                className="pt-input .modifier"
+                type="text"
+                placeholder="Etunimi"
+                dir="auto"
+                id="firstname"
+                value={this.state.eventdata.firstname}
+                onChange={this.handleChange}
+              />
+            </p>
+            <p>
+              <input
+                className="pt-input .modifier"
+                type="text"
+                placeholder="Sukunimi"
+                dir="auto"
+                id="lastname"
+                onChange={this.handleChange}
+              />
+            </p>
+            <p>
+              <input
+                className="pt-input .modifier"
+                type="text"
+                placeholder="Katuosoite"
+                dir="auto"
+                id="streetaddress"
+                onChange={this.handleChange}
+              />
 
-        <div>{this.state.select_groups}</div>
-        <div>
-          <select id="paymentmethod" defaultValue={1} onChange={this.handleChange}>
-            <option value={1}>Verkkomaksu</option>
-            <option value={2}>Liikuntasetelit</option>
-            <option value={3}>Käteinen</option>
-          </select>
-        </div>
-        <div className="event-enroll-total">
-          <h5>Maksun yhteenveto</h5>
-          <pre>
-            Sarja: {this.state.participantdata.groupid} <br />
-            Hintasi: <br />
-            Maksutapa: {this.state.participantdata.paymentmethod}
-          </pre>
-        </div>
-        <div className="event-enroll-button">
-          <Button onClick={this.addParticipant}>Ilmoittaudu</Button>
-        </div>
+              <input
+                className="pt-input .modifier"
+                type="text"
+                placeholder="Postinumero"
+                dir="auto"
+                id="zip"
+                onChange={this.handleChange}
+              />
+              <input
+                className="pt-input .modifier"
+                type="text"
+                placeholder="Kaupunki"
+                dir="auto"
+                id="city"
+                onChange={this.handleChange}
+              />
+            </p>
+            <p>
+              <input
+                className="pt-input .modifier"
+                type="text"
+                placeholder="Puhelinnumero"
+                dir="auto"
+                id="telephone"
+                onChange={this.handleChange}
+              />
+              <input
+                className="pt-input .modifier"
+                type="text"
+                placeholder="Sähköposti"
+                dir="auto"
+                id="email"
+                onChange={this.handleChange}
+              />
+            </p>
+            <p>
+              <input
+                className="pt-input .modifier"
+                type="text"
+                placeholder="Seura"
+                dir="auto"
+                id="club"
+                onChange={this.handleChange}
+              />
+            </p>
+            <p>
+              <Switch
+                checked={this.state.participantdata.public}
+                value={this.state.participantdata.public}
+                id="public"
+                label="Tapahtuman järjestäjät saavat julkaista tietojani sekä kisan aikana tuotettua materiaalia nettisivuilla"
+                onChange={this.handleChange}
+              />
+            </p>
+
+            <div>
+              <h5>Sarjat</h5>
+              <RadioGroup
+                id="groupid"
+                onChange={this.handleChange}
+                selectedValue={this.state.participantdata.groupid}
+                value={this.state.participantdata.groupid}
+              >
+                {this.getGroups()}
+              </RadioGroup>
+            </div>
+            <div>
+              <h5>Maksutavat</h5>
+              <RadioGroup
+                id="paymentmethod"
+                onChange={this.handleChange}
+                selectedValue={this.state.participantdata.paymentmethod}
+                value={this.state.participantdata.paymentmethod}
+              >
+                <Radio id="paymentmethod" label="Verkkomaksu" value="1" />
+                <Radio id="paymentmethod" label="Liikuntasetelit" value="2" />
+                <Radio id="paymentmethod" label="Käteinen" value="3" />
+              </RadioGroup>
+            </div>
+            <div className="event-enroll-total">
+              <h5>Maksun yhteenveto</h5>
+              <pre>
+                Sarja: {this.state.participantdata.groupid} <br />
+                Hintasi: <br />
+                Maksutapa: {this.state.participantdata.paymentmethod}
+              </pre>
+            </div>
+            <div className="event-enroll-button">
+              <Button onClick={this.addParticipant}>Ilmoittaudu</Button>
+            </div>
+          </div>
+        )}
       </Card>
     );
     return result;

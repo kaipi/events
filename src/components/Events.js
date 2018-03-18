@@ -7,17 +7,29 @@ class Events extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedin: false,
-      events: []
+      events: [],
+      loggedin: false
     };
     this.removeEvent = this.removeEvent.bind(this);
-    this.addEvent = this.addEvent.bind(this);
-    this.showDetails = this.showDetails.bind(this);
     this.getEvents = this.getEvents.bind(this);
+    this.logout = this.logout.bind(this);
   }
   componentDidMount() {
     this.getEvents();
+    let loginboolean = false;
+    if (localStorage.getItem("loggedin") === "true") {
+      loginboolean = true;
+    }
+    this.setState({ loggedin: loginboolean });
   }
+  logout() {
+    const { history } = this.props;
+    localStorage.removeItem("jyps-jwt");
+    localStorage.setItem("loggedin", false);
+    this.setState({ loggedin: false });
+    history.push("/");
+  }
+
   getEvents() {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/allevents", {
       method: "GET"
@@ -32,7 +44,6 @@ class Events extends Component {
         console.warn(error);
       });
   }
-  addEvent() {}
   removeEvent(id) {
     let payload = JSON.stringify({ id: id });
     fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/auth/deleteevent", {
@@ -45,13 +56,16 @@ class Events extends Component {
       this.getEvents();
     });
   }
-  editEvent() {}
-  showDetails() {}
   render() {
     let result = (
       <div className="content">
         <div className="navigation">
-          <Navigation loggedIn={this.state.loggedin} addEvent={this.addEvent} />
+          <Navigation
+            logout={this.logout}
+            addEvent={this.addEvent}
+            history={this.props.history}
+            loggedin={this.state.loggedin}
+          />
         </div>
         <div className="event-content">
           <Card interactive={false} elevation={Elevation.TWO}>
@@ -60,6 +74,7 @@ class Events extends Component {
               removeEvent={this.removeEvent}
               editEvent={this.editEvent}
               showDetails={this.showDetails}
+              loggedin={this.state.loggedin}
             />
           </Card>
         </div>
