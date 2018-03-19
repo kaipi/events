@@ -17,7 +17,7 @@ class Group extends Component {
         />
         <input
           className="pt-input .modifier"
-          type="number"
+          type="text"
           id="distance"
           placeholder="Matka"
           size="5"
@@ -28,10 +28,10 @@ class Group extends Component {
         />
         <input
           className="pt-input .modifier"
-          type="number"
+          type="text"
           id="price_prepay"
           placeholder="Hinta ennakkoon (verkkomaksu)"
-          size="20"
+          size="3"
           dir="auto"
           onChange={e => {
             this.props.handleGroupChange(this.props.id, e);
@@ -40,10 +40,10 @@ class Group extends Component {
 
         <input
           className="pt-input .modifier"
-          type="number"
+          type="text"
           id="price"
           placeholder="Hinta kisapäivänä (käteinen/liikuntasetelit)"
-          size="20"
+          size="3"
           dir="auto"
           onChange={e => {
             this.props.handleGroupChange(this.props.id, e);
@@ -62,7 +62,7 @@ class Group extends Component {
         />
         <input
           className="pt-input .modifier"
-          type="number"
+          type="text"
           id="tagrange_start"
           placeholder="Tagirange alku"
           size="5"
@@ -73,7 +73,7 @@ class Group extends Component {
         />
         <input
           className="pt-input .modifier"
-          type="number"
+          type="text"
           id="tagrange_end"
           placeholder="Tagirange loppu"
           size="5"
@@ -95,7 +95,7 @@ class Group extends Component {
         />
         <input
           className="pt-input .modifier"
-          type="number"
+          type="text"
           id="racenumberrange_start"
           placeholder="Kisanumerosarja alku"
           size="5"
@@ -106,7 +106,7 @@ class Group extends Component {
         />
         <input
           className="pt-input .modifier"
-          type="number"
+          type="text"
           id="racenumberrange_end"
           placeholder="Kisanumerosarja loppu"
           size="5"

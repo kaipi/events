@@ -21,17 +21,22 @@ class EventInfo extends Component {
         telephone: "",
         email: "",
         club: "",
-        groupid: 0,
-        paymentmethod: 1,
+        groupid: "0",
+        paymentmethod: "1",
         public: true,
-        zip: ""
+        zip: "",
+        city: ""
       },
-      registration: false
+      registration: false,
+      submitAllowed: true,
+      paymentdata: { name: "", paymentMethodName: "", price: 0 }
     };
     this.handleChange = this.handleChange.bind(this);
     this.getEventData = this.getEventData.bind(this);
     this.addParticipant = this.addParticipant.bind(this);
     this.getGroups = this.getGroups.bind(this);
+    this.validateFields = this.validateFields.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
   }
   componentDidMount() {
     this.getEventData(this.props.id);
@@ -64,8 +69,8 @@ class EventInfo extends Component {
       .then(response => {
         //response ok => direct to payment OR participant
         if (response.type === "normal") {
+          this.getEventData(this.props.id);
           this.setState({ registration: true });
-          //his.props.showNotification("Ilmoittautuminen onnistui!");
         } else {
           window.location = response.url;
         }
@@ -80,20 +85,108 @@ class EventInfo extends Component {
       e[evt.target.id] = !this.state.participantdata.public;
       this.setState({ participantdata: e });
     } else {
+      this.validateFields();
       e[evt.target.id] = evt.target.value;
+      let data = { name: "", paymentMethodName: "", price: 0 };
+
+      if (evt.target.id === "paymentmethod") {
+        let result = this.state.eventdata.groups.find(
+          group => group.id === parseInt(this.state.participantdata.groupid, 10)
+        );
+        // calc price
+        if (evt.target.value === "1") {
+          data.name = result.name;
+          data.paymentMethodName = "Paytrail verkkomaksu";
+          data.price = result.price_prepay;
+        } else if (evt.target.value === "2") {
+          data.name = result.name;
+          data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) paikanpäällä";
+          data.price = result.price;
+        }
+        if (evt.target.value === "3") {
+          data.name = result.name;
+          data.paymentMethodName = "Käteinen paikanpäällä";
+          data.price = result.price;
+        }
+        this.setState({ paymentdata: data });
+      }
+      if (evt.target.id === "groupid") {
+        let result = this.state.eventdata.groups.find(group => group.id === parseInt(evt.target.value, 10));
+        // calc price
+        if (this.state.participantdata.paymentmethod === "1") {
+          data.name = result.name;
+          data.paymentMethodName = "Paytrail verkkomaksu";
+          data.price = result.price_prepay;
+        } else if (this.state.participantdata.paymentmethod === "2") {
+          data.name = result.name;
+          data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) paikanpäällä";
+          data.price = result.price;
+        }
+        if (this.state.participantdata.paymentmethod === "3") {
+          data.name = result.name;
+          data.paymentMethodName = "Käteinen paikanpäällä";
+          data.price = result.price;
+        }
+        this.setState({ paymentdata: data });
+      }
       this.setState({ participantdata: e });
+    }
+  }
+  validateEmail(mail) {
+    if (mail === "") {
+      return false;
+    }
+    if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+      return true;
+    }
+    return false;
+  }
+  validateFields() {
+    //worlds worst form validator :D
+    let error = false;
+    if (!this.validateEmail(this.state.participantdata.email)) {
+      error = true;
+    } else if (
+      this.state.participantdata.firstname === "" ||
+      this.state.participantdata.lastname === "" ||
+      this.state.participantdata.streetaddress === "" ||
+      this.state.participantdata.zip === "" ||
+      this.state.participantdata.city === ""
+    ) {
+      error = true;
+    }
+    if (error === false) {
+      this.setState({ submitAllowed: false });
+    } else {
+      this.setState({ submitAllowed: true });
     }
   }
   getGroups() {
     let g = [];
     this.state.eventdata.groups.forEach(group => {
-      g.push(<Radio key={group.id} label={group.name} id="groupid" value={group.id} />);
+      g.push(<Radio key={group.id} label={group.name} id="groupid" value={group.id.toString()} />);
     });
 
     return g;
   }
 
   render() {
+    let validationMessage = "";
+    if (this.state.submitAllowed === true) {
+      validationMessage = (
+        <div className="pt-callout pt-intent-warning">
+          <h4 className="pt-callout-title">Tarkista lomake</h4>
+          Täytä lomakkeen tähdellä merkityt kentät
+        </div>
+      );
+    } else {
+      validationMessage = (
+        <div className="pt-callout pt-intent-success">
+          <h4 className="pt-callout-title">Lomake kunnossa</h4>
+          Voit jatkaa ilmoittautumiseen
+        </div>
+      );
+    }
     let result = (
       <Card interactive={false} elevation={Elevation.TWO}>
         <h5>Tapahtuman nimi</h5>
@@ -115,12 +208,12 @@ class EventInfo extends Component {
           </div>
         ) : (
           <div>
-            <h5>Ilmoittautuminen</h5>
+            <h5>Henkilötiedot</h5>
             <p>
               <input
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Etunimi"
+                placeholder="Etunimi *"
                 dir="auto"
                 id="firstname"
                 value={this.state.eventdata.firstname}
@@ -131,7 +224,7 @@ class EventInfo extends Component {
               <input
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Sukunimi"
+                placeholder="Sukunimi *"
                 dir="auto"
                 id="lastname"
                 onChange={this.handleChange}
@@ -141,7 +234,7 @@ class EventInfo extends Component {
               <input
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Katuosoite"
+                placeholder="Katuosoite *"
                 dir="auto"
                 id="streetaddress"
                 onChange={this.handleChange}
@@ -150,7 +243,7 @@ class EventInfo extends Component {
               <input
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Postinumero"
+                placeholder="Postinumero *"
                 dir="auto"
                 id="zip"
                 onChange={this.handleChange}
@@ -158,7 +251,7 @@ class EventInfo extends Component {
               <input
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Kaupunki"
+                placeholder="Kaupunki *"
                 dir="auto"
                 id="city"
                 onChange={this.handleChange}
@@ -176,7 +269,7 @@ class EventInfo extends Component {
               <input
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Sähköposti"
+                placeholder="Sähköposti *"
                 dir="auto"
                 id="email"
                 onChange={this.handleChange}
@@ -197,7 +290,7 @@ class EventInfo extends Component {
                 checked={this.state.participantdata.public}
                 value={this.state.participantdata.public}
                 id="public"
-                label="Tapahtuman järjestäjät saavat julkaista tietojani sekä kisan aikana tuotettua materiaalia nettisivuilla"
+                label="Tapahtuman järjestäjät saavat julkaista tietojani (tulokset/osallistujat), sekä kisan aikana tuotettua materiaalia nettisivuilla (kuvat, videot tmv.)"
                 onChange={this.handleChange}
               />
             </p>
@@ -229,13 +322,16 @@ class EventInfo extends Component {
             <div className="event-enroll-total">
               <h5>Maksun yhteenveto</h5>
               <pre>
-                Sarja: {this.state.participantdata.groupid} <br />
-                Hintasi: <br />
-                Maksutapa: {this.state.participantdata.paymentmethod}
+                Sarja: {this.state.paymentdata.name} <br />
+                Hintasi: {this.state.paymentdata.price}e<br />
+                Maksutapa: {this.state.paymentdata.paymentMethodName}
               </pre>
             </div>
+            {validationMessage}
             <div className="event-enroll-button">
-              <Button onClick={this.addParticipant}>Ilmoittaudu</Button>
+              <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
+                Ilmoittaudu
+              </Button>
             </div>
           </div>
         )}
