@@ -31,7 +31,7 @@ class Events extends Component {
   }
 
   getEvents() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/event/v1/event/allevents", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/event/data/v1/event/allevents", {
       method: "GET"
     })
       .then(response => {
