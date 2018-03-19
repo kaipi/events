@@ -31,7 +31,7 @@ class Events extends Component {
   }
 
   getEvents() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/allevents", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/event/v1/event/allevents", {
       method: "GET"
     })
       .then(response => {
@@ -46,7 +46,7 @@ class Events extends Component {
   }
   removeEvent(id) {
     let payload = JSON.stringify({ id: id });
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/auth/deleteevent", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deleteevent", {
       method: "DELETE",
       body: payload,
       headers: {

@@ -76,7 +76,7 @@ class NewEvent extends Component {
     this.setState({ eventdata: newevent });
   }
   updateData() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/auth/createevent", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/createevent", {
       method: "POST",
       body: JSON.stringify(this.state.eventdata),
       headers: {

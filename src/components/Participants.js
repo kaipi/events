@@ -17,7 +17,7 @@ class Participants extends Component {
     this.getParticipants(this.props.id);
   }
   getParticipants(id) {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/" + id + "/participants", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/events/" + id + "/participants", {
       method: "GET"
     })
       .then(result => {

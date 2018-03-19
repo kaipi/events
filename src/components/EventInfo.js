@@ -42,7 +42,7 @@ class EventInfo extends Component {
     this.getEventData(this.props.id);
   }
   getEventData(id) {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/" + id, {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + id, {
       method: "GET"
     })
       .then(response => {
@@ -56,7 +56,7 @@ class EventInfo extends Component {
       });
   }
   addParticipant() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/data/v1/events/addparticipant", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/addparticipant", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
