@@ -12,7 +12,7 @@ class Login extends Component {
   loginHandler() {
     const { history } = this.props;
 
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/login", {
+    fetch(process.env. + "/api/events/v1/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
