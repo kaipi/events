@@ -164,7 +164,14 @@ class EventInfo extends Component {
   getGroups() {
     let g = [];
     this.state.eventdata.groups.forEach(group => {
-      g.push(<Radio key={group.id} label={group.name} id="groupid" value={group.id.toString()} />);
+      g.push(
+        <Radio
+          key={group.id}
+          label={group.name + ", Matka: " + group.distance + ", Hinta: " + group.price_prepay + "euroa"}
+          id="groupid"
+          value={group.id.toString()}
+        />
+      );
     });
 
     return g;
@@ -305,27 +312,6 @@ class EventInfo extends Component {
               >
                 {this.getGroups()}
               </RadioGroup>
-            </div>
-            <div>
-              <h5>Maksutavat</h5>
-              <RadioGroup
-                id="paymentmethod"
-                onChange={this.handleChange}
-                selectedValue={this.state.participantdata.paymentmethod}
-                value={this.state.participantdata.paymentmethod}
-              >
-                <Radio id="paymentmethod" label="Verkkomaksu" value="1" />
-                <Radio id="paymentmethod" label="Liikuntasetelit" value="2" />
-                <Radio id="paymentmethod" label="Käteinen" value="3" />
-              </RadioGroup>
-            </div>
-            <div className="event-enroll-total">
-              <h5>Maksun yhteenveto</h5>
-              <pre>
-                Sarja: {this.state.paymentdata.name} <br />
-                Hintasi: {this.state.paymentdata.price}e<br />
-                Maksutapa: {this.state.paymentdata.paymentMethodName}
-              </pre>
             </div>
             {validationMessage}
             <div className="event-enroll-button">
