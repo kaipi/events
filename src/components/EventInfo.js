@@ -21,8 +21,8 @@ class EventInfo extends Component {
         telephone: "",
         email: "",
         club: "",
-        groupid: "0",
-        paymentmethod: "1",
+        groupid: "1",
+        paymentmethod: "2",
         public: true,
         zip: "",
         city: ""
@@ -51,7 +51,7 @@ class EventInfo extends Component {
       .then(response => {
         this.setState({ eventdata: response });
         let p = Object.assign({}, this.state.participantdata);
-        p.groupid = this.state.eventdata.groups[0].id;
+        p.groupid = this.state.eventdata.groups[0].id.toString();
         this.setState({ participantdata: p });
       });
   }
@@ -71,6 +71,7 @@ class EventInfo extends Component {
         if (response.type === "normal") {
           this.getEventData(this.props.id);
           this.setState({ registration: true });
+          this.props.history.push("/");
         } else {
           window.location = response.url;
         }
@@ -89,27 +90,6 @@ class EventInfo extends Component {
       e[evt.target.id] = evt.target.value;
       let data = { name: "", paymentMethodName: "", price: 0 };
 
-      if (evt.target.id === "paymentmethod") {
-        let result = this.state.eventdata.groups.find(
-          group => group.id === parseInt(this.state.participantdata.groupid, 10)
-        );
-        // calc price
-        if (evt.target.value === "1") {
-          data.name = result.name;
-          data.paymentMethodName = "Paytrail verkkomaksu";
-          data.price = result.price_prepay;
-        } else if (evt.target.value === "2") {
-          data.name = result.name;
-          data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) paikanpäällä";
-          data.price = result.price;
-        }
-        if (evt.target.value === "3") {
-          data.name = result.name;
-          data.paymentMethodName = "Käteinen paikanpäällä";
-          data.price = result.price;
-        }
-        this.setState({ paymentdata: data });
-      }
       if (evt.target.id === "groupid") {
         let result = this.state.eventdata.groups.find(group => group.id === parseInt(evt.target.value, 10));
         // calc price

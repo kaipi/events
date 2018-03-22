@@ -38,7 +38,7 @@ class EventTable extends Component {
                   icon="trash"
                 />
                 <Button className="app-icon-button" onClick={this.props.editEvent} icon="edit" />
-                <Link to={"/event/" + item.id}>
+                <Link to={"/event/" + item.id + "/eventinfo"}>
                   <Button className="app-icon-button" rightIcon="new-person">
                     Ilmoittautuminen ja lisätiedot
                   </Button>
@@ -46,7 +46,7 @@ class EventTable extends Component {
               </div>
             ) : (
               <div>
-                <Link to={"/event/" + item.id}>
+                <Link to={"/event/" + item.id + "/eventinfo"}>
                   <Button className="app-icon-button" rightIcon="new-person">
                     Ilmoittautuminen ja lisätiedot
                   </Button>

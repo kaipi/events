@@ -13,20 +13,17 @@ class SingleEvent extends Component {
       loggedin: false
     };
     this.handleTabChange = this.handleTabChange.bind(this);
-    this.showNotification = this.showNotification.bind(this);
   }
   componentDidMount() {
     let loginboolean = false;
     if (localStorage.getItem("loggedin") === "true") {
       loginboolean = true;
     }
-    this.setState({ loggedin: loginboolean });
+    this.setState({ loggedin: loginboolean, currentTab: this.props.match.params.tabid });
   }
   handleTabChange(e) {
     this.setState({ currentTab: e });
   }
-  showNotification(message) {}
-
   render() {
     let result = (
       <div className="content">

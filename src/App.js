@@ -14,7 +14,7 @@ class App extends Component {
           <div className="App">
             <Switch>
               <Route exact path="/" component={Events} />
-              <Route path="/event/:id" component={SingleEvent} />
+              <Route path="/event/:id/:tabid" component={SingleEvent} />
               <Route path="/newevent" component={NewEvent} />
               <Route path="/settings" component={Settings} />
               <Route path="/login" component={Login} />
