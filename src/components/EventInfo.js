@@ -22,7 +22,7 @@ class EventInfo extends Component {
         email: "",
         club: "",
         groupid: "1",
-        paymentmethod: "2",
+        paymentmethod: "1",
         public: true,
         zip: "",
         city: ""
