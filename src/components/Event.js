@@ -4,6 +4,7 @@ import { Tab, Tabs } from "@blueprintjs/core";
 import EventInfo from "./EventInfo";
 import Participants from "./Participants";
 import Results from "./Results";
+import { checkJwtToken } from "../utils/auth";
 
 class SingleEvent extends Component {
   constructor(props) {
@@ -15,11 +16,10 @@ class SingleEvent extends Component {
     this.handleTabChange = this.handleTabChange.bind(this);
   }
   componentDidMount() {
-    let loginboolean = false;
-    if (localStorage.getItem("loggedin") === "true") {
-      loginboolean = true;
-    }
-    this.setState({ loggedin: loginboolean, currentTab: this.props.match.params.tabid });
+    this.setState({
+      currentTab: this.props.match.params.tabid,
+      loggedin: checkJwtToken(localStorage.getItem("jyps-jwt"))
+    });
   }
   handleTabChange(e) {
     this.setState({ currentTab: e });

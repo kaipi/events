@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Navigation from "./Navigation";
 import { Button, Card, Elevation } from "@blueprintjs/core";
-
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +27,6 @@ class Login extends Component {
       })
       .then(response => {
         localStorage.setItem("jyps-jwt", response.jwt);
-        localStorage.setItem("loggedin", true);
         history.push("/");
       })
       .catch(error => {

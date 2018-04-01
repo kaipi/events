@@ -80,7 +80,8 @@ class NewEvent extends Component {
       method: "POST",
       body: JSON.stringify(this.state.eventdata),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
       }
     })
       .then(response => {

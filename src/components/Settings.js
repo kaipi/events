@@ -1,14 +1,16 @@
 import React, { Component } from "react";
-import { Button, Card, Elevation } from "@blueprintjs/core";
+import { Card, Elevation } from "@blueprintjs/core";
 import Navigation from "./Navigation";
 
 class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      settings: {},
-      loggedin: false
+      settings: [],
+      loggedin: false,
+      settingsrows: []
     };
+    this.getSettingRows = this.getSettingRows.bind(this);
   }
   componentDidMount() {
     let loginboolean = false;
@@ -16,6 +18,32 @@ class Settings extends Component {
       loginboolean = true;
     }
     this.setState({ loggedin: loginboolean });
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/settings", {
+      method: "GET",
+      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(r => {
+        this.setState({ settings: r });
+        this.getSettingRows();
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
+  getSettingRows() {
+    let settings = [];
+    this.state.settings.forEach(item => {
+      settings.push(
+        <tr key={item.id}>
+          <td>{item.key}</td>
+          <td>{item.value}</td>
+        </tr>
+      );
+    });
+    this.setState({ settingsrows: settings });
   }
   render() {
     let result = (
@@ -25,23 +53,16 @@ class Settings extends Component {
         </div>
         <div className="event-content">
           <Card interactive={false} elevation={Elevation.TWO}>
-            <h5>Paytrail kauppiastunnus</h5>
-            <p>
-              {" "}
-              <input className="pt-input .modifier" type="text" placeholder="Paytrailin kauppiastunnus" dir="auto" />
-            </p>
-            <h5>Paytrail kauppiasavain</h5>
-            <p>
-              {" "}
-              <input className="pt-input .modifier" type="text" placeholder="Paytrailin kauppiasavain" dir="auto" />
-            </p>
-            <h5>Sähköpostin lähettäjä</h5>
-            <p>
-              {" "}
-              <input className="pt-input .modifier" type="text" placeholder="Sähköpostin lähettäjä" dir="auto" />
-            </p>
-            <h5>API avain</h5> <pre>APIKEY</pre>
-            <Button>Tallenna asetukset</Button>
+            <table className="pt-html-table pt-interactive event-table">
+              <thead>
+                <tr>
+                  <th>Asetus</th>
+                  <th>Arvo</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>{this.state.settingsrows}</tbody>
+            </table>
           </Card>
         </div>
       </div>

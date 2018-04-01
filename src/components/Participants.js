@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Elevation, Button } from "@blueprintjs/core";
+import { Card, Elevation, Button, Icon } from "@blueprintjs/core";
 
 class Participants extends Component {
   constructor(props) {

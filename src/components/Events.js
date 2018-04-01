@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Navigation from "./Navigation";
 import EventTable from "./EventTable";
 import { Card, Elevation } from "@blueprintjs/core";
-
+import { checkJwtToken } from "../utils/auth";
 class Events extends Component {
   constructor(props) {
     super(props);
@@ -16,18 +16,11 @@ class Events extends Component {
   }
   componentDidMount() {
     this.getEvents();
-    let loginboolean = false;
-    if (localStorage.getItem("loggedin") === "true") {
-      loginboolean = true;
-    }
-    this.setState({ loggedin: loginboolean });
+    this.setState({ loggedin: checkJwtToken(localStorage.getItem("jyps-jwt")) });
   }
   logout() {
-    const { history } = this.props;
     localStorage.removeItem("jyps-jwt");
-    localStorage.setItem("loggedin", false);
     this.setState({ loggedin: false });
-    history.push("/");
   }
 
   getEvents() {
@@ -50,7 +43,8 @@ class Events extends Component {
       method: "DELETE",
       body: payload,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
       }
     }).then(response => {
       this.getEvents();

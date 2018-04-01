@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Button, Card, Elevation, Switch, Radio, RadioGroup } from "@blueprintjs/core";
+import qs from "query-string";
+import { withRouter } from "react-router";
 
 class EventInfo extends Component {
   constructor(props) {
@@ -40,6 +42,12 @@ class EventInfo extends Component {
   }
   componentDidMount() {
     this.getEventData(this.props.id);
+    const query = qs.parse(this.props.location.search);
+    if (query.payment_confirmed !== undefined) {
+      if (query.payment_confirmed === "true") {
+        this.setState({ registration: true });
+      }
+    }
   }
   getEventData(id) {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + id, {
@@ -59,7 +67,8 @@ class EventInfo extends Component {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/addparticipant", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "X-API-KEY": "FYP6vgZHnK92$$kk"
       },
       body: JSON.stringify(this.state.participantdata)
     })
@@ -306,4 +315,4 @@ class EventInfo extends Component {
     return result;
   }
 }
-export default EventInfo;
+export default withRouter(EventInfo);
