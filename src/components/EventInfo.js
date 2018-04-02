@@ -176,14 +176,12 @@ class EventInfo extends Component {
         </div>
       );
     } else {
-      console.log(this.state.paymentdata);
-
       validationMessage = (
         <div className="pt-callout pt-intent-success">
           <h4 className="pt-callout-title">Lomake kunnossa</h4>
           Voit jatkaa maksamiseen. Maksu hoidetaan verkkomaksuna Paytrail Oy:n palvelun välityksellä.<br />
           <b>
-            Olet ilmoittautumassa sarjaan: {this.state.paymentdata.name}, Hinta:{this.state.paymentdata.price} euroa
+            Olet ilmoittautumassa sarjaan: {this.state.paymentdata.name}, Hinta: {this.state.paymentdata.price} euroa.
           </b>
         </div>
       );
@@ -323,7 +321,7 @@ class EventInfo extends Component {
             {validationMessage}
             <div className="event-enroll-button">
               <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
-                Ilmoittaudu ja Maksa
+                Ilmoittaudu ja maksa
               </Button>
             </div>
           </div>

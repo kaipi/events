@@ -7,20 +7,14 @@ class Events extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      events: [],
-      loggedin: false
+      events: []
     };
     this.removeEvent = this.removeEvent.bind(this);
     this.getEvents = this.getEvents.bind(this);
-    this.logout = this.logout.bind(this);
   }
   componentDidMount() {
     this.getEvents();
     this.setState({ loggedin: checkJwtToken(localStorage.getItem("jyps-jwt")) });
-  }
-  logout() {
-    localStorage.removeItem("jyps-jwt");
-    this.setState({ loggedin: false });
   }
 
   getEvents() {
@@ -54,12 +48,7 @@ class Events extends Component {
     let result = (
       <div className="content">
         <div className="navigation">
-          <Navigation
-            logout={this.logout}
-            addEvent={this.addEvent}
-            history={this.props.history}
-            loggedin={this.state.loggedin}
-          />
+          <Navigation logout={this.logout} addEvent={this.addEvent} history={this.props.history} />
         </div>
         <div className="event-content">
           <Card interactive={false} elevation={Elevation.TWO}>
@@ -68,7 +57,7 @@ class Events extends Component {
               removeEvent={this.removeEvent}
               editEvent={this.editEvent}
               showDetails={this.showDetails}
-              loggedin={this.state.loggedin}
+              logout={this.logout}
             />
           </Card>
         </div>

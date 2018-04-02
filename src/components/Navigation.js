@@ -1,27 +1,46 @@
 import React, { Component } from "react";
 import { Button } from "@blueprintjs/core";
 import { Link } from "react-router-dom";
+import { checkJwtToken } from "../utils/auth";
 
 class Navigation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedin: false
+    };
+    this.logout = this.logout.bind(this);
+  }
+  componentDidMount() {
+    this.setState({ loggedin: checkJwtToken(localStorage.getItem("jyps-jwt")) });
+  }
+  logout() {
+    localStorage.removeItem("jyps-jwt");
+    this.setState({ loggedin: false });
+  }
   render() {
     let addButton = "";
     let loginButton = "";
     let settingsButton = "";
     let userSettingsButton = "";
 
-    if (this.props.loggedin) {
+    if (this.state.loggedin) {
       addButton = (
         <Link to="/newevent">
           <Button className="app-toolbar-icon" icon="add" />
         </Link>
       );
-      loginButton = <Button className="app-toolbar-icon" icon="log-out" onClick={this.props.logout} />;
+      loginButton = <Button className="app-toolbar-icon" icon="log-out" onClick={this.logout} />;
       settingsButton = (
         <Link to="/settings">
-          <Button className="app-toolbar-icon" icon="settings" onClick={this.logOut} />
+          <Button className="app-toolbar-icon" icon="settings" onClick={this.props.settings} />
         </Link>
       );
-      userSettingsButton = <Button className="app-toolbar-icon" icon="user" />;
+      userSettingsButton = (
+        <Link to="/users">
+          <Button className="app-toolbar-icon" icon="user" />
+        </Link>
+      );
     } else {
       loginButton = (
         <Link to="/login">

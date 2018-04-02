@@ -1,19 +1,27 @@
 import React, { Component } from "react";
 import { Button } from "@blueprintjs/core";
 import { Link } from "react-router-dom";
+import { checkJwtToken } from "../utils/auth";
 
 class EventTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      eventrows: []
+      eventrows: [],
+      loggedin: false
     };
     this.getEventsRows = this.getEventsRows.bind(this);
+    this.getTimingCSV = this.getTimingCSV.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     this.getEventsRows(nextProps.events);
   }
-
+  componentDidMount() {
+    this.setState({ loggedin: checkJwtToken(localStorage.getItem("jyps-jwt")) });
+  }
+  getTimingCSV(id) {
+    window.alert("Ajanotto CSV tapahtumalle " + id + " tuleepi tästä!");
+  }
   getEventsRows(prop) {
     let eventrows = [];
     prop.forEach(item => {
@@ -27,7 +35,7 @@ class EventTable extends Component {
             </a>
           </td>
           <td>
-            {this.props.loggedin ? (
+            {this.state.loggedin ? (
               <div>
                 <Button
                   id={item.id}
@@ -37,7 +45,16 @@ class EventTable extends Component {
                   }}
                   icon="trash"
                 />
-                <Button className="app-icon-button" onClick={this.props.editEvent} icon="edit" />
+                <Link to={"/event/" + item.id + "/edit"}>
+                  <Button className="app-icon-button" icon="edit" />
+                </Link>
+                <Button
+                  className="app-icon-button"
+                  icon="time"
+                  onClick={() => {
+                    this.getTimingCSV(item.id);
+                  }}
+                />
                 <Link to={"/event/" + item.id + "/eventinfo"}>
                   <Button className="app-icon-button" rightIcon="new-person">
                     Ilmoittautuminen ja lisätiedot
