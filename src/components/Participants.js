@@ -27,7 +27,18 @@ class Participants extends Component {
         this.setState({ participantrows: this.getRowElements(r) });
       });
   }
-  removeParticipant() {}
+  removeParticipant(id) {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deleteparticipant/" + id, {
+      method: "DELETE",
+      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+    })
+      .then(result => {
+        return result;
+      })
+      .then(r => {
+        this.setState({ participantrows: this.getParticipants(this.props.id) });
+      });
+  }
   movePariticipant() {}
   getRowElements(json) {
     let arr = [];

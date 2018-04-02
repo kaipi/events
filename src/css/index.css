@@ -68,3 +68,10 @@ body {
   color: red;
   padding-top: 10px;
 }
+.input-w label,
+.input-w input {
+  float: none; /* if you had floats before? otherwise inline-block will behave differently */
+  display: table-cell;
+  vertical-align: middle;
+  margin-bottom: 5px;
+}

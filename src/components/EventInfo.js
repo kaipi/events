@@ -156,7 +156,7 @@ class EventInfo extends Component {
       g.push(
         <Radio
           key={group.id}
-          label={group.name + ", Matka: " + group.distance + ", Hinta: " + group.price_prepay + "euroa"}
+          label={group.name + ", Matka: " + group.distance + ", Hinta: " + group.price_prepay + " euroa"}
           id="groupid"
           value={group.id.toString()}
         />
@@ -176,10 +176,15 @@ class EventInfo extends Component {
         </div>
       );
     } else {
+      console.log(this.state.paymentdata);
+
       validationMessage = (
         <div className="pt-callout pt-intent-success">
           <h4 className="pt-callout-title">Lomake kunnossa</h4>
-          Voit jatkaa ilmoittautumiseen
+          Voit jatkaa maksamiseen. Maksu hoidetaan verkkomaksuna Paytrail Oy:n palvelun välityksellä.<br />
+          <b>
+            Olet ilmoittautumassa sarjaan: {this.state.paymentdata.name}, Hinta:{this.state.paymentdata.price} euroa
+          </b>
         </div>
       );
     }
@@ -205,82 +210,95 @@ class EventInfo extends Component {
         ) : (
           <div>
             <h5>Henkilötiedot</h5>
-            <p>
+            <div className="input-w">
+              <label htmlFor="firstname">Etunimi *</label>
               <input
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Etunimi *"
                 dir="auto"
                 id="firstname"
+                size="30"
                 value={this.state.eventdata.firstname}
                 onChange={this.handleChange}
               />
-            </p>
-            <p>
+            </div>
+            <div className="input-w">
+              <label htmlFor="lastname">Sukunimi *</label>
               <input
+                size="30"
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Sukunimi *"
                 dir="auto"
                 id="lastname"
                 onChange={this.handleChange}
               />
-            </p>
-            <p>
+            </div>
+            <div className="input-w">
+              <label htmlFor="streetaddress">Katuosoite *</label>
               <input
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Katuosoite *"
+                size="40"
                 dir="auto"
                 id="streetaddress"
                 onChange={this.handleChange}
               />
-
+            </div>
+            <div className="input-w">
+              <label htmlFor="zip">Postinumero *</label>
               <input
+                size="5"
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Postinumero *"
                 dir="auto"
                 id="zip"
                 onChange={this.handleChange}
               />
+            </div>
+            <div className="input-w">
+              <label htmlFor="city">Kaupunki *</label>
               <input
+                size="30"
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Kaupunki *"
                 dir="auto"
                 id="city"
                 onChange={this.handleChange}
               />
-            </p>
-            <p>
+            </div>
+            <div className="input-w">
+              <label htmlFor="telephone">Puhelin *:</label>
               <input
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Puhelinnumero"
                 dir="auto"
+                size="30"
                 id="telephone"
                 onChange={this.handleChange}
               />
+            </div>
+            <div className="input-w">
+              <label htmlFor="email">Sähköposti *</label>
               <input
+                size="30"
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Sähköposti *"
                 dir="auto"
                 id="email"
                 onChange={this.handleChange}
               />
-            </p>
-            <p>
+            </div>
+            <div className="input-w">
+              <label htmlFor="club">Seura:</label>
               <input
+                size="30"
                 className="pt-input .modifier"
                 type="text"
-                placeholder="Seura"
                 dir="auto"
                 id="club"
                 onChange={this.handleChange}
               />
-            </p>
+            </div>
             <p>
               <Switch
                 checked={this.state.participantdata.public}
@@ -305,7 +323,7 @@ class EventInfo extends Component {
             {validationMessage}
             <div className="event-enroll-button">
               <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
-                Ilmoittaudu
+                Ilmoittaudu ja Maksa
               </Button>
             </div>
           </div>
