@@ -45,7 +45,7 @@ class EventTable extends Component {
                   }}
                   icon="trash"
                 />
-                <Link to={"/event/" + item.id + "/edit"}>
+                <Link to={"/event/edit/" + item.id}>
                   <Button className="app-icon-button" icon="edit" />
                 </Link>
                 <Button
@@ -55,6 +55,9 @@ class EventTable extends Component {
                     this.getTimingCSV(item.id);
                   }}
                 />
+                <Link to={"/event/" + item.id + "/pos"}>
+                  <Button className="app-icon-button" icon="people" />
+                </Link>
                 <Link to={"/event/" + item.id + "/eventinfo"}>
                   <Button className="app-icon-button" rightIcon="new-person">
                     Ilmoittautuminen ja lisätiedot

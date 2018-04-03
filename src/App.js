@@ -18,7 +18,8 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={Events} />
               <Route path="/event/:id/:tabid" component={SingleEvent} />
-              <Route path="/event/:id/edit" component={EventEdit} />
+              <Route path="/event/edit/:id" component={EventEdit} />
+              <Route path="/event/pos/:id" component={EventEdit} />
               <Route path="/newevent" component={NewEvent} />
               <Route path="/settings" component={Settings} />
               <Route path="/users" component={Users} />

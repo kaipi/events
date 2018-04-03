@@ -39,6 +39,7 @@ class EventInfo extends Component {
     this.getGroups = this.getGroups.bind(this);
     this.validateFields = this.validateFields.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
+    this.getDefaultValues = this.getDefaultValues.bind(this);
   }
   componentDidMount() {
     this.getEventData(this.props.id);
@@ -48,6 +49,10 @@ class EventInfo extends Component {
         this.setState({ registration: true });
       }
     }
+  }
+  getDefaultValues(data) {
+    let d = { name: data.groups[0].name, paymentMethodName: "", price: data.groups[0].price_prepay };
+    return d;
   }
   getEventData(id) {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + id, {
@@ -60,7 +65,7 @@ class EventInfo extends Component {
         this.setState({ eventdata: response });
         let p = Object.assign({}, this.state.participantdata);
         p.groupid = this.state.eventdata.groups[0].id.toString();
-        this.setState({ participantdata: p });
+        this.setState({ participantdata: p, paymentdata: this.getDefaultValues(this.state.eventdata) });
       });
   }
   addParticipant() {
@@ -94,8 +99,8 @@ class EventInfo extends Component {
     if (evt.target.id === "public") {
       e[evt.target.id] = !this.state.participantdata.public;
       this.setState({ participantdata: e });
+      this.validateFields(e);
     } else {
-      this.validateFields();
       e[evt.target.id] = evt.target.value;
       let data = { name: "", paymentMethodName: "", price: 0 };
 
@@ -119,6 +124,7 @@ class EventInfo extends Component {
         this.setState({ paymentdata: data });
       }
       this.setState({ participantdata: e });
+      this.validateFields(e);
     }
   }
   validateEmail(mail) {
@@ -130,17 +136,17 @@ class EventInfo extends Component {
     }
     return false;
   }
-  validateFields() {
+  validateFields(data) {
     //worlds worst form validator :D
     let error = false;
-    if (!this.validateEmail(this.state.participantdata.email)) {
+    if (!this.validateEmail(data.email)) {
       error = true;
     } else if (
-      this.state.participantdata.firstname === "" ||
-      this.state.participantdata.lastname === "" ||
-      this.state.participantdata.streetaddress === "" ||
-      this.state.participantdata.zip === "" ||
-      this.state.participantdata.city === ""
+      data.firstname === "" ||
+      data.lastname === "" ||
+      data.streetaddress === "" ||
+      data.zip === "" ||
+      data.city === ""
     ) {
       error = true;
     }
