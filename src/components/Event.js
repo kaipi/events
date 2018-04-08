@@ -42,7 +42,6 @@ class SingleEvent extends Component {
               title="Osallistujat"
               panel={<Participants loggedin={this.state.loggedin} id={this.props.match.params.id} />}
             />
-            <Tab id="results" title="Tulokset" panel={<Results />} />
             <Tabs.Expander />
           </Tabs>
         </div>
