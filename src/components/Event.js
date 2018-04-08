@@ -3,7 +3,6 @@ import Navigation from "./Navigation";
 import { Tab, Tabs } from "@blueprintjs/core";
 import EventInfo from "./EventInfo";
 import Participants from "./Participants";
-import Results from "./Results";
 import { checkJwtToken } from "../utils/auth";
 
 class SingleEvent extends Component {
