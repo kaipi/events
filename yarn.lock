@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@blueprintjs/core@^2.0.1":
+"@blueprintjs/core@^2.0.0", "@blueprintjs/core@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-2.0.1.tgz#0b2cf9b477c8a0d102030a5de0465c1709eb99e7"
   dependencies:
@@ -20,6 +20,35 @@
   resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-2.0.0.tgz#d3c149b0c70de20f16bf46eff30caa60b3e74370"
   dependencies:
     classnames "^2.2"
+    tslib "^1.9.0"
+
+"@blueprintjs/labs@^0.15.4":
+  version "0.15.4"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/labs/-/labs-0.15.4.tgz#10bac2dc722f1158aa4979a5a83a620d3d796139"
+  dependencies:
+    "@blueprintjs/core" "^2.0.0"
+    "@blueprintjs/select" "^2.0.0"
+    "@blueprintjs/timezone" "^2.0.0"
+    classnames "^2.2"
+    tslib "^1.9.0"
+
+"@blueprintjs/select@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/select/-/select-2.0.0.tgz#35c1e05e1171774fe4cb6772f5f8f77d5be80c4d"
+  dependencies:
+    "@blueprintjs/core" "^2.0.0"
+    classnames "^2.2"
+    tslib "^1.9.0"
+
+"@blueprintjs/timezone@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/timezone/-/timezone-2.0.0.tgz#f698cca04578cbb970f863fd04ca839cf979cf8f"
+  dependencies:
+    "@blueprintjs/core" "^2.0.0"
+    "@blueprintjs/select" "^2.0.0"
+    classnames "^2.2"
+    moment "^2.14.1"
+    moment-timezone "^0.5.13"
     tslib "^1.9.0"
 
 "@types/dom4@^2.0.0":
@@ -4254,6 +4283,16 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.1, mkdirp@~0.5.0, mkdi
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
+
+moment-timezone@^0.5.13:
+  version "0.5.14"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.14.tgz#4eb38ff9538b80108ba467a458f3ed4268ccfcb1"
+  dependencies:
+    moment ">= 2.9.0"
+
+"moment@>= 2.9.0", moment@^2.14.1:
+  version "2.22.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.0.tgz#7921ade01017dd45186e7fee5f424f0b8663a730"
 
 ms@2.0.0:
   version "2.0.0"

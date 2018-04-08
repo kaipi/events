@@ -37,8 +37,8 @@ class Events extends Component {
       method: "DELETE",
       body: payload,
       headers: {
-        "Content-Type": "application/json",
-        headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+        Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
+        "Content-type": "application/json"
       }
     }).then(response => {
       this.getEvents();

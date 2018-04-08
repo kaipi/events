@@ -20,7 +20,16 @@ class EventTable extends Component {
     this.setState({ loggedin: checkJwtToken(localStorage.getItem("jyps-jwt")) });
   }
   getTimingCSV(id) {
-    window.alert("Ajanotto CSV tapahtumalle " + id + " tuleepi tästä!");
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/" + id + "/chrono", {
+      method: "GET",
+      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+    })
+      .then(response => {
+        return response;
+      })
+      .then(r => {
+        console.log(r);
+      });
   }
   getEventsRows(prop) {
     let eventrows = [];
@@ -59,9 +68,7 @@ class EventTable extends Component {
                   <Button className="app-icon-button" icon="people" />
                 </Link>
                 <Link to={"/event/" + item.id + "/eventinfo"}>
-                  <Button className="app-icon-button" rightIcon="new-person">
-                    Ilmoittautuminen ja lisätiedot
-                  </Button>
+                  <Button className="app-icon-button" rightIcon="new-person" />
                 </Link>
               </div>
             ) : (

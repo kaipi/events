@@ -1,4 +1,6 @@
 @import "~@blueprintjs/core/lib/css/blueprint.css";
+@import "~@blueprintjs/labs/lib/css/blueprint-labs.css";
+
 @import "~normalize.css/normalize.css";
 .container {
   display: flex; /* or inline-flex */
@@ -74,4 +76,14 @@ body {
   display: table-cell;
   vertical-align: middle;
   margin-bottom: 5px;
+}
+.event-info-search {
+  display: inline-block;
+}
+.event-info-search-container {
+  margin-left: 60px;
+}
+table.pt-html-table th,
+table.pt-html-table td {
+  vertical-align: middle;
 }
