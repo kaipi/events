@@ -8,7 +8,7 @@ class NewEvent extends Component {
     super(props);
     this.state = {
       eventdata: {
-        description: "",
+        general_description: "",
         date: "",
         location: "",
         paymentDescription: "",

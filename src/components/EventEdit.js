@@ -218,7 +218,7 @@ class EventEdit extends Component {
                 value={this.state.eventdata.payment_description}
                 rows={5}
                 cols={50}
-                id="paymentDescription"
+                id="payment_description"
               />{" "}
             </p>
             <h5>Vahvistussähköposti</h5>
