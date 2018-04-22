@@ -33,8 +33,38 @@ class Users extends Component {
         console.warn(error);
       });
   }
-  deleteUser(id) {}
-  adduser() {}
+  deleteUser(id) {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/users/delete", {
+      method: "DELETE",
+      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(u => {
+        this.setState({ users: u });
+        this.getUserRows();
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
+  adduser() {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/users/add", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(u => {
+        this.setState({ users: u });
+        this.getUserRows();
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
   getUserRows() {
     let users = [];
     this.state.users.forEach(item => {
@@ -43,9 +73,27 @@ class Users extends Component {
           <td>{item.username}</td>
           <td>{item.realname}</td>
           <td>{item.email}</td>
+          <td />
         </tr>
       );
     });
+    users.push(
+      <tr>
+        <td>
+          {" "}
+          <input class="pt-input" id="username" type="text" placeholder="Käyttäjätunnus" dir="auto" />
+        </td>
+
+        <td>
+          {" "}
+          <input class="pt-input" id="fullname" type="text" placeholder="Kokonimi" dir="auto" />
+        </td>
+        <td>
+          {" "}
+          <input class="pt-input" id="email" type="text" placeholder="Email" dir="auto" />
+        </td>
+      </tr>
+    );
     this.setState({ userrows: users });
   }
   render() {
@@ -62,7 +110,7 @@ class Users extends Component {
                   <th>Käyttäjätunnus</th>
                   <th>Nimi</th>
                   <th>Email</th>
-                  <th />
+                  <th>Toiminnot</th>
                 </tr>
               </thead>
               <tbody>{this.state.userrows}</tbody>

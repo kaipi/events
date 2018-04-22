@@ -45,6 +45,23 @@ class Settings extends Component {
     });
     this.setState({ settingsrows: settings });
   }
+  updateSettings() {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/settings/update", {
+      method: "POST",
+      body: JSON.stringify(this.state.settings),
+      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(r => {
+        this.setState({ settings: r });
+        this.getSettingRows();
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
   render() {
     let result = (
       <div className="content">

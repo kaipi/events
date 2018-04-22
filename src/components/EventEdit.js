@@ -1,32 +1,36 @@
 import React, { Component } from "react";
 import { Button, Card, Elevation, Intent } from "@blueprintjs/core";
 import Navigation from "./Navigation";
-import Group from "./Group";
+import GroupEdit from "./GroupEdit";
 
 class EventEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
       eventdata: {
-        description: "",
+        general_description: "",
         date: "",
         location: "",
-        paymentDescription: "",
-        groupsDescription: "",
+        payment_description: "",
+        groups_description: "",
         groups: [],
         name: "",
         googlemaps_link: "",
         paytrail_product: "",
-        email_template: ""
+        email_template: "",
+        close_date: "",
+        open_date: ""
       },
       groups: [],
       loggedin: false
     };
-    this.addGroup = this.addGroup.bind(this);
+    this.addNewGroup = this.addNewGroup.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.updateData = this.updateData.bind(this);
     this.removeGroup = this.removeGroup.bind(this);
     this.handleGroupChange = this.handleGroupChange.bind(this);
+    this.getEventData = this.getEventData.bind(this);
+    this.getGroups = this.getGroups.bind(this);
   }
   componentDidMount() {
     let loginboolean = false;
@@ -34,36 +38,35 @@ class EventEdit extends Component {
       loginboolean = true;
     }
     this.setState({ loggedin: loginboolean });
+    //get eventdata
+    this.getEventData();
   }
-  addGroup() {
-    let newevent = Object.assign({}, this.state.eventdata);
-    newevent.groups.push({
-      name: "",
-      distance: 0.0,
-      price_prepay: 0,
-      price: 0,
-      product_code: "",
-      number_prefix: "",
-      tagrange_start: 0,
-      tagrange_end: 0,
-      current_tag: 0,
-      racenumberrange_start: 0,
-      racenumberrange_end: 0,
-      current_racenumber: 0,
-      group_id: newevent.groups.length
-    });
-    let g = Object.assign([], this.state.groups);
-    g.push(
-      <Group id={g.length} key={g.length} removeGroup={this.removeGroup} handleGroupChange={this.handleGroupChange} />
-    );
-    this.setState({ groups: g, eventdata: newevent });
+  getEventData() {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + this.props.match.params.id, {
+      method: "GET"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        this.setState({ eventdata: response });
+      });
   }
+  addNewGroup() {}
   removeGroup(groupId) {
-    let newevent = Object.assign({}, this.state.eventdata);
-    let newgroups = Object.assign([], this.state.groups);
-    newevent.groups.splice(groupId, 1);
-    newgroups.splice(groupId, 1);
-    this.setState({ eventdata: newevent, groups: newgroups });
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deletegroup/" + groupId, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => {
+        this.getEventData();
+      })
+      .catch(error => {
+        console.warn(error);
+      });
   }
   handleGroupChange(id, evt) {
     let newevent = Object.assign({}, this.state.eventdata);
@@ -76,7 +79,7 @@ class EventEdit extends Component {
     this.setState({ eventdata: newevent });
   }
   updateData() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/createevent", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/update/" + this.props.match.params.id, {
       method: "POST",
       body: JSON.stringify(this.state.eventdata),
       headers: {
@@ -85,11 +88,26 @@ class EventEdit extends Component {
       }
     })
       .then(response => {
-        this.props.history.push("/");
+        this.getEventData();
       })
       .catch(error => {
         console.warn(error);
       });
+  }
+  getGroups() {
+    let groups = [];
+    this.state.eventdata.groups.forEach(group => {
+      groups.push(
+        <GroupEdit
+          id={group.id}
+          key={group.id}
+          removeGroup={this.removeGroup}
+          handleGroupChange={this.handleGroupChange}
+          groupdata={group}
+        />
+      );
+    });
+    return groups;
   }
   render() {
     let result = (
@@ -135,8 +153,6 @@ class EventEdit extends Component {
                 onChange={this.handleChange}
                 value={this.state.eventdata.location}
               />
-            </p>
-            <p>
               <input
                 className="pt-input .modifier"
                 type="text"
@@ -148,19 +164,39 @@ class EventEdit extends Component {
                 value={this.state.eventdata.googlemaps_link}
               />
             </p>
+            <h5>Ilmoittautuminen alkaa/päättyy</h5>
+            <p>
+              <input
+                className="pt-input .modifier"
+                type="date"
+                placeholder="Ilmoittautuminen sulkeutuu"
+                dir="auto"
+                id="open_date"
+                onChange={this.handleChange}
+                value={this.state.eventdata.open_date}
+              />
+              <input
+                className="pt-input .modifier"
+                type="date"
+                placeholder="Ilmoittautuminen sulkeutuu"
+                dir="auto"
+                id="close_date"
+                onChange={this.handleChange}
+                value={this.state.eventdata.close_date}
+              />
+            </p>
             <h5>Tapahtuman kuvaus</h5>
             <p>
               {" "}
               <textarea
                 intent={Intent.PRIMARY}
                 onChange={this.handleChange}
-                value={this.state.eventdata.description}
+                value={this.state.eventdata.general_description}
                 rows="5"
                 cols="50"
-                id="description"
+                id="general_description"
               />{" "}
             </p>
-
             <h5>Maksutavat</h5>
             <p>
               <input
@@ -174,13 +210,12 @@ class EventEdit extends Component {
                 value={this.state.eventdata.paytrail_product}
               />
             </p>
-
             <p>
               {" "}
               <textarea
                 intent={Intent.PRIMARY}
                 onChange={this.handleChange}
-                value={this.state.eventdata.paymentDescription}
+                value={this.state.eventdata.payment_description}
                 rows={5}
                 cols={50}
                 id="paymentDescription"
@@ -204,19 +239,17 @@ class EventEdit extends Component {
               <textarea
                 intent={Intent.PRIMARY}
                 onChange={this.handleChange}
-                value={this.state.eventdata.groupsDescription}
+                value={this.state.eventdata.groups_description}
                 rows={5}
                 cols={50}
                 id="groupsDescription"
               />{" "}
             </p>
-            {this.state.groups}
+            Olethan varovainen poistaessasi ryhmiä, jos ryhmässä on jäseniä myös jäsenet poistuvat!
+            {this.getGroups()}
             <div className="new-event-create-buttons">
-              <Button className="app-icon-button" onClick={this.addGroup} icon="add">
-                Lisää sarja
-              </Button>
               <Button className="app-icon-button" onClick={this.updateData} icon="add">
-                Luo tapahtuma
+                Tallenna muutokset
               </Button>
             </div>
           </Card>

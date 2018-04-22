@@ -38,6 +38,8 @@ class EventTable extends Component {
         <tr key={item.id}>
           <td>{item.name}</td>
           <td>{item.date}</td>
+          <td>{item.open_date}</td>
+          <td>{item.close_date}</td>
           <td>
             <a href={item.googlemaps_link} target="_blank">
               {item.location}
@@ -54,7 +56,7 @@ class EventTable extends Component {
                   }}
                   icon="trash"
                 />
-                <Link to={"/event/edit/" + item.id}>
+                <Link to={"/eventedit/" + item.id}>
                   <Button className="app-icon-button" icon="edit" />
                 </Link>
                 <Button
@@ -64,7 +66,7 @@ class EventTable extends Component {
                     this.getTimingCSV(item.id);
                   }}
                 />
-                <Link to={"/event/" + item.id + "/pos"}>
+                <Link to={"/eventpos/" + item.id}>
                   <Button className="app-icon-button" icon="people" />
                 </Link>
                 <Link to={"/event/" + item.id + "/eventinfo"}>
@@ -93,6 +95,8 @@ class EventTable extends Component {
           <tr>
             <th>Tapahtuma</th>
             <th>Aika</th>
+            <th>Ennakkoilmoittautuminen alkaa</th>
+            <th>Ennakkoilmoittautuminen päättyy</th>
             <th>Paikka</th>
             <th />
           </tr>

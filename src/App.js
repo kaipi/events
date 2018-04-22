@@ -8,6 +8,7 @@ import Settings from "./components/Settings";
 import Login from "./components/Login";
 import EventEdit from "./components/EventEdit";
 import Users from "./components/Users";
+import EventPos from "./components/EventPos";
 
 class App extends Component {
   render() {
@@ -17,9 +18,9 @@ class App extends Component {
           <div className="App">
             <Switch>
               <Route exact path="/" component={Events} />
+              <Route path="/eventedit/:id" component={EventEdit} />
               <Route path="/event/:id/:tabid" component={SingleEvent} />
-              <Route path="/event/edit/:id" component={EventEdit} />
-              <Route path="/event/pos/:id" component={EventEdit} />
+              <Route path="/eventpos/:id" component={EventPos} />
               <Route path="/newevent" component={NewEvent} />
               <Route path="/settings" component={Settings} />
               <Route path="/users" component={Users} />

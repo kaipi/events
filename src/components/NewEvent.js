@@ -17,7 +17,9 @@ class NewEvent extends Component {
         name: "",
         googlemaps_link: "",
         paytrail_product: "",
-        email_template: ""
+        email_template: "",
+        close_date: "",
+        open_date: ""
       },
       groups: [],
       loggedin: false
@@ -135,8 +137,6 @@ class NewEvent extends Component {
                 onChange={this.handleChange}
                 value={this.state.eventdata.location}
               />
-            </p>
-            <p>
               <input
                 className="pt-input .modifier"
                 type="text"
@@ -148,6 +148,28 @@ class NewEvent extends Component {
                 value={this.state.eventdata.googlemaps_link}
               />
             </p>
+            <h5>Ilmoittauttuminen alkaa/päättyy</h5>
+            <p>
+              <input
+                className="pt-input .modifier"
+                type="date"
+                placeholder="Ilmoittautuminen sulkeutuu"
+                dir="auto"
+                id="open_date"
+                onChange={this.handleChange}
+                value={this.state.eventdata.open_date}
+              />
+              <input
+                className="pt-input .modifier"
+                type="date"
+                placeholder="Ilmoittautuminen sulkeutuu"
+                dir="auto"
+                id="close_date"
+                onChange={this.handleChange}
+                value={this.state.eventdata.close_date}
+              />
+            </p>
+            <p />
             <h5>Tapahtuman kuvaus</h5>
             <p>
               {" "}
@@ -157,7 +179,7 @@ class NewEvent extends Component {
                 value={this.state.eventdata.description}
                 rows="5"
                 cols="50"
-                id="description"
+                id="general_description"
               />{" "}
             </p>
 
