@@ -13,7 +13,7 @@ class EventEdit extends Component {
         location: "",
         payment_description: "",
         groups_description: "",
-        groups: [],
+        groups: [{ distance: "" }],
         name: "",
         googlemaps_link: "",
         paytrail_product: "",
@@ -69,8 +69,9 @@ class EventEdit extends Component {
       });
   }
   handleGroupChange(id, evt) {
+    let result = this.state.eventdata.groups.find(group => group.id === id);
     let newevent = Object.assign({}, this.state.eventdata);
-    newevent.groups[id][evt.target.id] = evt.target.value;
+    newevent.groups[this.state.eventdata.groups.indexOf(result)][evt.target.id] = evt.target.value;
     this.setState({ eventdata: newevent });
   }
   handleChange(evt) {
