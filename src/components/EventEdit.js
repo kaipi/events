@@ -75,6 +75,7 @@ class EventEdit extends Component {
     this.setState({ eventdata: newevent });
   }
   handleChange(evt) {
+    
     let newevent = Object.assign({}, this.state.eventdata);
     newevent[evt.target.id] = evt.target.value;
     this.setState({ eventdata: newevent });
@@ -243,7 +244,7 @@ class EventEdit extends Component {
                 value={this.state.eventdata.groups_description}
                 rows={5}
                 cols={50}
-                id="groupsDescription"
+                id="groups_description"
               />{" "}
             </p>
             Olethan varovainen poistaessasi ryhmiä, jos ryhmässä on jäseniä myös jäsenet poistuvat!
