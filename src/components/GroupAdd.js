@@ -1,18 +1,59 @@
 import React, { Component } from "react";
 import { Button } from "@blueprintjs/core";
 
-class GroupEdit extends Component {
+class GroupAdd extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      groupdata: {
+        price_prepay: "",
+        price: "",
+        racenumberrange_start: "",
+        product_code: "",
+        distance: "",
+        name: "",
+        number_prefix: "",
+        tagrange_start: "",
+        tagrange_end: "",
+        racenumberrange_end: ""
+      }
+    };
+    this.handleGroupChange = this.handleGroupChange.bind(this);
+    this.addNewGroup = this.addNewGroup.bind(this);
+  }
+  handleGroupChange(evt) {
+    let grpdata = Object.assign({}, this.state.groupdata);
+    grpdata[evt.target.id] = evt.target.value;
+    this.setState({ groupdata: grpdata });
+  }
+  addNewGroup(id) {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/addgroup/" + id, {
+      method: "POST",
+      body: JSON.stringify(this.state.groupdata),
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => {
+        this.props.getEventData();
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
   render() {
     let result = (
       <div className="new-event-group-row">
         <input
           className="pt-input .modifier"
           id="name"
+          placeholder="Sarjanimi"
           type="text"
-          value={this.props.groupdata.name}
+          value={this.state.groupdata.name}
           dir="auto"
           onChange={e => {
-            this.props.handleGroupChange(this.props.id, e);
+            this.handleGroupChange(e);
           }}
         />
         <input
@@ -20,11 +61,11 @@ class GroupEdit extends Component {
           type="text"
           id="distance"
           placeholder="Matka"
-          value={this.props.groupdata.distance}
+          value={this.state.groupdata.distance}
           size="5"
           dir="auto"
           onChange={e => {
-            this.props.handleGroupChange(this.props.id, e);
+            this.handleGroupChange(e);
           }}
         />
         <input
@@ -32,11 +73,11 @@ class GroupEdit extends Component {
           type="text"
           id="price_prepay"
           placeholder="Hinta"
-          value={this.props.groupdata.price_prepay}
+          value={this.state.groupdata.price_prepay}
           size="5"
           dir="auto"
           onChange={e => {
-            this.props.handleGroupChange(this.props.id, e);
+            this.handleGroupChange(e);
           }}
         />
         <input
@@ -44,35 +85,36 @@ class GroupEdit extends Component {
           type="text"
           id="price"
           placeholder="Hinta paikanpäällä"
-          value={this.props.groupdata.price}
+          value={this.state.groupdata.price}
           size="5"
           dir="auto"
           onChange={e => {
-            this.props.handleGroupChange(this.props.id, e);
+            this.handleGroupChange(e);
           }}
         />
+
         <input
           className="pt-input .modifier"
           type="text"
           id="product_code"
           placeholder="Sarjakoodi (esim. M30)"
           size="15"
-          value={this.props.groupdata.product_code}
+          value={this.state.groupdata.product_code}
           dir="auto"
           onChange={e => {
-            this.props.handleGroupChange(this.props.id, e);
+            this.handleGroupChange(e);
           }}
         />
         <input
           className="pt-input .modifier"
           type="text"
           id="tagrange_start"
-          value={this.props.groupdata.tagrange_start}
+          value={this.state.groupdata.tagrange_start}
           placeholder="Tagirange alku"
           size="13"
           dir="auto"
           onChange={e => {
-            this.props.handleGroupChange(this.props.id, e);
+            this.handleGroupChange(e);
           }}
         />
         <input
@@ -80,11 +122,11 @@ class GroupEdit extends Component {
           type="text"
           id="tagrange_end"
           placeholder="Tagirange loppu"
-          value={this.props.groupdata.tagrange_end}
+          value={this.state.groupdata.tagrange_end}
           size="14"
           dir="auto"
           onChange={e => {
-            this.props.handleGroupChange(this.props.id, e);
+            this.handleGroupChange(e);
           }}
         />
         <input
@@ -92,11 +134,11 @@ class GroupEdit extends Component {
           type="text"
           id="number_prefix"
           placeholder="Numero prefixi"
-          value={this.props.groupdata.number_prefix}
+          value={this.state.groupdata.number_prefix}
           size="13"
           dir="auto"
           onChange={e => {
-            this.props.handleGroupChange(this.props.id, e);
+            this.handleGroupChange(e);
           }}
         />
         <input
@@ -104,11 +146,11 @@ class GroupEdit extends Component {
           type="text"
           id="racenumberrange_start"
           placeholder="Numerosarja alku"
-          value={this.props.groupdata.racenumberrange_start}
+          value={this.state.groupdata.racenumberrange_start}
           size="15"
           dir="auto"
           onChange={e => {
-            this.props.handleGroupChange(this.props.id, e);
+            this.handleGroupChange(e);
           }}
         />
         <input
@@ -116,23 +158,23 @@ class GroupEdit extends Component {
           type="text"
           id="racenumberrange_end"
           placeholder="Numerosarja loppu"
-          value={this.props.groupdata.racenumberrange_end}
+          value={this.state.groupdata.racenumberrange_end}
           size="16"
           dir="auto"
           onChange={e => {
-            this.props.handleGroupChange(this.props.id, e);
+            this.handleGroupChange(e);
           }}
         />
         <Button
           className="app-icon-button"
           onClick={() => {
-            this.props.removeGroup(this.props.id);
+            this.addNewGroup(this.props.eventId);
           }}
-          icon="trash"
+          icon="add"
         />
       </div>
     );
     return result;
   }
 }
-export default GroupEdit;
+export default GroupAdd;

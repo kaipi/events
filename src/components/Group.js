@@ -37,7 +37,17 @@ class Group extends Component {
             this.props.handleGroupChange(this.props.id, e);
           }}
         />
-
+        <input
+          className="pt-input .modifier"
+          type="text"
+          id="price"
+          placeholder="Hinta paikanpäällä"
+          size="5"
+          dir="auto"
+          onChange={e => {
+            this.props.handleGroupChange(this.props.id, e);
+          }}
+        />
         <input
           className="pt-input .modifier"
           type="text"

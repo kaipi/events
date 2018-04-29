@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button } from "@blueprintjs/core";
 import { Link } from "react-router-dom";
 import { checkJwtToken } from "../utils/auth";
+var fileDownload = require("js-file-download");
 
 class EventTable extends Component {
   constructor(props) {
@@ -25,9 +26,12 @@ class EventTable extends Component {
       headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
     })
       .then(response => {
-        return response;
+        return response.text();
       })
-      .then(r => {
+      .then(resp => {
+        fileDownload(resp, "chrono_input_" + id + "_" + Date.now() + ".csv");
+      })
+      .catch(r => {
         console.log(r);
       });
   }

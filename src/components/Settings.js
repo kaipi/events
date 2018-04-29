@@ -40,6 +40,7 @@ class Settings extends Component {
         <tr key={item.id}>
           <td>{item.key}</td>
           <td>{item.value}</td>
+          <td />
         </tr>
       );
     });
@@ -55,7 +56,6 @@ class Settings extends Component {
         return response.json();
       })
       .then(r => {
-        this.setState({ settings: r });
         this.getSettingRows();
       })
       .catch(error => {
@@ -75,7 +75,7 @@ class Settings extends Component {
                 <tr>
                   <th>Asetus</th>
                   <th>Arvo</th>
-                  <th />
+                  <th>Toiminto</th>
                 </tr>
               </thead>
               <tbody>{this.state.settingsrows}</tbody>

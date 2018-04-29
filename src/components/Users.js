@@ -11,6 +11,9 @@ class Users extends Component {
       userrows: []
     };
     this.getUserRows = this.getUserRows.bind(this);
+    this.deleteUser = this.deleteUser.bind(this);
+    this.adduser = this.adduser.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
   }
   componentDidMount() {
     let loginboolean = false;
@@ -65,6 +68,7 @@ class Users extends Component {
         console.warn(error);
       });
   }
+  resetPassword() {}
   getUserRows() {
     let users = [];
     this.state.users.forEach(item => {

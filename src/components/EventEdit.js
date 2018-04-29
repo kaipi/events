@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Card, Elevation, Intent } from "@blueprintjs/core";
 import Navigation from "./Navigation";
 import GroupEdit from "./GroupEdit";
+import GroupAdd from "./GroupAdd";
 
 class EventEdit extends Component {
   constructor(props) {
@@ -24,7 +25,6 @@ class EventEdit extends Component {
       groups: [],
       loggedin: false
     };
-    this.addNewGroup = this.addNewGroup.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.updateData = this.updateData.bind(this);
     this.removeGroup = this.removeGroup.bind(this);
@@ -52,7 +52,7 @@ class EventEdit extends Component {
         this.setState({ eventdata: response });
       });
   }
-  addNewGroup() {}
+
   removeGroup(groupId) {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deletegroup/" + groupId, {
       method: "DELETE",
@@ -75,7 +75,6 @@ class EventEdit extends Component {
     this.setState({ eventdata: newevent });
   }
   handleChange(evt) {
-    
     let newevent = Object.assign({}, this.state.eventdata);
     newevent[evt.target.id] = evt.target.value;
     this.setState({ eventdata: newevent });
@@ -249,6 +248,9 @@ class EventEdit extends Component {
             </p>
             Olethan varovainen poistaessasi ryhmiä, jos ryhmässä on jäseniä myös jäsenet poistuvat!
             {this.getGroups()}
+            <br />
+            <h5>Lisää uusi sarja</h5>
+            <GroupAdd eventId={this.props.match.params.id} getEventData={this.getEventData} />
             <div className="new-event-create-buttons">
               <Button className="app-icon-button" onClick={this.updateData} icon="add">
                 Tallenna muutokset
