@@ -162,7 +162,7 @@ class EventInfo extends Component {
       g.push(
         <Radio
           key={group.id}
-          label={group.name + ", Matka: " + group.distance + ", Hinta: " + group.price_prepay + " euroa"}
+          label={group.name + ", Matka: " + group.distance + "km, Hinta: " + group.price_prepay + " euroa"}
           id="groupid"
           value={group.id.toString()}
         />

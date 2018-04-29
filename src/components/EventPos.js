@@ -173,7 +173,7 @@ class EventPos extends Component {
       g.push(
         <Radio
           key={group.id}
-          label={group.name + ", Matka: " + group.distance + ", Hinta: " + group.price + " euroa"}
+          label={group.name + ", Matka: " + group.distance + "km, Hinta: " + group.price + " euroa"}
           id="groupid"
           value={group.id.toString()}
         />
