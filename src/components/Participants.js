@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Elevation, Button } from "@blueprintjs/core";
+import { Card, Elevation, Button, Icon } from "@blueprintjs/core";
 
 class Participants extends Component {
   constructor(props) {
@@ -53,14 +53,21 @@ class Participants extends Component {
           <td>{item.number}</td>
           <td>
             {this.props.loggedin ? (
-              <Button
-                id={item.id}
-                className="app-icon-button"
-                onClick={() => {
-                  this.removeParticipant(item.id);
-                }}
-                icon="trash"
-              />
+              <div>
+                <Button
+                  id={item.id}
+                  className="app-icon-button"
+                  onClick={() => {
+                    this.removeParticipant(item.id);
+                  }}
+                  icon="trash"
+                />
+                {item.payment_confirmed ? (
+                  <Icon className="paid-icon" icon="tick-circle" />
+                ) : (
+                  <Icon className="paid-icon" icon="error" />
+                )}
+              </div>
             ) : (
               ""
             )}

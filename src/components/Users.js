@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Card, Elevation } from "@blueprintjs/core";
 import Navigation from "./Navigation";
+import { Button } from "@blueprintjs/core";
 
 class Users extends Component {
   constructor(props) {
@@ -8,12 +9,15 @@ class Users extends Component {
     this.state = {
       users: [],
       loggedin: false,
-      userrows: []
+      userrows: [],
+      newUser: { username: "", fullname: "", email: "" }
     };
     this.getUserRows = this.getUserRows.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
     this.adduser = this.adduser.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
+    this.updateNewUser = this.updateNewUser.bind(this);
+    this.getUserData = this.getUserData.bind(this);
   }
   componentDidMount() {
     let loginboolean = false;
@@ -21,6 +25,9 @@ class Users extends Component {
       loginboolean = true;
     }
     this.setState({ loggedin: loginboolean });
+    this.getUserData();
+  }
+  getUserData() {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/users/allusers", {
       method: "GET",
       headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
@@ -46,7 +53,7 @@ class Users extends Component {
       })
       .then(u => {
         this.setState({ users: u });
-        this.getUserRows();
+        this.getUserData();
       })
       .catch(error => {
         console.warn(error);
@@ -55,20 +62,37 @@ class Users extends Component {
   adduser() {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/users/add", {
       method: "POST",
-      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt"), "Content-Type": "application/json" },
+      body: JSON.stringify(this.state.newUser)
     })
       .then(response => {
         return response.json();
       })
       .then(u => {
         this.setState({ users: u });
-        this.getUserRows();
+        this.getUserData();
       })
       .catch(error => {
         console.warn(error);
       });
   }
-  resetPassword() {}
+  resetPassword(id, email) {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/users/resetpassword/" + id, {
+      method: "POST",
+      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt"), "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email })
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(u => {
+        this.setState({ users: u });
+        this.getUserData();
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
   getUserRows() {
     let users = [];
     this.state.users.forEach(item => {
@@ -77,28 +101,39 @@ class Users extends Component {
           <td>{item.username}</td>
           <td>{item.realname}</td>
           <td>{item.email}</td>
-          <td />
+          <td>
+            {" "}
+            <Button
+              className="app-icon-button"
+              rightIcon="trash"
+              onClick={() => {
+                this.deleteUser(item.id);
+              }}
+            />
+            <Button
+              className="app-icon-button"
+              rightIcon="refresh"
+              onClick={() => {
+                this.resetPassword(item.id, item.email);
+              }}
+            />
+            <Button
+              className="app-icon-button"
+              rightIcon="floppy-disk"
+              onClick={() => {
+                this.updateSetting(item.id);
+              }}
+            />
+          </td>
         </tr>
       );
     });
-    users.push(
-      <tr>
-        <td>
-          {" "}
-          <input class="pt-input" id="username" type="text" placeholder="Käyttäjätunnus" dir="auto" />
-        </td>
-
-        <td>
-          {" "}
-          <input class="pt-input" id="fullname" type="text" placeholder="Kokonimi" dir="auto" />
-        </td>
-        <td>
-          {" "}
-          <input class="pt-input" id="email" type="text" placeholder="Email" dir="auto" />
-        </td>
-      </tr>
-    );
     this.setState({ userrows: users });
+  }
+  updateNewUser(evt) {
+    let user = Object.assign({}, this.state.newUser);
+    user[evt.target.id] = evt.target.value;
+    this.setState({ newUser: user });
   }
   render() {
     let result = (
@@ -117,7 +152,57 @@ class Users extends Component {
                   <th>Toiminnot</th>
                 </tr>
               </thead>
-              <tbody>{this.state.userrows}</tbody>
+              <tbody>
+                {this.state.userrows}
+                <tr>
+                  <td>
+                    {" "}
+                    <input
+                      class="pt-input"
+                      id="username"
+                      type="text"
+                      onChange={this.updateNewUser}
+                      value={this.state.newUser.username}
+                      placeholder="Käyttäjätunnus"
+                      dir="auto"
+                    />
+                  </td>
+
+                  <td>
+                    {" "}
+                    <input
+                      class="pt-input"
+                      id="fullname"
+                      type="text"
+                      onChange={this.updateNewUser}
+                      value={this.state.newUser.fullname}
+                      placeholder="Kokonimi"
+                      dir="auto"
+                    />
+                  </td>
+                  <td>
+                    {" "}
+                    <input
+                      class="pt-input"
+                      id="email"
+                      type="text"
+                      onChange={this.updateNewUser}
+                      value={this.state.newUser.email}
+                      placeholder="Email"
+                      dir="auto"
+                    />
+                  </td>
+                  <td>
+                    <Button
+                      className="app-icon-button"
+                      rightIcon="new-person"
+                      onClick={() => {
+                        this.adduser();
+                      }}
+                    />
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </Card>
         </div>

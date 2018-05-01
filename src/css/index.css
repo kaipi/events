@@ -87,3 +87,7 @@ table.pt-html-table th,
 table.pt-html-table td {
   vertical-align: middle;
 }
+.paid-icon {
+  margin-top: 6px;
+  margin-left: 10px;
+}
