@@ -137,7 +137,7 @@ class EventEdit extends Component {
               {" "}
               <input
                 className="pt-input .modifier"
-                type="date"
+                type="datetime"
                 placeholder="Aika"
                 dir="auto"
                 id="date"
@@ -169,7 +169,7 @@ class EventEdit extends Component {
             <p>
               <input
                 className="pt-input .modifier"
-                type="date"
+                type="datetime"
                 placeholder="Ilmoittautuminen sulkeutuu"
                 dir="auto"
                 id="open_date"
@@ -178,7 +178,7 @@ class EventEdit extends Component {
               />
               <input
                 className="pt-input .modifier"
-                type="date"
+                type="datetime"
                 placeholder="Ilmoittautuminen sulkeutuu"
                 dir="auto"
                 id="close_date"

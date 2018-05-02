@@ -120,10 +120,10 @@ class NewEvent extends Component {
               {" "}
               <input
                 className="pt-input .modifier"
-                type="date"
+                type="datetime"
                 placeholder="Aika"
                 dir="auto"
-                id="date"
+                id="datetime"
                 onChange={this.handleChange}
                 value={this.state.eventdata.date}
               />
@@ -152,7 +152,7 @@ class NewEvent extends Component {
             <p>
               <input
                 className="pt-input .modifier"
-                type="date"
+                type="datetime"
                 placeholder="Ilmoittautuminen sulkeutuu"
                 dir="auto"
                 id="open_date"
@@ -161,7 +161,7 @@ class NewEvent extends Component {
               />
               <input
                 className="pt-input .modifier"
-                type="date"
+                type="datetime"
                 placeholder="Ilmoittautuminen sulkeutuu"
                 dir="auto"
                 id="close_date"

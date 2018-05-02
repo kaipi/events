@@ -97,13 +97,18 @@ class EventPos extends Component {
         return response.json();
       })
       .then(response => {
+        console.log(response);
+
         if (response.type === "normal") {
-          this.setState({
+          console.log("nep");
+          /*this.setState({
             pos_registration: true,
             racenumber: response.racenumber,
             price: response.price,
-            participantdata: resetdata
-          });
+            participantdata: resetdata,
+            submitAllowed: false
+          });*/
+          this.getDefaultValues();
         }
       })
       .catch(error => {
