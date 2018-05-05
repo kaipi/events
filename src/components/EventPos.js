@@ -101,13 +101,13 @@ class EventPos extends Component {
 
         if (response.type === "normal") {
           console.log("nep");
-          /*this.setState({
+          this.setState({
             pos_registration: true,
             racenumber: response.racenumber,
             price: response.price,
             participantdata: resetdata,
             submitAllowed: false
-          });*/
+          });
           this.getDefaultValues();
         }
       })
