@@ -24,14 +24,14 @@ class EventPos extends Component {
         telephone: "",
         email: "",
         club: "",
-        groupid: "1",
+        groupid: 1,
         paymentmethod: "1",
         public: true,
         zip: "",
         city: ""
       },
       pos_registration: false,
-      submitAllowed: true,
+      submitAllowed: false,
       paymentdata: { name: "", paymentMethodName: "", price: 0 },
       price: "",
       racenumber: ""
@@ -41,7 +41,6 @@ class EventPos extends Component {
     this.addParticipant = this.addParticipant.bind(this);
     this.getGroups = this.getGroups.bind(this);
     this.validateFields = this.validateFields.bind(this);
-    this.validateEmail = this.validateEmail.bind(this);
     this.getDefaultValues = this.getDefaultValues.bind(this);
   }
   componentDidMount() {
@@ -57,7 +56,7 @@ class EventPos extends Component {
     let d = { name: data.groups[0].name, paymentMethodName: "", price: data.groups[0].price_prepay };
     return d;
   }
-  getEventData(id) {
+  getEventData() {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + this.props.match.params.id, {
       method: "GET"
     })
@@ -79,8 +78,8 @@ class EventPos extends Component {
       telephone: "",
       email: "",
       club: "",
-      groupid: "1",
-      paymentmethod: "1",
+      groupid: 1,
+      paymentmethod: "2",
       public: true,
       zip: "",
       city: ""
@@ -97,18 +96,14 @@ class EventPos extends Component {
         return response.json();
       })
       .then(response => {
-        console.log(response);
-
         if (response.type === "normal") {
-          console.log("nep");
           this.setState({
             pos_registration: true,
             racenumber: response.racenumber,
             price: response.price,
-            participantdata: resetdata,
-            submitAllowed: false
+            participantdata:resetdata,
+            submitAllowed:false
           });
-          this.getDefaultValues();
         }
       })
       .catch(error => {
@@ -143,33 +138,17 @@ class EventPos extends Component {
       this.validateFields(e);
     }
   }
-  validateEmail(mail) {
-    if (mail === "") {
-      return false;
-    }
-    if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
-      return true;
-    }
-    return false;
-  }
   validateFields(data) {
     //worlds worst form validator :D
     let error = false;
-    if (!this.validateEmail(data.email)) {
-      error = true;
-    } else if (
-      data.firstname === "" ||
-      data.lastname === "" ||
-      data.streetaddress === "" ||
-      data.zip === "" ||
-      data.city === ""
-    ) {
+    if  (data.firstname === "" || data.lastname === "" ) 
+    {
       error = true;
     }
     if (error === false) {
-      this.setState({ submitAllowed: false });
-    } else {
       this.setState({ submitAllowed: true });
+    } else {
+      this.setState({ submitAllowed: false });
     }
   }
   getGroups() {
@@ -190,7 +169,7 @@ class EventPos extends Component {
 
   render() {
     let validationMessage = "";
-    if (this.state.submitAllowed === true) {
+    if (this.state.submitAllowed === false) {
       validationMessage = (
         <div className="pt-callout pt-intent-warning">
           <h4 className="pt-callout-title">Tarkista lomake</h4>
@@ -236,7 +215,7 @@ class EventPos extends Component {
                   dir="auto"
                   id="firstname"
                   size="30"
-                  value={this.state.eventdata.firstname}
+                  value={this.state.participantdata.firstname}
                   onChange={this.handleChange}
                 />
               </div>
@@ -248,33 +227,36 @@ class EventPos extends Component {
                   type="text"
                   dir="auto"
                   id="lastname"
+                  value={this.state.participantdata.lastname}
                   onChange={this.handleChange}
                 />
               </div>
               <div className="input-w">
-                <label htmlFor="streetaddress">Katuosoite *</label>
+                <label htmlFor="streetaddress">Katuosoite</label>
                 <input
                   className="pt-input .modifier"
                   type="text"
                   size="40"
                   dir="auto"
                   id="streetaddress"
+                  value={this.state.participantdata.streetaddress}
                   onChange={this.handleChange}
                 />
               </div>
               <div className="input-w">
-                <label htmlFor="zip">Postinumero *</label>
+                <label htmlFor="zip">Postinumero</label>
                 <input
                   size="5"
                   className="pt-input .modifier"
                   type="text"
                   dir="auto"
                   id="zip"
+                  value={this.state.participantdata.zip}
                   onChange={this.handleChange}
                 />
               </div>
               <div className="input-w">
-                <label htmlFor="city">Kaupunki *</label>
+                <label htmlFor="city">Kaupunki</label>
                 <input
                   size="30"
                   className="pt-input .modifier"
@@ -285,24 +267,26 @@ class EventPos extends Component {
                 />
               </div>
               <div className="input-w">
-                <label htmlFor="telephone">Puhelin *:</label>
+                <label htmlFor="telephone">Puhelin:</label>
                 <input
                   className="pt-input .modifier"
                   type="text"
                   dir="auto"
                   size="30"
                   id="telephone"
+                  value={this.state.participantdata.telephone}
                   onChange={this.handleChange}
                 />
               </div>
               <div className="input-w">
-                <label htmlFor="email">Sähköposti *</label>
+                <label htmlFor="email">Sähköposti</label>
                 <input
                   size="30"
                   className="pt-input .modifier"
                   type="text"
                   dir="auto"
                   id="email"
+                  value={this.state.participantdata.email}
                   onChange={this.handleChange}
                 />
               </div>
@@ -314,6 +298,7 @@ class EventPos extends Component {
                   type="text"
                   dir="auto"
                   id="club"
+                  value={this.state.participantdata.club}
                   onChange={this.handleChange}
                 />
               </div>
@@ -340,7 +325,7 @@ class EventPos extends Component {
               </div>
               {validationMessage}
               <div className="event-enroll-button">
-                <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
+                <Button onClick={this.addParticipant} disabled={!this.state.submitAllowed}>
                   Lisää kilpailija
                 </Button>
               </div>
