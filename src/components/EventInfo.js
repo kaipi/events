@@ -14,7 +14,8 @@ class EventInfo extends Component {
         location: "",
         general_description: "",
         name: "",
-        groups: []
+        groups: [],
+        close_date: ""
       },
       participantdata: {
         firstname: "",
@@ -174,7 +175,7 @@ class EventInfo extends Component {
 
   render() {
     let validationMessage = "";
-    if (this.state.submitAllowed === true) {
+    if (this.state.submitAllowed === true ) {
       validationMessage = (
         <div className="pt-callout pt-intent-warning">
           <h4 className="pt-callout-title">Tarkista lomake</h4>
@@ -325,11 +326,16 @@ class EventInfo extends Component {
               </RadioGroup>
             </div>
             {validationMessage}
-            <div className="event-enroll-button">
-              <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
+            {this.state.eventdata.close_date <= Date.now ? (
+              <div className="event-enroll-button">
+                <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
                 Ilmoittaudu ja maksa
-              </Button>
-            </div>
+                </Button>
+              </div>
+            ):(<div className="event-enroll-button">
+              <Button>
+              Ilmoittautuminen on päättynyt
+              </Button></div>)}
           </div>
         )}
       </Card>

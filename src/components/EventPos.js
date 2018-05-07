@@ -79,7 +79,7 @@ class EventPos extends Component {
       email: "",
       club: "",
       groupid: 1,
-      paymentmethod: "2",
+      paymentmethod: 2,
       public: true,
       zip: "",
       city: ""
