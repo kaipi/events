@@ -79,7 +79,7 @@ class EventTable extends Component {
               </div>
             ) : (
               <div>
-                {item.close_date >= Date.now ? (
+                {item.close_date < Date.now ? (
                   <Link to={"/event/" + item.id + "/eventinfo"}>
                     <Button className="app-icon-button" rightIcon="new-person">
                     Ilmoittautuminen ja lisätiedot

@@ -326,7 +326,7 @@ class EventInfo extends Component {
               </RadioGroup>
             </div>
             {validationMessage}
-            {this.state.eventdata.close_date <= Date.now ? (
+            {this.state.eventdata.close_date < Date.now ? (
               <div className="event-enroll-button">
                 <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
                 Ilmoittaudu ja maksa
