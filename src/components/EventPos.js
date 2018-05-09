@@ -28,7 +28,9 @@ class EventPos extends Component {
         paymentmethod: "1",
         public: true,
         zip: "",
-        city: ""
+        city: "",
+        sport_voucher:false,
+        sport_voucher_name:""
       },
       pos_registration: false,
       submitAllowed: false,
@@ -82,7 +84,10 @@ class EventPos extends Component {
       paymentmethod: 2,
       public: true,
       zip: "",
-      city: ""
+      city: "",
+      sport_voucher:false,
+      sport_voucher_name:""
+
     };
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/addparticipant_pos", {
       method: "POST",
@@ -116,7 +121,11 @@ class EventPos extends Component {
       e[evt.target.id] = !this.state.participantdata.public;
       this.setState({ participantdata: e });
       this.validateFields(e);
-    } else {
+    } else if(evt.target.id === "sport_voucher") {
+      e[evt.target.id] = !this.state.participantdata.sport_voucher;      
+      this.setState({ participantdata: e });
+    }
+    else {
       e[evt.target.id] = evt.target.value;
       let data = { name: "", paymentMethodName: "", price: 0 };
 
@@ -311,7 +320,23 @@ class EventPos extends Component {
                   onChange={this.handleChange}
                 />
               </p>
-
+              <Switch
+                checked={this.state.participantdata.sport_voucher}
+                value={this.state.participantdata.sport_voucher}
+                id="sport_voucher"
+                label="Maksu liikuntaseteleillä"
+                onChange={this.handleChange}
+              />
+              <label htmlFor="club">Liikuntasetelin nimi:</label>
+              <input
+                size="30"
+                className="pt-input .modifier"
+                type="text"
+                dir="auto"
+                id="sport_voucher_name"
+                value={this.state.participantdata.sport_voucher_name}
+                onChange={this.handleChange}
+              />
               <div>
                 <h5>Sarjat</h5>
                 <RadioGroup
