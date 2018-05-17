@@ -29,12 +29,15 @@ class EventPos extends Component {
         public: true,
         zip: "",
         city: "",
-        sport_voucher:false,
-        sport_voucher_name:""
+        sport_voucher: false,
+        sport_voucher_name: "",
+        jyps_member: false,
+        birth_year:0,
+        team:""
       },
       pos_registration: false,
       submitAllowed: false,
-      paymentdata: { name: "", paymentMethodName: "", price: 0 },
+      paymentdata: { name: "", paymentMethodName: "", price: 0, discount:0 },
       price: "",
       racenumber: ""
     };
@@ -55,7 +58,7 @@ class EventPos extends Component {
     }
   }
   getDefaultValues(data) {
-    let d = { name: data.groups[0].name, paymentMethodName: "", price: data.groups[0].price_prepay };
+    let d = { name: data.groups[0].name, paymentMethodName: "", price: data.groups[0].price_prepay, discount: data.groups[0].discount};
     return d;
   }
   getEventData() {
@@ -85,9 +88,11 @@ class EventPos extends Component {
       public: true,
       zip: "",
       city: "",
-      sport_voucher:false,
-      sport_voucher_name:""
-
+      sport_voucher: false,
+      sport_voucher_name: "",
+      birth_year:0,
+      team:"",
+      jyps_member:false,
     };
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/addparticipant_pos", {
       method: "POST",
@@ -106,8 +111,8 @@ class EventPos extends Component {
             pos_registration: true,
             racenumber: response.racenumber,
             price: response.price,
-            participantdata:resetdata,
-            submitAllowed:false
+            participantdata: resetdata,
+            submitAllowed: false
           });
         }
       })
@@ -121,14 +126,32 @@ class EventPos extends Component {
       e[evt.target.id] = !this.state.participantdata.public;
       this.setState({ participantdata: e });
       this.validateFields(e);
-    } else if(evt.target.id === "sport_voucher") {
-      e[evt.target.id] = !this.state.participantdata.sport_voucher;      
+      return;
+    } else if (evt.target.id === "sport_voucher") {
+      e[evt.target.id] = !this.state.participantdata.sport_voucher;
       this.setState({ participantdata: e });
+      return;
     }
-    else {
+    else if (evt.target.id === "jyps_member") {
+      e[evt.target.id] = !e.jyps_member;
+      if (e.jyps_member === true) {
+        let n = Object.assign({}, this.getDefaultValues(this.state.eventdata));
+        n.price = n.price - n.discount;
+        this.setState({
+          participantdata: e,
+          paymentdata: n
+        });
+        return;
+      }
+      this.setState({
+        participantdata: e,
+        paymentdata: this.getDefaultValues(this.state.eventdata)
+      });
+      this.validateFields(e);
+      return;
+    } else {
       e[evt.target.id] = evt.target.value;
-      let data = { name: "", paymentMethodName: "", price: 0 };
-
+      let data = { name: "", paymentMethodName: "", price: 0,discount:0 };
       if (evt.target.id === "groupid") {
         let result = this.state.eventdata.groups.find(group => group.id === parseInt(evt.target.value, 10));
         // calc price
@@ -141,17 +164,20 @@ class EventPos extends Component {
           data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) tai käteinen paikanpäällä";
           data.price = result.price;
         }
+        if (this.state.participantdata.jyps_member === true) {
+          data.price = result.price_prepay - data.discount;
+        }
         this.setState({ paymentdata: data });
       }
       this.setState({ participantdata: e });
       this.validateFields(e);
+      return;
     }
   }
   validateFields(data) {
     //worlds worst form validator :D
     let error = false;
-    if  (data.firstname === "" || data.lastname === "" ) 
-    {
+    if (data.firstname === "" || data.lastname === "") {
       error = true;
     }
     if (error === false) {
@@ -163,10 +189,14 @@ class EventPos extends Component {
   getGroups() {
     let g = [];
     this.state.eventdata.groups.forEach(group => {
+      let p = group.price;
+      if (this.state.participantdata.jyps_member === true) {
+        p = group.price - this.state.paymentdata.discount;
+      }
       g.push(
         <Radio
           key={group.id}
-          label={group.name + ", Matka: " + group.distance + "km, Hinta: " + group.price + " euroa"}
+          label={group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa"}
           id="groupid"
           value={group.id.toString()}
         />
@@ -241,6 +271,17 @@ class EventPos extends Component {
                 />
               </div>
               <div className="input-w">
+                <label htmlFor="birth_year">Syntymävuosi </label>
+                <input
+                  size="4"
+                  className="pt-input .modifier"
+                  type="text"
+                  dir="auto"
+                  id="birth_year"
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="input-w">
                 <label htmlFor="streetaddress">Katuosoite</label>
                 <input
                   className="pt-input .modifier"
@@ -311,6 +352,18 @@ class EventPos extends Component {
                   onChange={this.handleChange}
                 />
               </div>
+              <div className="input-w">
+                <label htmlFor="club">Joukkue:</label>
+                <input
+                  size="30"
+                  className="pt-input .modifier"
+                  type="text"
+                  dir="auto"
+                  id="team"
+                  value={this.state.participantdata.team}
+                  onChange={this.handleChange}
+                />
+              </div>
               <p>
                 <Switch
                   checked={this.state.participantdata.public}
@@ -320,6 +373,13 @@ class EventPos extends Component {
                   onChange={this.handleChange}
                 />
               </p>
+              <Switch
+                checked={this.state.participantdata.jyps_member}
+                value={this.state.participantdata.jyps_member}
+                id="jyps_member"
+                label="JYPS Ry jäsen, erikoishinta"
+                onChange={this.handleChange}
+              />
               <Switch
                 checked={this.state.participantdata.sport_voucher}
                 value={this.state.participantdata.sport_voucher}
@@ -337,6 +397,7 @@ class EventPos extends Component {
                 value={this.state.participantdata.sport_voucher_name}
                 onChange={this.handleChange}
               />
+          
               <div>
                 <h5>Sarjat</h5>
                 <RadioGroup

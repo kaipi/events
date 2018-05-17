@@ -54,6 +54,18 @@ class GroupEdit extends Component {
         <input
           className="pt-input .modifier"
           type="text"
+          id="discount"
+          placeholder="Alennus euroina"
+          value={this.props.groupdata.discount}
+          size="5"
+          dir="auto"
+          onChange={e => {
+            this.props.handleGroupChange(this.props.id, e);
+          }}
+        />
+        <input
+          className="pt-input .modifier"
+          type="text"
           id="product_code"
           placeholder="Sarjakoodi (esim. M30)"
           size="15"

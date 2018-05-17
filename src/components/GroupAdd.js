@@ -15,7 +15,8 @@ class GroupAdd extends Component {
         number_prefix: "",
         tagrange_start: "",
         tagrange_end: "",
-        racenumberrange_end: ""
+        racenumberrange_end: "",
+        discount:0
       }
     };
     this.handleGroupChange = this.handleGroupChange.bind(this);
@@ -92,7 +93,18 @@ class GroupAdd extends Component {
             this.handleGroupChange(e);
           }}
         />
-
+        <input
+          className="pt-input .modifier"
+          type="text"
+          id="discount"
+          placeholder="Alennus"
+          value={this.state.groupdata.discount}
+          size="5"
+          dir="auto"
+          onChange={e => {
+            this.handleGroupChange(e);
+          }}
+        />
         <input
           className="pt-input .modifier"
           type="text"

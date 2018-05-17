@@ -49,6 +49,7 @@ class Participants extends Component {
             {item.firstname} {item.lastname}
           </td>
           <td>{item.club}</td>
+          <td>{item.team}</td>
           <td>{item.group}</td>
           <td>{item.number}</td>
           <td>
@@ -85,6 +86,7 @@ class Participants extends Component {
             <tr>
               <th>Nimi</th>
               <th>Seura</th>
+              <th>Joukkue</th>
               <th>Sarja</th>
               <th>Alustava kilpailunumero</th>
               <th />
