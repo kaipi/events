@@ -102,6 +102,18 @@ class GroupEdit extends Component {
         <input
           className="pt-input .modifier"
           type="text"
+          id="current_tag"
+          placeholder="Tämänhetkinen tagi"
+          value={this.props.groupdata.current_tag}
+          size="14"
+          dir="auto"
+          onChange={e => {
+            this.props.handleGroupChange(this.props.id, e);
+          }}
+        />
+        <input
+          className="pt-input .modifier"
+          type="text"
           id="number_prefix"
           placeholder="Numero prefixi"
           value={this.props.groupdata.number_prefix}
@@ -130,6 +142,18 @@ class GroupEdit extends Component {
           placeholder="Numerosarja loppu"
           value={this.props.groupdata.racenumberrange_end}
           size="16"
+          dir="auto"
+          onChange={e => {
+            this.props.handleGroupChange(this.props.id, e);
+          }}
+        />
+        <input
+          className="pt-input .modifier"
+          type="text"
+          id="current_racenumber"
+          placeholder="Tämänhetkinen tagi"
+          value={this.props.groupdata.current_racenumber}
+          size="14"
           dir="auto"
           onChange={e => {
             this.props.handleGroupChange(this.props.id, e);
