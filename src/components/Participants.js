@@ -94,7 +94,7 @@ class Participants extends Component {
       ret.push(
         <div>
           <h5 className="participant-table-header">
-            <a name={group[0].group} />Sarja: {group[0].group}
+            <a name={group[0].group} >Sarja: {group[0].group}</a>
           </h5>
           <table className="pt-html-table pt-interactive event-table">
             <thead>
