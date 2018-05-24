@@ -52,7 +52,7 @@ class Navigation extends Component {
       <nav className="pt-navbar pt-dark">
         <div className="pt-navbar-group pt-align-left">
           <div className="pt-navbar-heading">
-            <Link to="/">JYPS ry:n tapahtumat</Link>
+            <Link to="/">JYPSin tapahtumat</Link>
           </div>
           {addButton}
         </div>

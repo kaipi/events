@@ -1,93 +1,132 @@
 @import "~@blueprintjs/core/lib/css/blueprint.css";
 @import "~@blueprintjs/labs/lib/css/blueprint-labs.css";
-
 @import "~normalize.css/normalize.css";
 .container {
-  display: flex; /* or inline-flex */
+  display: flex;
+  /* or inline-flex */
   flex-direction: row;
 }
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
 }
+
 .app-toolbar-icon {
   padding-left: 10px;
   margin-left: 5px;
 }
+
 .App {
   width: 100%;
 }
+
 .content {
   width: 100%;
 }
+
 .event-table {
   width: 100%;
   padding-left: 5%;
   padding-right: 5%;
-  padding-top: 50px;
+  padding-top: 20px;
 }
+
 .app-icon-button {
   margin-left: 5px;
 }
+
 .event-content {
   width: 100%;
   padding-left: 5%;
   padding-right: 5%;
   padding-top: 50px;
 }
+
 .pt-navbar-heading a {
   color: white;
 }
+
 .pt-navbar-heading a:hover {
   color: white;
 }
+
 .newevent-content {
   width: 100%;
   padding-left: 5%;
   padding-right: 5%;
   padding-top: 50px;
 }
+
 .new-event-create-buttons {
   padding-top: 20px;
 }
+
 .new-event-group-row {
   padding-top: 10px;
 }
+
 .event-enroll-button {
   padding-top: 30px;
 }
+
 .pt-input {
   margin-left: 5px;
 }
+
 .event-enroll-total {
   padding-top: 10px;
 }
+
 .login-prompt {
   text-align: center;
 }
+
 .login-errormessage {
   color: red;
   padding-top: 10px;
 }
+
 .input-w label,
 .input-w input {
-  float: none; /* if you had floats before? otherwise inline-block will behave differently */
+  float: none;
+  /* if you had floats before? otherwise inline-block will behave differently */
   display: table-cell;
   vertical-align: middle;
   margin-bottom: 5px;
 }
+
 .event-info-search {
   display: inline-block;
 }
+
 .event-info-search-container {
   margin-left: 60px;
 }
+
 table.pt-html-table th,
 table.pt-html-table td {
   vertical-align: middle;
 }
+
 .paid-icon {
   margin-top: 6px;
   margin-left: 10px;
+}
+
+.participant-table-header {
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 2%;
+}
+
+.group-selector {
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 2%;
+}
+
+.groups-list {
+  padding-right: 8px;
 }

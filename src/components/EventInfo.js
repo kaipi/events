@@ -370,7 +370,7 @@ class EventInfo extends Component {
               />{" "}
             </div>{" "}
             <div className="input-w">
-              <label htmlFor="club"> Seura: </label>{" "}
+              <label htmlFor="club"> Seura tai kotikunta: </label>{" "}
               <input
                 size="30"
                 className="pt-input .modifier"
@@ -396,7 +396,7 @@ class EventInfo extends Component {
                 checked={this.state.participantdata.public}
                 value={this.state.participantdata.public}
                 id="public"
-                label="Tapahtuman järjestäjät saavat julkaista tietojani (tulokset/osallistujat), sekä kisan aikana tuotettua materiaalia nettisivuilla (kuvat, videot tmv.)"
+                label="Tapahtuman järjestäjät saavat julkaista tietojani (Osallistuja- ja tuloslistat) sekä kisan aikana tuotettua materiaalia nettisivuilla (kuvat, videot tmv.)"
                 onChange={this.handleChange}
               />{" "}
               <Switch
