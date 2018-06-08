@@ -65,7 +65,7 @@ class Participants extends Component {
             arr.push(
               <tr key={item.id}>
                 <td>
-                <span className="hide_in_desktop">Nimi: </span>{item.firstname} {item.lastname}
+                  <span className="hide_in_desktop">Nimi: </span>{item.firstname} {item.lastname}
                 </td>
                 <td><span className="hide_in_desktop">Seura: </span>{item.club}</td>
                 <td><span className="hide_in_desktop">Joukkue: </span>{item.team}</td>
