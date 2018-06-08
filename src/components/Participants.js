@@ -65,12 +65,12 @@ class Participants extends Component {
             arr.push(
               <tr key={item.id}>
                 <td>
-                  {item.firstname} {item.lastname}
+                <span className="hide_in_desktop">Nimi: </span>{item.firstname} {item.lastname}
                 </td>
-                <td>{item.club}</td>
-                <td>{item.team}</td>
-                <td>{item.group}</td>
-                <td>{item.number}</td>
+                <td><span className="hide_in_desktop">Seura: </span>{item.club}</td>
+                <td><span className="hide_in_desktop">Joukkue: </span>{item.team}</td>
+                <td><span className="hide_in_desktop">Sarja: </span>{item.group}</td>
+                <td><span className="hide_in_desktop">Alustava kisanumero: </span>{item.number}</td>
                 <td>
                   {this.props.loggedin ? (
                     <div>

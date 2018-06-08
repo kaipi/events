@@ -40,11 +40,11 @@ class EventTable extends Component {
     prop.forEach(item => {
       eventrows.push(
         <tr key={item.id}>
-          <td>{item.name}</td>
-          <td>{item.date}</td>
-          <td>{item.open_date}</td>
-          <td>{item.close_date}</td>
-          <td>
+          <td><span className="hide_in_desktop">Tapahtuma: </span>{item.name}</td>
+          <td><span className="hide_in_desktop">Päivämäärä: </span>{item.date}</td>
+          <td><span className="hide_in_desktop">Ilmoittautuminen alkaa: </span>{item.open_date}</td>
+          <td><span className="hide_in_desktop">Ilmoittautuminen loppuu: </span>{item.close_date}</td>
+          <td><span className="hide_in_desktop">Sijainti: </span>
             <a href={item.googlemaps_link} target="_blank">
               {item.location}
             </a>
@@ -52,14 +52,7 @@ class EventTable extends Component {
           <td>
             {this.state.loggedin ? (
               <div>
-                <Button
-                  id={item.id}
-                  className="app-icon-button"
-                  onClick={() => {
-                    this.props.removeEvent(item.id);
-                  }}
-                  icon="trash"
-                />
+        
                 <Link to={"/eventedit/" + item.id}>
                   <Button className="app-icon-button" icon="edit" />
                 </Link>
