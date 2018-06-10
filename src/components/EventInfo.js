@@ -247,7 +247,7 @@ class EventInfo extends Component {
       validationMessage = (
         <div className="pt-callout pt-intent-warning">
           <h4 className="pt-callout-title"> Tarkista lomake </h4>
-          Täytä lomakkeen tähdellä merkityt kentät{" "}
+          Täytä lomakkeen tähdellä merkityt kentät, huomioithan että sähköpostiosoite on oikeaa muotoa ja syntymävuosi on merkattu 4 numerolla{" "}
         </div>
       );
     } else {
@@ -304,7 +304,7 @@ class EventInfo extends Component {
               />{" "}
             </div>{" "}
             <div className="input-w">
-              <label htmlFor="birth_year"> Syntymävuosi * </label>{" "}
+              <label htmlFor="birth_year"> Syntymävuosi (neljällä numerolla, esim. 1982) * </label>{" "}
               <input
                 size="4"
                 className="pt-input .modifier"
@@ -359,7 +359,7 @@ class EventInfo extends Component {
               />{" "}
             </div>{" "}
             <div className="input-w">
-              <label htmlFor="email"> Sähköposti * </label>{" "}
+              <label htmlFor="email"> Sähköposti (huomaa oikea muoto, esim. teuvo@testaaja.com) * </label>{" "}
               <input
                 size="30"
                 className="pt-input .modifier"
