@@ -247,7 +247,8 @@ class EventInfo extends Component {
       validationMessage = (
         <div className="pt-callout pt-intent-warning">
           <h4 className="pt-callout-title"> Tarkista lomake </h4>
-          Täytä lomakkeen tähdellä merkityt kentät, huomioithan että sähköpostiosoite on oikeaa muotoa ja syntymävuosi on merkattu 4 numerolla{" "}
+          Täytä lomakkeen tähdellä merkityt kentät, huomioithan että sähköpostiosoite on oikeaa muotoa ja syntymävuosi
+          on merkattu 4 numerolla{" "}
         </div>
       );
     } else {
@@ -420,17 +421,11 @@ class EventInfo extends Component {
               </RadioGroup>{" "}
             </div>{" "}
             {validationMessage}{" "}
-            {this.state.eventdata.close_date < Date.now ? (
-              <div className="event-enroll-button">
-                <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
-                  Ilmoittaudu ja maksa{" "}
-                </Button>{" "}
-              </div>
-            ) : (
-              <div className="event-enroll-button">
-                <Button>Ilmoittautuminen on päättynyt </Button>
-              </div>
-            )}{" "}
+            <div className="event-enroll-button">
+              <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
+                Ilmoittaudu ja maksa{" "}
+              </Button>{" "}
+            </div>
           </div>
         )}{" "}
       </Card>
