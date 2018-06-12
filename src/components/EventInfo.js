@@ -228,12 +228,12 @@ class EventInfo extends Component {
       if (this.state.participantdata.jyps_member === true) {
         p = group.price_prepay - this.state.paymentdata.discount;
       }
-      let total_places = group.racenumberrange_end - group.racenumberrange_start;
+      //let total_places = group.racenumberrange_end - group.racenumberrange_start;
       let left_now = group.racenumberrange_end - group.current_racenumber;
       g.push(
         <Radio
           key={group.id}
-          label={group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa (" + left_now + "/" + total_places + " paikkaa jäljellä)"  }
+          label={group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa (" + left_now +" paikkaa jäljellä)"  }
           id="groupid"
           value={group.id.toString()}
         />
