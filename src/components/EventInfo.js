@@ -222,7 +222,7 @@ class EventInfo extends Component {
     }
   }
   getGroups() {
-    let g = [];    
+    let g = [];
     this.state.eventdata.groups.forEach(group => {
       let p = group.price_prepay;
       if (this.state.participantdata.jyps_member === true) {
@@ -233,7 +233,9 @@ class EventInfo extends Component {
       g.push(
         <Radio
           key={group.id}
-          label={group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa (" + left_now +" paikkaa jäljellä)"  }
+          label={
+            group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa (" + left_now + " paikkaa jäljellä)"
+          }
           id="groupid"
           value={group.id.toString()}
         />
@@ -424,9 +426,7 @@ class EventInfo extends Component {
             </div>{" "}
             {validationMessage}{" "}
             <div className="event-enroll-button">
-              <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
-                Ilmoittaudu ja maksa{" "}
-              </Button>{" "}
+              <Button>Ilmoittautuminen on päättynyt </Button>
             </div>
           </div>
         )}{" "}

@@ -189,6 +189,8 @@ class EventPos extends Component {
   getGroups() {
     let g = [];
     this.state.eventdata.groups.forEach(group => {
+      let left_now = group.racenumberrange_end - group.current_racenumber;
+
       let p = group.price;
       if (this.state.participantdata.jyps_member === true) {
         p = group.price - this.state.paymentdata.discount;
@@ -196,7 +198,7 @@ class EventPos extends Component {
       g.push(
         <Radio
           key={group.id}
-          label={group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa"}
+          label={group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa (" + left_now + " paikkaa jäljellä)"}
           id="groupid"
           value={group.id.toString()}
         />
