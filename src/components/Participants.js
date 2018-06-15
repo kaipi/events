@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Card, Elevation, Button, Icon } from "@blueprintjs/core";
+import { checkJwtToken } from "../utils/auth";
 
 class Participants extends Component {
   constructor(props) {
@@ -19,15 +20,30 @@ class Participants extends Component {
     this.getParticipants(this.props.id);
   }
   getParticipants(id) {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/events/" + id + "/participants", {
-      method: "GET"
-    })
-      .then(result => {
-        return result.json();
+    let logged = checkJwtToken(localStorage.getItem("jyps-jwt"));
+    
+    if(logged === false) {
+      fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/events/" + id + "/participants", {
+        method: "GET"
       })
-      .then(r => {
-        this.setState({ participantrows: this.getRowElements(r), groups: this.getGroups(r) });
-      });
+        .then(result => {
+          return result.json();
+        })
+        .then(r => {
+          this.setState({ participantrows: this.getRowElements(r), groups: this.getGroups(r) });
+        });
+    } else {
+      fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/events/" + id + "/participants_pos", {
+        method: "GET",
+        headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+      })
+        .then(result => {
+          return result.json();
+        })
+        .then(r => {
+          this.setState({ participantrows: this.getRowElements(r), groups: this.getGroups(r) });
+        });
+    }
   }
   removeParticipant(id) {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deleteparticipant/" + id, {
