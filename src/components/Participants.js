@@ -87,9 +87,8 @@ class Participants extends Component {
                 <td><span className="hide_in_desktop">Joukkue: </span>{item.team}</td>
                 <td><span className="hide_in_desktop">Sarja: </span>{item.group}</td>
                 <td><span className="hide_in_desktop">Alustava kisanumero: </span>{item.number}</td>
-                <td>
-                  {this.props.loggedin ? (
-                    <div>
+                {this.props.loggedin ? (
+                  <td>
                       <Button
                         id={item.id}
                         className="app-icon-button"
@@ -103,11 +102,11 @@ class Participants extends Component {
                       ) : (
                         <Icon className="paid-icon" icon="error" />
                       )}
-                    </div>
+                    </td>
                   ) : (
                     ""
                   )}
-                </td>
+               
               </tr>
             );
           }

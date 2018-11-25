@@ -6,7 +6,6 @@
     "@blueprintjs/core": "^2.3.1",
     "@blueprintjs/icons": "^2.2.1",
     "@blueprintjs/labs": "^0.15.5",
-    "cypress": "^3.0.1",
     "js-file-download": "^0.4.1",
     "jwt-decode": "^2.2.0",
     "query-string": "5",

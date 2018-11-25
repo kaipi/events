@@ -425,9 +425,17 @@ class EventInfo extends Component {
               </RadioGroup>{" "}
             </div>{" "}
             {validationMessage}{" "}
-            <div className="event-enroll-button">
-              <Button>Ilmoittautuminen on päättynyt </Button>
-            </div>
+            {this.state.eventdata.close_date < Date.now ? (
+              <div className="event-enroll-button">
+                <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
+                  Ilmoittaudu ja maksa{" "}
+                </Button>{" "}
+              </div>
+            ) : (
+              <div className="event-enroll-button">
+                <Button>Ilmoittautuminen on päättynyt </Button>
+              </div>
+            )}{" "}
           </div>
         )}{" "}
       </Card>
