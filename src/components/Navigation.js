@@ -49,15 +49,15 @@ class Navigation extends Component {
       );
     }
     return (
-      <nav className="pt-navbar pt-dark">
-        <div className="pt-navbar-group pt-align-left">
-          <div className="pt-navbar-heading">
+      <nav className="bp3-navbar bp3-dark">
+        <div className="bp3-navbar-group bp3-align-left">
+          <div className="bp3-navbar-heading">
             <Link to="/">JYPSin tapahtumat</Link>
           </div>
           {addButton}
         </div>
-        <div className="pt-navbar-group pt-align-right">
-          <span className="pt-navbar-divider" />
+        <div className="bp3-navbar-group bp3-align-right">
+          <span className="bp3-navbar-divider" />
           {settingsButton}
           {userSettingsButton}
           {loginButton}

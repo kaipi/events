@@ -46,11 +46,11 @@ body {
   padding-top: 50px;
 }
 
-.pt-navbar-heading a {
+.bp3-navbar-heading a {
   color: white;
 }
 
-.pt-navbar-heading a:hover {
+.bp3-navbar-heading a:hover {
   color: white;
 }
 
@@ -137,8 +137,7 @@ table.pt-html-table td {
   padding-right: 8px;
 }
 
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
   /* Force table to not be like tables anymore */
   table,
   thead,
