@@ -21,8 +21,8 @@ class Participants extends Component {
   }
   getParticipants(id) {
     let logged = checkJwtToken(localStorage.getItem("jyps-jwt"));
-    
-    if(logged === false) {
+
+    if (logged === false) {
       fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/events/" + id + "/participants", {
         method: "GET"
       })
@@ -81,32 +81,44 @@ class Participants extends Component {
             arr.push(
               <tr key={item.id}>
                 <td>
-                  <span className="hide_in_desktop">Nimi: </span>{item.firstname} {item.lastname}
+                  <span className="hide_in_desktop">Nimi: </span>
+                  {item.firstname} {item.lastname}
                 </td>
-                <td><span className="hide_in_desktop">Seura: </span>{item.club}</td>
-                <td><span className="hide_in_desktop">Joukkue: </span>{item.team}</td>
-                <td><span className="hide_in_desktop">Sarja: </span>{item.group}</td>
-                <td><span className="hide_in_desktop">Alustava kisanumero: </span>{item.number}</td>
+                <td>
+                  <span className="hide_in_desktop">Seura: </span>
+                  {item.club}
+                </td>
+                <td>
+                  <span className="hide_in_desktop">Joukkue: </span>
+                  {item.team}
+                </td>
+                <td>
+                  <span className="hide_in_desktop">Sarja: </span>
+                  {item.group}
+                </td>
+                <td>
+                  <span className="hide_in_desktop">Alustava kisanumero: </span>
+                  {item.number}
+                </td>
                 {this.props.loggedin ? (
                   <td>
-                      <Button
-                        id={item.id}
-                        className="app-icon-button"
-                        onClick={() => {
-                          this.removeParticipant(item.id);
-                        }}
-                        icon="trash"
-                      />
-                      {item.payment_confirmed ? (
-                        <Icon className="paid-icon" icon="tick-circle" />
-                      ) : (
-                        <Icon className="paid-icon" icon="error" />
-                      )}
-                    </td>
-                  ) : (
-                    ""
-                  )}
-               
+                    <Button
+                      id={item.id}
+                      className="app-icon-button"
+                      onClick={() => {
+                        this.removeParticipant(item.id);
+                      }}
+                      icon="trash"
+                    />
+                    {item.payment_confirmed ? (
+                      <Icon className="paid-icon" icon="tick-circle" />
+                    ) : (
+                      <Icon className="paid-icon" icon="error" />
+                    )}
+                  </td>
+                ) : (
+                  ""
+                )}
               </tr>
             );
           }
@@ -115,7 +127,10 @@ class Participants extends Component {
           ret.push(
             <div>
               <h5 className="participant-table-header">
-                Sarja: <a name={group[0].group}>{group[0].group}</a>
+                Sarja:{" "}
+                <a href={group[0].group} name={group[0].group}>
+                  {group[0].group}
+                </a>
               </h5>
               <table className="bp3-html-table pt-interactive event-table">
                 <thead>
