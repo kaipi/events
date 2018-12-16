@@ -117,7 +117,7 @@ class Participants extends Component {
               <h5 className="participant-table-header">
                 Sarja: <a name={group[0].group}>{group[0].group}</a>
               </h5>
-              <table className="pt-html-table pt-interactive event-table">
+              <table className="bp3-html-table pt-interactive event-table">
                 <thead>
                   <tr>
                     <th>Nimi</th>

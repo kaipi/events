@@ -105,7 +105,7 @@ class NewEvent extends Component {
             <p>
               {" "}
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 placeholder="Tapahtuman nimi"
                 dir="auto"
@@ -119,7 +119,7 @@ class NewEvent extends Component {
             <p>
               {" "}
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="datetime"
                 placeholder="Aika"
                 dir="auto"
@@ -128,7 +128,7 @@ class NewEvent extends Component {
                 value={this.state.eventdata.date}
               />
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 placeholder="Paikka"
                 dir="auto"
@@ -138,7 +138,7 @@ class NewEvent extends Component {
                 value={this.state.eventdata.location}
               />
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 placeholder="Google maps linkki"
                 dir="auto"
@@ -151,7 +151,7 @@ class NewEvent extends Component {
             <h5>Ilmoittauttuminen alkaa/päättyy</h5>
             <p>
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="datetime"
                 placeholder="Ilmoittautuminen sulkeutuu"
                 dir="auto"
@@ -160,7 +160,7 @@ class NewEvent extends Component {
                 value={this.state.eventdata.open_date}
               />
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="datetime"
                 placeholder="Ilmoittautuminen sulkeutuu"
                 dir="auto"
@@ -186,7 +186,7 @@ class NewEvent extends Component {
             <h5>Maksutavat</h5>
             <p>
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 placeholder="Paytrail tuote"
                 dir="auto"

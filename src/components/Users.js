@@ -143,7 +143,7 @@ class Users extends Component {
         </div>
         <div className="event-content">
           <Card interactive={false} elevation={Elevation.TWO}>
-            <table className="pt-html-table pt-interactive event-table">
+            <table className="bp3-html-table pt-interactive event-table">
               <thead>
                 <tr>
                   <th>Käyttäjätunnus</th>
@@ -158,7 +158,7 @@ class Users extends Component {
                   <td>
                     {" "}
                     <input
-                      class="pt-input"
+                      class="bp3-input"
                       id="username"
                       type="text"
                       onChange={this.updateNewUser}
@@ -171,7 +171,7 @@ class Users extends Component {
                   <td>
                     {" "}
                     <input
-                      class="pt-input"
+                      class="bp3-input"
                       id="fullname"
                       type="text"
                       onChange={this.updateNewUser}
@@ -183,7 +183,7 @@ class Users extends Component {
                   <td>
                     {" "}
                     <input
-                      class="pt-input"
+                      class="bp3-input"
                       id="email"
                       type="text"
                       onChange={this.updateNewUser}

@@ -6,7 +6,7 @@ class Group extends Component {
     let result = (
       <div className="new-event-group-row">
         <input
-          className="pt-input .modifier"
+          className="bp3-input .modifier"
           id="name"
           type="text"
           placeholder="Sarjannimi"
@@ -16,7 +16,7 @@ class Group extends Component {
           }}
         />
         <input
-          className="pt-input .modifier"
+          className="bp3-input .modifier"
           type="text"
           id="distance"
           placeholder="Matka"
@@ -27,7 +27,7 @@ class Group extends Component {
           }}
         />
         <input
-          className="pt-input .modifier"
+          className="bp3-input .modifier"
           type="text"
           id="price_prepay"
           placeholder="Hinta"
@@ -38,7 +38,7 @@ class Group extends Component {
           }}
         />
         <input
-          className="pt-input .modifier"
+          className="bp3-input .modifier"
           type="text"
           id="price"
           placeholder="Hinta paikanpäällä"
@@ -49,7 +49,7 @@ class Group extends Component {
           }}
         />
         <input
-          className="pt-input .modifier"
+          className="bp3-input .modifier"
           type="text"
           id="product_code"
           placeholder="Sarjakoodi (esim. M30)"
@@ -60,7 +60,7 @@ class Group extends Component {
           }}
         />
         <input
-          className="pt-input .modifier"
+          className="bp3-input .modifier"
           type="text"
           id="tagrange_start"
           placeholder="Tagirange alku"
@@ -71,7 +71,7 @@ class Group extends Component {
           }}
         />
         <input
-          className="pt-input .modifier"
+          className="bp3-input .modifier"
           type="text"
           id="tagrange_end"
           placeholder="Tagirange loppu"
@@ -82,7 +82,7 @@ class Group extends Component {
           }}
         />
         <input
-          className="pt-input .modifier"
+          className="bp3-input .modifier"
           type="text"
           id="number_prefix"
           placeholder="Numero prefixi"
@@ -93,7 +93,7 @@ class Group extends Component {
           }}
         />
         <input
-          className="pt-input .modifier"
+          className="bp3-input .modifier"
           type="text"
           id="racenumberrange_start"
           placeholder="Numerosarja alku"
@@ -104,7 +104,7 @@ class Group extends Component {
           }}
         />
         <input
-          className="pt-input .modifier"
+          className="bp3-input .modifier"
           type="text"
           id="racenumberrange_end"
           placeholder="Numerosarja loppu"

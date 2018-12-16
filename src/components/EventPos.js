@@ -212,15 +212,15 @@ class EventPos extends Component {
     let validationMessage = "";
     if (this.state.submitAllowed === false) {
       validationMessage = (
-        <div className="pt-callout pt-intent-warning">
-          <h4 className="pt-callout-title">Tarkista lomake</h4>
+        <div className="bp3-callout pt-intent-warning">
+          <h4 className="bp3-callout-title">Tarkista lomake</h4>
           Täytä lomakkeen tähdellä merkityt kentät
         </div>
       );
     } else {
       validationMessage = (
-        <div className="pt-callout pt-intent-success">
-          <h4 className="pt-callout-title">Lomake kunnossa</h4>
+        <div className="bp3-callout pt-intent-success">
+          <h4 className="bp3-callout-title">Lomake kunnossa</h4>
           Lomake ok, voit lisätä kilpailijan!
         </div>
       );
@@ -228,8 +228,8 @@ class EventPos extends Component {
     let posConfirm = "";
     if (this.state.pos_registration === true) {
       posConfirm = (
-        <div className="pt-callout pt-intent-success">
-          <h4 className="pt-callout-title">Kilpailija lisätty!</h4>
+        <div className="bp3-callout pt-intent-success">
+          <h4 className="bp3-callout-title">Kilpailija lisätty!</h4>
           Anna kilpailunumero: <b>{this.state.racenumber}</b>
           <br />
           Maksu: <b>{this.state.price} euroa</b>
@@ -251,7 +251,7 @@ class EventPos extends Component {
               <div className="input-w">
                 <label htmlFor="firstname">Etunimi *</label>
                 <input
-                  className="pt-input .modifier"
+                  className="bp3-input .modifier"
                   type="text"
                   dir="auto"
                   id="firstname"
@@ -264,7 +264,7 @@ class EventPos extends Component {
                 <label htmlFor="lastname">Sukunimi *</label>
                 <input
                   size="30"
-                  className="pt-input .modifier"
+                  className="bp3-input .modifier"
                   type="text"
                   dir="auto"
                   id="lastname"
@@ -276,7 +276,7 @@ class EventPos extends Component {
                 <label htmlFor="birth_year">Syntymävuosi </label>
                 <input
                   size="4"
-                  className="pt-input .modifier"
+                  className="bp3-input .modifier"
                   type="text"
                   dir="auto"
                   id="birth_year"
@@ -286,7 +286,7 @@ class EventPos extends Component {
               <div className="input-w">
                 <label htmlFor="streetaddress">Katuosoite</label>
                 <input
-                  className="pt-input .modifier"
+                  className="bp3-input .modifier"
                   type="text"
                   size="40"
                   dir="auto"
@@ -299,7 +299,7 @@ class EventPos extends Component {
                 <label htmlFor="zip">Postinumero</label>
                 <input
                   size="5"
-                  className="pt-input .modifier"
+                  className="bp3-input .modifier"
                   type="text"
                   dir="auto"
                   id="zip"
@@ -311,7 +311,7 @@ class EventPos extends Component {
                 <label htmlFor="city">Kaupunki</label>
                 <input
                   size="30"
-                  className="pt-input .modifier"
+                  className="bp3-input .modifier"
                   type="text"
                   dir="auto"
                   id="city"
@@ -321,7 +321,7 @@ class EventPos extends Component {
               <div className="input-w">
                 <label htmlFor="telephone">Puhelin:</label>
                 <input
-                  className="pt-input .modifier"
+                  className="bp3-input .modifier"
                   type="text"
                   dir="auto"
                   size="30"
@@ -334,7 +334,7 @@ class EventPos extends Component {
                 <label htmlFor="email">Sähköposti</label>
                 <input
                   size="30"
-                  className="pt-input .modifier"
+                  className="bp3-input .modifier"
                   type="text"
                   dir="auto"
                   id="email"
@@ -346,7 +346,7 @@ class EventPos extends Component {
                 <label htmlFor="club">Seura:</label>
                 <input
                   size="30"
-                  className="pt-input .modifier"
+                  className="bp3-input .modifier"
                   type="text"
                   dir="auto"
                   id="club"
@@ -358,7 +358,7 @@ class EventPos extends Component {
                 <label htmlFor="club">Joukkue:</label>
                 <input
                   size="30"
-                  className="pt-input .modifier"
+                  className="bp3-input .modifier"
                   type="text"
                   dir="auto"
                   id="team"
@@ -392,7 +392,7 @@ class EventPos extends Component {
               <label htmlFor="club">Liikuntasetelin nimi:</label>
               <input
                 size="30"
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 dir="auto"
                 id="sport_voucher_name"

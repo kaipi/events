@@ -12,7 +12,7 @@ class Results extends Component {
   render() {
     let result = (
       <Card interactive={false} elevation={Elevation.TWO}>
-        <table className="pt-html-table pt-interactive event-table">
+        <table className="bp3-html-table pt-interactive event-table">
           <thead>
             <tr>
               <th>Nimi</th>

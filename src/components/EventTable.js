@@ -40,19 +40,31 @@ class EventTable extends Component {
     prop.forEach(item => {
       eventrows.push(
         <tr key={item.id}>
-          <td><span className="hide_in_desktop">Tapahtuma: </span>{item.name}</td>
-          <td><span className="hide_in_desktop">Päivämäärä: </span>{item.date}</td>
-          <td><span className="hide_in_desktop">Ilmoittautuminen alkaa: </span>{item.open_date}</td>
-          <td><span className="hide_in_desktop">Ilmoittautuminen loppuu: </span>{item.close_date}</td>
-          <td><span className="hide_in_desktop">Sijainti: </span>
-            <a href={item.googlemaps_link} target="_blank">
+          <td>
+            <span className="hide_in_desktop">Tapahtuma: </span>
+            {item.name}
+          </td>
+          <td>
+            <span className="hide_in_desktop">Päivämäärä: </span>
+            {item.date}
+          </td>
+          <td>
+            <span className="hide_in_desktop">Ilmoittautuminen alkaa: </span>
+            {item.open_date}
+          </td>
+          <td>
+            <span className="hide_in_desktop">Ilmoittautuminen loppuu: </span>
+            {item.close_date}
+          </td>
+          <td>
+            <span className="hide_in_desktop">Sijainti: </span>
+            <a href={item.googlemaps_link} target="_blank" rel="noopener noreferrer">
               {item.location}
             </a>
           </td>
           <td>
             {this.state.loggedin ? (
               <div>
-        
                 <Link to={"/eventedit/" + item.id}>
                   <Button className="app-icon-button" icon="edit" />
                 </Link>
@@ -75,10 +87,12 @@ class EventTable extends Component {
                 {item.close_date < Date.now ? (
                   <Link to={"/event/" + item.id + "/eventinfo"}>
                     <Button className="app-icon-button" rightIcon="new-person">
-                    Ilmoittautuminen ja lisätiedot
+                      Ilmoittautuminen ja lisätiedot
                     </Button>
                   </Link>
-                ):("")}
+                ) : (
+                  ""
+                )}
               </div>
             )}
           </td>
@@ -89,7 +103,7 @@ class EventTable extends Component {
   }
   render() {
     let result = (
-      <table className="pt-html-table pt-interactive event-table">
+      <table className="bp3-html-table pt-interactive event-table">
         <thead>
           <tr>
             <th>Tapahtuma</th>

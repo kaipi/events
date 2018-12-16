@@ -50,7 +50,7 @@ class Login extends Component {
             <h5>Kirjaudu sisään</h5>
             <p>
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 placeholder="Username"
                 dir="auto"
@@ -61,7 +61,7 @@ class Login extends Component {
             </p>
             <p>
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="password"
                 placeholder="Password"
                 dir="auto"

@@ -48,7 +48,7 @@ class Settings extends Component {
           <td>
             {" "}
             <input
-              className="pt-input"
+              className="bp3-input"
               id={item.id}
               type="text"
               size="45"
@@ -149,7 +149,7 @@ class Settings extends Component {
         </div>
         <div className="event-content">
           <Card interactive={false} elevation={Elevation.TWO}>
-            <table className="pt-html-table pt-interactive event-table">
+            <table className="bp3-html-table pt-interactive event-table">
               <thead>
                 <tr>
                   <th>Asetus</th>
@@ -163,7 +163,7 @@ class Settings extends Component {
                   <td>
                     {" "}
                     <input
-                      className="pt-input"
+                      className="bp3-input"
                       id="key"
                       type="text"
                       value={this.state.newSettings.key}
@@ -175,7 +175,7 @@ class Settings extends Component {
                   <td>
                     {" "}
                     <input
-                      className="pt-input"
+                      className="bp3-input"
                       id="value"
                       type="text"
                       value={this.state.newSettings.value}

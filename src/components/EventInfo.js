@@ -249,16 +249,16 @@ class EventInfo extends Component {
     let validationMessage = "";
     if (this.state.submitAllowed === true) {
       validationMessage = (
-        <div className="pt-callout pt-intent-warning">
-          <h4 className="pt-callout-title"> Tarkista lomake </h4>
+        <div className="bp3-callout pt-intent-warning">
+          <h4 className="bp3-callout-title"> Tarkista lomake </h4>
           Täytä lomakkeen tähdellä merkityt kentät, huomioithan että sähköpostiosoite on oikeaa muotoa ja syntymävuosi
           on merkattu 4 numerolla{" "}
         </div>
       );
     } else {
       validationMessage = (
-        <div className="pt-callout pt-intent-success">
-          <h4 className="pt-callout-title"> Lomake kunnossa </h4>
+        <div className="bp3-callout pt-intent-success">
+          <h4 className="bp3-callout-title"> Lomake kunnossa </h4>
           Voit jatkaa maksamiseen.Maksu hoidetaan verkkomaksuna Paytrail Oy: n palvelun välityksellä. <br />
           <b>
             Olet ilmoittautumassa sarjaan: {this.state.paymentdata.name}, Hinta: {this.state.paymentdata.price}
@@ -278,8 +278,8 @@ class EventInfo extends Component {
         <h5> Maksutavat </h5> <p> {this.state.eventdata.payment_description} </p> <h5> Sarjat ja matkat </h5>{" "}
         <p> {this.state.eventdata.groups_description} </p>{" "}
         {this.state.registration ? (
-          <div className="pt-callout pt-intent-success">
-            <h4 className="pt-callout-title "> Ilmoittautuminen onnistui! </h4>
+          <div className="bp3-callout pt-intent-success">
+            <h4 className="bp3-callout-title "> Ilmoittautuminen onnistui! </h4>
             Tervetuloa mukaan, saat sähköpostiisi vielä vahvistuksen kisamaksusta ja lisäohjeita!
           </div>
         ) : (
@@ -288,7 +288,7 @@ class EventInfo extends Component {
             <div className="input-w">
               <label htmlFor="firstname"> Etunimi * </label>{" "}
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 dir="auto"
                 id="firstname"
@@ -301,7 +301,7 @@ class EventInfo extends Component {
               <label htmlFor="lastname"> Sukunimi * </label>{" "}
               <input
                 size="30"
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 dir="auto"
                 id="lastname"
@@ -312,7 +312,7 @@ class EventInfo extends Component {
               <label htmlFor="birth_year"> Syntymävuosi (neljällä numerolla, esim. 1982) * </label>{" "}
               <input
                 size="4"
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 dir="auto"
                 id="birth_year"
@@ -322,7 +322,7 @@ class EventInfo extends Component {
             <div className="input-w">
               <label htmlFor="streetaddress"> Katuosoite * </label>{" "}
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 size="40"
                 dir="auto"
@@ -334,7 +334,7 @@ class EventInfo extends Component {
               <label htmlFor="zip"> Postinumero * </label>{" "}
               <input
                 size="5"
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 dir="auto"
                 id="zip"
@@ -345,7 +345,7 @@ class EventInfo extends Component {
               <label htmlFor="city"> Kaupunki * </label>{" "}
               <input
                 size="30"
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 dir="auto"
                 id="city"
@@ -355,7 +355,7 @@ class EventInfo extends Component {
             <div className="input-w">
               <label htmlFor="telephone"> Puhelin *: </label>{" "}
               <input
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 dir="auto"
                 size="30"
@@ -367,7 +367,7 @@ class EventInfo extends Component {
               <label htmlFor="email"> Sähköposti (huomaa oikea muoto, esim. teuvo@testaaja.com) * </label>{" "}
               <input
                 size="30"
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 dir="auto"
                 id="email"
@@ -378,7 +378,7 @@ class EventInfo extends Component {
               <label htmlFor="club"> Seura tai kotikunta: </label>{" "}
               <input
                 size="30"
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 dir="auto"
                 id="club"
@@ -389,7 +389,7 @@ class EventInfo extends Component {
               <label htmlFor="team"> Joukkue: </label>{" "}
               <input
                 size="30"
-                className="pt-input .modifier"
+                className="bp3-input .modifier"
                 type="text"
                 dir="auto"
                 id="team"
