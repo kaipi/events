@@ -31,6 +31,7 @@ class EventEdit extends Component {
     this.handleGroupChange = this.handleGroupChange.bind(this);
     this.getEventData = this.getEventData.bind(this);
     this.getGroups = this.getGroups.bind(this);
+    this.removeEvent = this.removeEvent.bind(this);
   }
   componentDidMount() {
     let loginboolean = false;
@@ -90,6 +91,21 @@ class EventEdit extends Component {
     })
       .then(response => {
         this.getEventData();
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
+  removeEvent() {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deleteevent/" + this.props.match.params.id, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => {
+        this.props.history.push("/");
       })
       .catch(error => {
         console.warn(error);
@@ -254,6 +270,9 @@ class EventEdit extends Component {
             <div className="new-event-create-buttons">
               <Button className="app-icon-button" onClick={this.updateData} icon="add">
                 Tallenna muutokset
+              </Button>
+              <Button className="app-icon-button" onClick={this.removeEvent} icon="remove">
+                Poista tapahtuma
               </Button>
             </div>
           </Card>

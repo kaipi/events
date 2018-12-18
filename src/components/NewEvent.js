@@ -123,7 +123,7 @@ class NewEvent extends Component {
                 type="datetime"
                 placeholder="Aika"
                 dir="auto"
-                id="datetime"
+                id="date"
                 onChange={this.handleChange}
                 value={this.state.eventdata.date}
               />

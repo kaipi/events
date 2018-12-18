@@ -32,12 +32,12 @@ class EventPos extends Component {
         sport_voucher: false,
         sport_voucher_name: "",
         jyps_member: false,
-        birth_year:0,
-        team:""
+        birth_year: 0,
+        team: ""
       },
       pos_registration: false,
       submitAllowed: false,
-      paymentdata: { name: "", paymentMethodName: "", price: 0, discount:0 },
+      paymentdata: { name: "", paymentMethodName: "", price: 0, discount: 0 },
       price: "",
       racenumber: ""
     };
@@ -57,10 +57,7 @@ class EventPos extends Component {
       }
     }
   }
-  getDefaultValues(data) {
-    let d = { name: data.groups[0].name, paymentMethodName: "", price: data.groups[0].price_prepay, discount: data.groups[0].discount};
-    return d;
-  }
+
   getEventData() {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + this.props.match.params.id, {
       method: "GET"
@@ -71,8 +68,10 @@ class EventPos extends Component {
       .then(response => {
         this.setState({ eventdata: response });
         let p = Object.assign({}, this.state.participantdata);
-        p.groupid = this.state.eventdata.groups[0].id.toString();
-        this.setState({ participantdata: p, paymentdata: this.getDefaultValues(this.state.eventdata) });
+        if (this.state.eventdata.groups.length > 0) {
+          p.groupid = this.state.eventdata.groups[0].id.toString();
+        }
+        this.setState({ participantdata: p });
       });
   }
   addParticipant() {
@@ -84,15 +83,16 @@ class EventPos extends Component {
       email: "",
       club: "",
       groupid: 1,
+      id: 1,
       paymentmethod: 2,
       public: true,
       zip: "",
       city: "",
       sport_voucher: false,
       sport_voucher_name: "",
-      birth_year:0,
-      team:"",
-      jyps_member:false,
+      birth_year: 0,
+      team: "",
+      jyps_member: false
     };
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/addparticipant_pos", {
       method: "POST",
@@ -131,8 +131,7 @@ class EventPos extends Component {
       e[evt.target.id] = !this.state.participantdata.sport_voucher;
       this.setState({ participantdata: e });
       return;
-    }
-    else if (evt.target.id === "jyps_member") {
+    } else if (evt.target.id === "jyps_member") {
       e[evt.target.id] = !e.jyps_member;
       if (e.jyps_member === true) {
         let n = Object.assign({}, this.getDefaultValues(this.state.eventdata));
@@ -151,7 +150,7 @@ class EventPos extends Component {
       return;
     } else {
       e[evt.target.id] = evt.target.value;
-      let data = { name: "", paymentMethodName: "", price: 0,discount:0 };
+      let data = { name: "", paymentMethodName: "", price: 0, discount: 0 };
       if (evt.target.id === "groupid") {
         let result = this.state.eventdata.groups.find(group => group.id === parseInt(evt.target.value, 10));
         // calc price
@@ -198,7 +197,9 @@ class EventPos extends Component {
       g.push(
         <Radio
           key={group.id}
-          label={group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa (" + left_now + " paikkaa jäljellä)"}
+          label={
+            group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa (" + left_now + " paikkaa jäljellä)"
+          }
           id="groupid"
           value={group.id.toString()}
         />
@@ -399,7 +400,7 @@ class EventPos extends Component {
                 value={this.state.participantdata.sport_voucher_name}
                 onChange={this.handleChange}
               />
-          
+
               <div>
                 <h5>Sarjat</h5>
                 <RadioGroup

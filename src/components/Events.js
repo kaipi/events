@@ -50,7 +50,7 @@ class Events extends Component {
         <div className="navigation">
           <Navigation logout={this.logout} addEvent={this.addEvent} history={this.props.history} />
         </div>
-        <div className="event-content" >
+        <div className="event-content">
           <Card interactive={false} elevation={Elevation.TWO}>
             <EventTable
               events={this.state.events}
