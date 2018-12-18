@@ -46,7 +46,6 @@ class EventPos extends Component {
     this.addParticipant = this.addParticipant.bind(this);
     this.getGroups = this.getGroups.bind(this);
     this.validateFields = this.validateFields.bind(this);
-    this.getDefaultValues = this.getDefaultValues.bind(this);
   }
   componentDidMount() {
     this.getEventData(this.props.id);
