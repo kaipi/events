@@ -49,7 +49,6 @@ class EventInfo extends Component {
     this.getGroups = this.getGroups.bind(this);
     this.validateFields = this.validateFields.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
-    this.getDefaultValues = this.getDefaultValues.bind(this);
   }
   componentDidMount() {
     this.getEventData(this.props.id);
@@ -62,16 +61,7 @@ class EventInfo extends Component {
       }
     }
   }
-  getDefaultValues(data) {
-    let d = {
-      name: data.groups[0].name,
-      paymentMethodName: "",
-      price: data.groups[0].price_prepay,
-      id: data.groups[0].id,
-      discount: data.groups[0].discount
-    };
-    return d;
-  }
+
   getEventData(id) {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + id, {
       method: "GET"
@@ -84,10 +74,8 @@ class EventInfo extends Component {
           eventdata: response
         });
         let p = Object.assign({}, this.state.participantdata);
-        p.groupid = this.state.eventdata.groups[0].id.toString();
         this.setState({
-          participantdata: p,
-          paymentdata: this.getDefaultValues(this.state.eventdata)
+          participantdata: p
         });
       });
   }
