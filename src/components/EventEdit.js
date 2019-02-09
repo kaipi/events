@@ -3,7 +3,6 @@ import { Button, Card, Elevation, Intent } from "@blueprintjs/core";
 import Navigation from "./Navigation";
 import GroupEdit from "./GroupEdit";
 import GroupAdd from "./GroupAdd";
-import { Select } from "@blueprintjs/select";
 
 class EventEdit extends Component {
   constructor(props) {
