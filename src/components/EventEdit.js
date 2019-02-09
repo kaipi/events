@@ -3,6 +3,7 @@ import { Button, Card, Elevation, Intent } from "@blueprintjs/core";
 import Navigation from "./Navigation";
 import GroupEdit from "./GroupEdit";
 import GroupAdd from "./GroupAdd";
+import { Select } from "@blueprintjs/select";
 
 class EventEdit extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class EventEdit extends Component {
         close_date: "",
         open_date: ""
       },
+      allEvents: [],
       groups: [],
       loggedin: false
     };
@@ -32,6 +34,7 @@ class EventEdit extends Component {
     this.getEventData = this.getEventData.bind(this);
     this.getGroups = this.getGroups.bind(this);
     this.removeEvent = this.removeEvent.bind(this);
+    this.getAllEvents = this.getAllEvents.bind(this);
   }
   componentDidMount() {
     let loginboolean = false;
@@ -41,6 +44,7 @@ class EventEdit extends Component {
     this.setState({ loggedin: loginboolean });
     //get eventdata
     this.getEventData();
+    this.getAllEvents();
   }
   getEventData() {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + this.props.match.params.id, {
@@ -53,7 +57,20 @@ class EventEdit extends Component {
         this.setState({ eventdata: response });
       });
   }
-
+  getAllEvents() {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/allevents", {
+      method: "GET"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(r => {
+        this.setState({ allEvents: r });
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
   removeGroup(groupId) {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deletegroup/" + groupId, {
       method: "DELETE",
@@ -273,6 +290,9 @@ class EventEdit extends Component {
               </Button>
               <Button className="app-icon-button" onClick={this.removeEvent} icon="remove">
                 Poista tapahtuma
+              </Button>
+              <Button className="app-icon-button" onClick={this.copyGroups} icon="remove">
+                Kopioi sarjat
               </Button>
             </div>
           </Card>
