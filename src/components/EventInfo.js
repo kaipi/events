@@ -415,9 +415,7 @@ class EventInfo extends Component {
             {validationMessage}{" "}
             {this.state.eventdata.close_date < Date.now ? (
               <div className="event-enroll-button">
-                <Button onClick={this.addParticipant} disabled={this.state.submitAllowed}>
-                  Ilmoittaudu ja maksa{" "}
-                </Button>{" "}
+                <Button>Ilmoittautuminen on päättynyt </Button>
               </div>
             ) : (
               <div className="event-enroll-button">
