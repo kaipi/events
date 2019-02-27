@@ -4,6 +4,7 @@ import { Tab, Tabs } from "@blueprintjs/core";
 import EventInfo from "./EventInfo";
 import Participants from "./Participants";
 import { checkJwtToken } from "../utils/auth";
+import SportVoucher from "./SportVoucher";
 
 class SingleEvent extends Component {
   constructor(props) {
@@ -41,6 +42,13 @@ class SingleEvent extends Component {
               title="Osallistujat"
               panel={<Participants loggedin={this.state.loggedin} id={this.props.match.params.id} />}
             />
+            {this.state.loggedin ? (
+              <Tab
+                id="sportvoucher_pending"
+                title="Liikuntaseteli hyväksynnät"
+                panel={<SportVoucher loggedin={this.state.loggedin} id={this.props.match.params.id} />}
+              />
+            ) : null}
             <Tabs.Expander />
           </Tabs>
         </div>

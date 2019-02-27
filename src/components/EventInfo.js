@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, Elevation, Switch, Radio, RadioGroup } from "@blueprintjs/core";
+import { Button, Card, Elevation, Switch, Radio, RadioGroup, HTMLSelect } from "@blueprintjs/core";
 import qs from "query-string";
 import { withRouter } from "react-router";
 
@@ -15,7 +15,8 @@ class EventInfo extends Component {
         general_description: "",
         name: "",
         groups: [],
-        close_date: ""
+        close_date: "",
+        event_active: false
       },
       participantdata: {
         firstname: "",
@@ -24,24 +25,27 @@ class EventInfo extends Component {
         telephone: "",
         email: "",
         club: "",
-        groupid: "1",
-        paymentmethod: "1",
+        groupid: 0,
+        paymentmethod: 1,
         public: true,
         zip: "",
         city: "",
         jyps_member: false,
         team: "",
-        birth_year: ""
+        birth_year: "",
+        sport_voucher: false,
+        sport_voucher_name: "Smartum"
       },
       registration: false,
-      submitAllowed: true,
+      submitAllowed: false,
       paymentdata: {
         name: "",
         paymentMethodName: "",
         price: 0,
-        discount: 5,
+        discount: 0,
         id: 0
-      }
+      },
+      sport_vouchers: [{ value: "Smartum" }, { value: "Epassi" }]
     };
     this.handleChange = this.handleChange.bind(this);
     this.getEventData = this.getEventData.bind(this);
@@ -74,6 +78,7 @@ class EventInfo extends Component {
           eventdata: response
         });
         let p = Object.assign({}, this.state.participantdata);
+        p.groupid = response.groups[0].id;
         this.setState({
           participantdata: p
         });
@@ -113,7 +118,7 @@ class EventInfo extends Component {
       name: "",
       paymentMethodName: "",
       price: 0,
-      discount: 5
+      discount: 0
     };
     let e = Object.assign({}, this.state.participantdata);
     if (evt.target.id === "public") {
@@ -123,20 +128,37 @@ class EventInfo extends Component {
       });
       this.validateFields(e);
       return;
+    } else if (evt.target.id === "sport_voucher") {
+      e[evt.target.id] = !this.state.participantdata.sport_voucher;
+      if (e.sport_voucher) {
+        e.paymentmethod = 2;
+      } else {
+        e.paymentmethod = 1;
+      }
+      this.setState({
+        participantdata: e
+      });
+      this.validateFields(e);
+      return;
     } else if (evt.target.id === "jyps_member") {
-      e[evt.target.id] = !e.jyps_member;
-      if (e.jyps_member === true) {
-        let n = Object.assign({}, this.getDefaultValues(this.state.eventdata));
-        n.price = n.price - n.discount;
-        this.setState({
-          participantdata: e,
-          paymentdata: n
+      e[evt.target.id] = !this.state.participantdata.jyps_member;
+      //calculate jyps prices + also for "current payment data"
+      let evtData = JSON.parse(JSON.stringify(this.state.eventdata));
+
+      if (e.jyps_member) {
+        evtData.groups.forEach(group => {
+          group.price_prepay = parseInt(group.price_prepay) - parseInt(group.discount);
+          console.log(this.state.paymentdata);
         });
-        return;
+      } else {
+        evtData.groups.forEach(group => {
+          group.price_prepay = parseInt(group.price_prepay) + parseInt(group.discount);
+          console.log(this.state.paymentdata);
+        });
       }
       this.setState({
         participantdata: e,
-        paymentdata: this.getDefaultValues(this.state.eventdata)
+        eventdata: evtData
       });
       this.validateFields(e);
       return;
@@ -146,21 +168,17 @@ class EventInfo extends Component {
     if (evt.target.id === "groupid") {
       // calc price
       let result = this.state.eventdata.groups.find(group => group.id === parseInt(evt.target.value, 10));
-      if (this.state.participantdata.paymentmethod === "1") {
+      if (!this.state.participantdata.sport_voucher) {
         data.name = result.name;
         data.paymentMethodName = "Paytrail verkkomaksu";
         data.price = result.price_prepay;
-      } else if (this.state.participantdata.paymentmethod === "2") {
+      } else if (this.state.participantdata.sport_voucher) {
         data.name = result.name;
         data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) paikanpäällä";
-        data.price = result.price;
+        data.price = result.price_prepay;
       }
-      if (this.state.participantdata.paymentmethod === "3") {
-        data.name = result.name;
-        data.paymentMethodName = "Käteinen paikanpäällä";
-        data.price = result.price;
-      }
-      if (this.state.participantdata.jyps_member === true) {
+
+      if (this.state.participantdata.jyps_member) {
         data.price = result.price_prepay - data.discount;
       }
       this.setState({
@@ -195,11 +213,12 @@ class EventInfo extends Component {
       data.zip === "" ||
       data.city === "" ||
       data.city === "" ||
-      data.birth_year < 1900
+      data.birth_year < 1900 ||
+      data.groupid === 0
     ) {
       error = true;
     }
-    if (error === false) {
+    if (error) {
       this.setState({
         submitAllowed: false
       });
@@ -216,7 +235,6 @@ class EventInfo extends Component {
       if (this.state.participantdata.jyps_member === true) {
         p = group.price_prepay - this.state.paymentdata.discount;
       }
-      //let total_places = group.racenumberrange_end - group.racenumberrange_start;
       let left_now = group.racenumberrange_end - group.current_racenumber;
       g.push(
         <Radio
@@ -235,7 +253,7 @@ class EventInfo extends Component {
 
   render() {
     let validationMessage = "";
-    if (this.state.submitAllowed === true) {
+    if (!this.state.submitAllowed) {
       validationMessage = (
         <div className="bp3-callout pt-intent-warning">
           <h4 className="bp3-callout-title"> Tarkista lomake </h4>
@@ -243,7 +261,7 @@ class EventInfo extends Component {
           on merkattu 4 numerolla{" "}
         </div>
       );
-    } else {
+    } else if (this.state.submitAllowed && !this.state.participantdata.sport_voucher) {
       validationMessage = (
         <div className="bp3-callout pt-intent-success">
           <h4 className="bp3-callout-title"> Lomake kunnossa </h4>
@@ -254,17 +272,28 @@ class EventInfo extends Component {
           </b>{" "}
         </div>
       );
+    } else if (this.state.submitAllowed && this.state.participantdata.sport_voucher) {
+      validationMessage = (
+        <div className="bp3-callout pt-intent-success">
+          <h4 className="bp3-callout-title"> Lomake kunnossa </h4>
+          Olet ilmoittautumassa <b>liikuntasetelillä</b>, huolehdithan että liikuntaseteli maksu on hoidettu
+          mahdollisimman pian lähettämällä maksutosite sähköpostilla osoitteeseen pj@jyps.fi! Saat vielä erillisen
+          sähköpostiviestin kun Jyps Ry on käsitellyt ja vahvistanut osallistumisesi, huomioithan että nimesi ei näy
+          osallistujalistalla ennen maksun vahvistusta.
+          <br />
+          <b>
+            Olet ilmoittautumassa sarjaan: {this.state.paymentdata.name}, Hinta: {this.state.paymentdata.price}
+            euroa.{" "}
+          </b>{" "}
+        </div>
+      );
     }
     let result = (
       <Card interactive={false} elevation={Elevation.TWO}>
-        <h5> Tapahtuman nimi </h5> <p> {this.state.eventdata.name} </p> <h5> Tapahtuman kuvaus </h5>{" "}
-        <p> {this.state.eventdata.general_description} </p> <h5> Aika ja paikka </h5>{" "}
-        <p>
-          {" "}
-          {this.state.eventdata.date} {this.state.eventdata.location}{" "}
-        </p>{" "}
-        <h5> Maksutavat </h5> <p> {this.state.eventdata.payment_description} </p> <h5> Sarjat ja matkat </h5>{" "}
-        <p> {this.state.eventdata.groups_description} </p>{" "}
+        <h5> Tapahtuman nimi </h5> {this.state.eventdata.name} <h5> Tapahtuman kuvaus </h5>
+        {this.state.eventdata.general_description} <h5> Aika ja paikka </h5> {this.state.eventdata.date}
+        {this.state.eventdata.location} <h5> Maksutavat </h5> {this.state.eventdata.payment_description}
+        <h5> Sarjat ja matkat </h5> {this.state.eventdata.groups_description}
         {this.state.registration ? (
           <div className="bp3-callout pt-intent-success">
             <h4 className="bp3-callout-title "> Ilmoittautuminen onnistui! </h4>
@@ -384,22 +413,30 @@ class EventInfo extends Component {
                 onChange={this.handleChange}
               />{" "}
             </div>{" "}
-            <p>
-              <Switch
-                checked={this.state.participantdata.public}
-                value={this.state.participantdata.public}
-                id="public"
-                label="Tapahtuman järjestäjät saavat julkaista tietojani (Osallistuja- ja tuloslistat) sekä kisan aikana tuotettua materiaalia nettisivuilla (kuvat, videot tmv.)"
-                onChange={this.handleChange}
-              />{" "}
-              <Switch
-                checked={this.state.participantdata.jyps_member}
-                value={this.state.participantdata.jyps_member}
-                id="jyps_member"
-                label="JYPS Ry jäsen, erikoishinta"
-                onChange={this.handleChange}
-              />{" "}
-            </p>
+            <Switch
+              checked={this.state.participantdata.public}
+              value={this.state.participantdata.public}
+              id="public"
+              label="Tapahtuman järjestäjät saavat julkaista tietojani (Osallistuja- ja tuloslistat) sekä kisan aikana tuotettua materiaalia nettisivuilla (kuvat, videot tmv.)"
+              onChange={this.handleChange}
+            />{" "}
+            <Switch
+              checked={this.state.participantdata.jyps_member}
+              value={this.state.participantdata.jyps_member}
+              id="jyps_member"
+              label="JYPS Ry jäsen, erikoishinta"
+              onChange={this.handleChange}
+            />{" "}
+            <Switch
+              checked={this.state.participantdata.sport_voucher}
+              value={this.state.participantdata.sport_voucher}
+              id="sport_voucher"
+              label="Maksan liikuntaseteleillä"
+              onChange={this.handleChange}
+            />{" "}
+            {this.state.participantdata.sport_voucher ? (
+              <HTMLSelect id="sport_voucher_name" options={this.state.sport_vouchers} onChange={this.handleChange} />
+            ) : null}
             <div>
               <h5> Sarjat </h5>{" "}
               <RadioGroup
@@ -413,9 +450,11 @@ class EventInfo extends Component {
               </RadioGroup>{" "}
             </div>{" "}
             {validationMessage}{" "}
-            {this.state.eventdata.close_date < Date.now ? (
+            {this.state.eventdata.event_active ? (
               <div className="event-enroll-button">
-                <Button>Ilmoittautuminen on päättynyt </Button>
+                <Button onClick={this.addParticipant} disabled={!this.state.submitAllowed}>
+                  Ilmoittaudu ja maksa{" "}
+                </Button>{" "}
               </div>
             ) : (
               <div className="event-enroll-button">

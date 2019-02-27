@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, Elevation, Intent } from "@blueprintjs/core";
+import { Button, Card, Elevation, Intent, HTMLSelect } from "@blueprintjs/core";
 import Navigation from "./Navigation";
 import GroupEdit from "./GroupEdit";
 import GroupAdd from "./GroupAdd";
@@ -24,7 +24,8 @@ class EventEdit extends Component {
       },
       allEvents: [],
       groups: [],
-      loggedin: false
+      loggedin: false,
+      sourceid: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.updateData = this.updateData.bind(this);
@@ -34,6 +35,8 @@ class EventEdit extends Component {
     this.getGroups = this.getGroups.bind(this);
     this.removeEvent = this.removeEvent.bind(this);
     this.getAllEvents = this.getAllEvents.bind(this);
+    this.getDropdownEvents = this.getDropdownEvents.bind(this);
+    this.copyGroups = this.copyGroups.bind(this);
   }
   componentDidMount() {
     let loginboolean = false;
@@ -92,9 +95,14 @@ class EventEdit extends Component {
     this.setState({ eventdata: newevent });
   }
   handleChange(evt) {
-    let newevent = Object.assign({}, this.state.eventdata);
-    newevent[evt.target.id] = evt.target.value;
-    this.setState({ eventdata: newevent });
+    console.log(evt.target.id);
+    if (evt.target.id === "dropdown-copy") {
+      this.setState({ sourceid: evt.target.value });
+    } else {
+      let newevent = Object.assign({}, this.state.eventdata);
+      newevent[evt.target.id] = evt.target.value;
+      this.setState({ eventdata: newevent });
+    }
   }
   updateData() {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/update/" + this.props.match.params.id, {
@@ -141,6 +149,35 @@ class EventEdit extends Component {
       );
     });
     return groups;
+  }
+  getDropdownEvents() {
+    let dropDownData = [];
+    this.state.allEvents.forEach(item => {
+      dropDownData.push({ label: item.name, value: item.id });
+    });
+    return dropDownData;
+  }
+  copyGroups(targetid, sourceid) {
+    fetch(
+      process.env.REACT_APP_JYPSAPI +
+        "/api/events/v1/copygroups/" +
+        this.props.match.params.id +
+        "/" +
+        this.state.sourceid,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
+          "Content-Type": "application/json"
+        }
+      }
+    )
+      .then(response => {
+        this.props.history.push("/eventedit/" + this.props.match.params.id);
+      })
+      .catch(error => {
+        console.warn(error);
+      });
   }
   render() {
     let result = (
@@ -290,6 +327,7 @@ class EventEdit extends Component {
               <Button className="app-icon-button" onClick={this.removeEvent} icon="remove">
                 Poista tapahtuma
               </Button>
+              <HTMLSelect id="dropdown-copy" options={this.getDropdownEvents()} onChange={this.handleChange} />
               <Button className="app-icon-button" onClick={this.copyGroups} icon="remove">
                 Kopioi sarjat
               </Button>
