@@ -45,7 +45,13 @@ class EventInfo extends Component {
         discount: 0,
         id: 0
       },
-      sport_vouchers: [{ value: "Smartum" }, { value: "Epassi" }]
+      sport_vouchers: [
+        { value: "Smartum" },
+        { value: "Epassi" },
+        { value: "Edenred" },
+        { value: "Eazybreak" },
+        { value: "Tyky" }
+      ]
     };
     this.handleChange = this.handleChange.bind(this);
     this.getEventData = this.getEventData.bind(this);
