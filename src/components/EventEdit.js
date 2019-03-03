@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, Elevation, Intent, HTMLSelect } from "@blueprintjs/core";
+import { Button, Card, Elevation, Intent, HTMLSelect, Switch } from "@blueprintjs/core";
 import Navigation from "./Navigation";
 import GroupEdit from "./GroupEdit";
 import GroupAdd from "./GroupAdd";
@@ -20,7 +20,10 @@ class EventEdit extends Component {
         paytrail_product: "",
         email_template: "",
         close_date: "",
-        open_date: ""
+        open_date: "",
+        event_active: false,
+        sport_voucher_email: "",
+        sport_voucher_confirmed_email: ""
       },
       allEvents: [],
       groups: [],
@@ -303,6 +306,30 @@ class EventEdit extends Component {
                 id="email_template"
               />{" "}
             </p>
+            <h5>Liikuntasetelin vahvistusmaili</h5>
+            <p>
+              {" "}
+              <textarea
+                intent={Intent.PRIMARY}
+                onChange={this.handleChange}
+                value={this.state.eventdata.sport_voucher_confirmed_email}
+                rows={5}
+                cols={50}
+                id="sport_voucher_confirmed_email"
+              />{" "}
+            </p>
+            <h5>Liikuntasetelin vastaanottoviesti</h5>
+            <p>
+              {" "}
+              <textarea
+                intent={Intent.PRIMARY}
+                onChange={this.handleChange}
+                value={this.state.eventdata.sport_voucher_email}
+                rows={5}
+                cols={50}
+                id="sport_voucher_email"
+              />{" "}
+            </p>
             <h5>Sarjat ja matkat</h5>
             <p>
               {" "}
@@ -315,6 +342,13 @@ class EventEdit extends Component {
                 id="groups_description"
               />{" "}
             </p>
+            <Switch
+              checked={this.state.eventdata.event_active}
+              value={this.state.eventdata.event_active}
+              id="event_active"
+              label="Tapahtuma aktiivinen"
+              onChange={this.handleChange}
+            />{" "}
             Olethan varovainen poistaessasi ryhmiä, jos ryhmässä on jäseniä myös jäsenet poistuvat!
             {this.getGroups()}
             <br />

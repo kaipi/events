@@ -86,7 +86,14 @@ class EventInfo extends Component {
         let p = Object.assign({}, this.state.participantdata);
         p.groupid = response.groups[0].id;
         this.setState({
-          participantdata: p
+          participantdata: p,
+          paymentdata: {
+            name: response.groups[0].name,
+            paymentMethodName: "",
+            price: response.groups[0].price_prepay,
+            discount: response.groups[0].discount,
+            id: response.groups[0].id
+          }
         });
       });
   }
@@ -154,12 +161,10 @@ class EventInfo extends Component {
       if (e.jyps_member) {
         evtData.groups.forEach(group => {
           group.price_prepay = parseInt(group.price_prepay) - parseInt(group.discount);
-          console.log(this.state.paymentdata);
         });
       } else {
         evtData.groups.forEach(group => {
           group.price_prepay = parseInt(group.price_prepay) + parseInt(group.discount);
-          console.log(this.state.paymentdata);
         });
       }
       this.setState({
@@ -168,10 +173,7 @@ class EventInfo extends Component {
       });
       this.validateFields(e);
       return;
-    }
-    e[evt.target.id] = evt.target.value;
-
-    if (evt.target.id === "groupid") {
+    } else if (evt.target.id === "groupid") {
       // calc price
       let result = this.state.eventdata.groups.find(group => group.id === parseInt(evt.target.value, 10));
       if (!this.state.participantdata.sport_voucher) {
@@ -183,15 +185,18 @@ class EventInfo extends Component {
         data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) paikanpäällä";
         data.price = result.price_prepay;
       }
+      e[evt.target.id] = parseInt(evt.target.value);
 
       if (this.state.participantdata.jyps_member) {
         data.price = result.price_prepay - data.discount;
       }
       this.setState({
-        paymentdata: data
+        paymentdata: data,
+        participantdata: e
       });
+    } else {
+      e[evt.target.id] = evt.target.value;
     }
-
     this.setState({
       participantdata: e
     });
@@ -249,7 +254,7 @@ class EventInfo extends Component {
             group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa (" + left_now + " paikkaa jäljellä)"
           }
           id="groupid"
-          value={group.id.toString()}
+          value={group.id}
         />
       );
     });
@@ -283,9 +288,9 @@ class EventInfo extends Component {
         <div className="bp3-callout pt-intent-success">
           <h4 className="bp3-callout-title"> Lomake kunnossa </h4>
           Olet ilmoittautumassa <b>liikuntasetelillä</b>, huolehdithan että liikuntaseteli maksu on hoidettu
-          mahdollisimman pian lähettämällä maksutosite sähköpostilla osoitteeseen pj@jyps.fi! Saat vielä erillisen
-          sähköpostiviestin kun Jyps Ry on käsitellyt ja vahvistanut osallistumisesi, huomioithan että nimesi ei näy
-          osallistujalistalla ennen maksun vahvistusta.
+          mahdollisimman pian lähettämällä maksutosite sähköpostilla osoitteeseen pj@jyps.fi, tai maksamalla ko.
+          setelillä esim. vaatejaossa. Saat vielä erillisen sähköpostiviestin kun Jyps Ry on käsitellyt ja vahvistanut
+          osallistumisesi, huomioithan että nimesi ei näy osallistujalistalla ennen maksun vahvistusta.
           <br />
           <b>
             Olet ilmoittautumassa sarjaan: {this.state.paymentdata.name}, Hinta: {this.state.paymentdata.price}
