@@ -287,10 +287,10 @@ class EventInfo extends Component {
       validationMessage = (
         <div className="bp3-callout pt-intent-success">
           <h4 className="bp3-callout-title"> Lomake kunnossa </h4>
-          Olet ilmoittautumassa <b>liikuntasetelillä</b>, huolehdithan että liikuntaseteli maksu on hoidettu
-          mahdollisimman pian lähettämällä maksutosite sähköpostilla osoitteeseen pj@jyps.fi, tai maksamalla ko.
-          setelillä esim. vaatejaossa. Saat vielä erillisen sähköpostiviestin kun Jyps Ry on käsitellyt ja vahvistanut
-          osallistumisesi, huomioithan että nimesi ei näy osallistujalistalla ennen maksun vahvistusta.
+          Olet maksamassa ilmoittautumistasi liikuntaseteleillä. Ilmoittautumisesi vahvistetaan, kun toimitat
+          maksuvahvistuksen osoitteeseen <a href="mailto:pj@jyps.fi">pj@jyps.fi</a> tai esität maksuvahvistuksen jossain
+          JYPSin kevään tapahtumassa (<a href="https://www.jyps.fi">www.jyps.fi</a>). Nimesi ei näy osallistujalistalla
+          ennen maksun vahvistamista. Saat erillisen sähköpostin, kun ilmoittautumisesi on hyväksytty
           <br />
           <b>
             Olet ilmoittautumassa sarjaan: {this.state.paymentdata.name}, Hinta: {this.state.paymentdata.price}
