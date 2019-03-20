@@ -37,6 +37,7 @@ class EventInfo extends Component {
         sport_voucher_name: "Smartum"
       },
       registration: false,
+      confirm_content: null,
       submitAllowed: false,
       paymentdata: {
         name: "",
@@ -66,7 +67,26 @@ class EventInfo extends Component {
     if (query.payment_confirmed !== undefined) {
       if (query.payment_confirmed === "true") {
         this.setState({
-          registration: true
+          registration: true,
+          confirm_content: (
+            <div className="bp3-callout pt-intent-success">
+              <h4 className="bp3-callout-title "> Ilmoittautuminen onnistui! </h4>
+              Tervetuloa mukaan, saat sähköpostiisi vielä vahvistuksen kisamaksusta ja lisäohjeita!
+            </div>
+          )
+        });
+      }
+    } else if (query.sport_voucher_received !== undefined) {
+      if (query.sport_voucher_received === "true") {
+        this.setState({
+          registration: true,
+          confirm_content: (
+            <div className="bp3-callout pt-intent-success">
+              <h4 className="bp3-callout-title "> Liikuntaseteli ilmottautumisesi on otettu vastaan! </h4>
+              Kiitos ilmottautumisesta, saat vielä erillisen sähköpostin kun liikuntasetelimaksusi on hyväksytty,
+              tällöin näyt myös osallistujalistalla.
+            </div>
+          )
         });
       }
     }
@@ -306,10 +326,7 @@ class EventInfo extends Component {
         {this.state.eventdata.location} <h5> Maksutavat </h5> {this.state.eventdata.payment_description}
         <h5> Sarjat ja matkat </h5> {this.state.eventdata.groups_description}
         {this.state.registration ? (
-          <div className="bp3-callout pt-intent-success">
-            <h4 className="bp3-callout-title "> Ilmoittautuminen onnistui! </h4>
-            Tervetuloa mukaan, saat sähköpostiisi vielä vahvistuksen kisamaksusta ja lisäohjeita!
-          </div>
+          this.state.confirm_content
         ) : (
           <div>
             <h5> Henkilötiedot </h5>{" "}
