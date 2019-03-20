@@ -50,6 +50,8 @@ class SportVoucher extends Component {
           <td>
             {participant.firstname} {participant.surname}
           </td>
+          <td>{participant.phone}</td>
+          <td>{participant.sport_voucher_name}</td>
           <td>
             <Button
               id={participant.id}
@@ -70,6 +72,8 @@ class SportVoucher extends Component {
           <thead>
             <tr>
               <th>Nimi</th>
+              <th>Puhelin</th>
+              <th>Liikuntaseteli</th>
               <th>Hyväksy maksu </th>
             </tr>
           </thead>
