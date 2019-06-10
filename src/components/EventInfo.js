@@ -187,9 +187,28 @@ class EventInfo extends Component {
           group.price_prepay = parseInt(group.price_prepay) + parseInt(group.discount);
         });
       }
+
+      let result = this.state.eventdata.groups.find(group => group.id === parseInt(e.groupid));
+      if (!this.state.participantdata.sport_voucher) {
+        data.name = result.name;
+        data.paymentMethodName = "Paytrail verkkomaksu";
+        data.price = result.price_prepay;
+      } else if (this.state.participantdata.sport_voucher) {
+        data.name = result.name;
+        data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) paikanpäällä";
+        data.price = result.price_prepay;
+      }
+      //e[evt.target.id] = parseInt(evt.target.value);
+
+      if (this.state.participantdata.jyps_member) {
+        data.price = result.price_prepay - data.discount;
+      } else {
+        data.price = result.price_prepay;
+      }
       this.setState({
         participantdata: e,
-        eventdata: evtData
+        eventdata: evtData,
+        paymentdata: data
       });
       this.validateFields(e);
       return;
@@ -322,7 +341,7 @@ class EventInfo extends Component {
     let result = (
       <Card interactive={false} elevation={Elevation.TWO}>
         <h5> Tapahtuman nimi </h5> {this.state.eventdata.name} <h5> Tapahtuman kuvaus </h5>
-        {this.state.eventdata.general_description} <h5> Aika ja paikka </h5> {this.state.eventdata.date}
+        {this.state.eventdata.general_description} <h5> Aika ja paikka </h5> {this.state.eventdata.date}/
         {this.state.eventdata.location} <h5> Maksutavat </h5> {this.state.eventdata.payment_description}
         <h5> Sarjat ja matkat </h5> {this.state.eventdata.groups_description}
         {this.state.registration ? (

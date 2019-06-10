@@ -120,57 +120,103 @@ class EventPos extends Component {
       });
   }
   handleChange(evt) {
+    let data = {
+      id: "",
+      name: "",
+      paymentMethodName: "",
+      price: 0,
+      discount: 0
+    };
     let e = Object.assign({}, this.state.participantdata);
     if (evt.target.id === "public") {
       e[evt.target.id] = !this.state.participantdata.public;
-      this.setState({ participantdata: e });
+      this.setState({
+        participantdata: e
+      });
       this.validateFields(e);
       return;
     } else if (evt.target.id === "sport_voucher") {
       e[evt.target.id] = !this.state.participantdata.sport_voucher;
-      this.setState({ participantdata: e });
-      return;
-    } else if (evt.target.id === "jyps_member") {
-      e[evt.target.id] = !e.jyps_member;
-      if (e.jyps_member === true) {
-        let n = Object.assign({}, this.getDefaultValues(this.state.eventdata));
-        n.price = n.price - n.discount;
-        this.setState({
-          participantdata: e,
-          paymentdata: n
-        });
-        return;
+      if (e.sport_voucher) {
+        e.paymentmethod = 2;
+      } else {
+        e.paymentmethod = 1;
       }
       this.setState({
-        participantdata: e,
-        paymentdata: this.getDefaultValues(this.state.eventdata)
+        participantdata: e
       });
       this.validateFields(e);
       return;
-    } else {
-      e[evt.target.id] = evt.target.value;
-      let data = { name: "", paymentMethodName: "", price: 0, discount: 0 };
-      if (evt.target.id === "groupid") {
-        let result = this.state.eventdata.groups.find(group => group.id === parseInt(evt.target.value, 10));
-        // calc price
-        if (this.state.participantdata.paymentmethod === "1") {
-          data.name = result.name;
-          data.paymentMethodName = "Paytrail verkkomaksu";
-          data.price = result.price_prepay;
-        } else if (this.state.participantdata.paymentmethod === "2") {
-          data.name = result.name;
-          data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) tai käteinen paikanpäällä";
-          data.price = result.price;
-        }
-        if (this.state.participantdata.jyps_member === true) {
-          data.price = result.price_prepay - data.discount;
-        }
-        this.setState({ paymentdata: data });
+    } else if (evt.target.id === "jyps_member") {
+      e[evt.target.id] = !this.state.participantdata.jyps_member;
+
+      //calculate jyps prices + also for "current payment data"
+      let evtData = JSON.parse(JSON.stringify(this.state.eventdata));
+
+      if (e.jyps_member) {
+        evtData.groups.forEach(group => {
+          group.price_prepay = parseInt(group.price_prepay) - parseInt(group.discount);
+        });
+      } else {
+        evtData.groups.forEach(group => {
+          group.price_prepay = parseInt(group.price_prepay) + parseInt(group.discount);
+        });
       }
-      this.setState({ participantdata: e });
+
+      let result = this.state.eventdata.groups.find(group => group.id === parseInt(e.groupid));
+      if (!this.state.participantdata.sport_voucher) {
+        data.name = result.name;
+        data.paymentMethodName = "Paytrail verkkomaksu";
+        data.price = result.price_prepay;
+      } else if (this.state.participantdata.sport_voucher) {
+        data.name = result.name;
+        data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) paikanpäällä";
+        data.price = result.price_prepay;
+      }
+      // e[evt.target.id] = parseInt(evt.target.value);
+
+      if (this.state.participantdata.jyps_member) {
+        data.price = result.price_prepay - data.discount;
+      } else {
+        data.price = result.price_prepay;
+      }
+      this.setState({
+        participantdata: e,
+        eventdata: evtData,
+        paymentdata: data
+      });
       this.validateFields(e);
       return;
+    } else if (evt.target.id === "groupid") {
+      // calc price
+      let result = this.state.eventdata.groups.find(group => group.id === parseInt(evt.target.value, 10));
+      if (!this.state.participantdata.sport_voucher) {
+        data.name = result.name;
+        data.paymentMethodName = "Paytrail verkkomaksu";
+        data.price = result.price_prepay;
+      } else if (this.state.participantdata.sport_voucher) {
+        data.name = result.name;
+        data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) paikanpäällä";
+        data.price = result.price_prepay;
+      }
+
+      e[evt.target.id] = parseInt(evt.target.value);
+
+      if (this.state.participantdata.jyps_member) {
+        data.price = result.price_prepay - data.discount;
+      }
+      this.setState({
+        paymentdata: data,
+        participantdata: e
+      });
+    } else {
+      e[evt.target.id] = evt.target.value;
     }
+    this.setState({
+      participantdata: e
+    });
+    this.validateFields(e);
+    return;
   }
   validateFields(data) {
     //worlds worst form validator :D
@@ -200,7 +246,7 @@ class EventPos extends Component {
             group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa (" + left_now + " paikkaa jäljellä)"
           }
           id="groupid"
-          value={group.id.toString()}
+          value={group.id}
         />
       );
     });

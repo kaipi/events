@@ -11,10 +11,52 @@ class SportVoucher extends Component {
     this.getParticipants = this.getParticipants.bind(this);
     this.getRowElements = this.getRowElements.bind(this);
     this.approveParticipant = this.approveParticipant.bind(this);
+    this.getGroupData = this.getGroupData.bind(this);
   }
 
   componentDidMount() {
     this.getParticipants(this.props.id);
+    this.getGroupData(this.props.id);
+  }
+
+  getGroupData(id) {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + id, {
+      method: "GET"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        console.log(response);
+        this.setState({
+          groups: response.groups
+        });
+      });
+  }
+  getEventData(id) {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + id, {
+      method: "GET"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        this.setState({
+          eventdata: response
+        });
+        let p = Object.assign({}, this.state.participantdata);
+        p.groupid = response.groups[0].id;
+        this.setState({
+          participantdata: p,
+          paymentdata: {
+            name: response.groups[0].name,
+            paymentMethodName: "",
+            price: response.groups[0].price_prepay,
+            discount: response.groups[0].discount,
+            id: response.groups[0].id
+          }
+        });
+      });
   }
   getParticipants(id) {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/sportvoucherpending/" + this.props.id, {
@@ -40,7 +82,18 @@ class SportVoucher extends Component {
         this.setState({ participantrows: this.getParticipants(this.props.id) });
       });
   }
-
+  removeParticipant(id) {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deleteparticipant/" + id, {
+      method: "DELETE",
+      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+    })
+      .then(result => {
+        return result;
+      })
+      .then(r => {
+        this.setState({ participantrows: this.getParticipants(this.props.id) });
+      });
+  }
   getRowElements(json) {
     let ret = [];
     let arr = [];
@@ -63,6 +116,16 @@ class SportVoucher extends Component {
               icon="confirm"
             />
           </td>
+          <td>
+            <Button
+              id={participant.id}
+              className="app-icon-button"
+              onClick={() => {
+                this.removeParticipant(participant.id);
+              }}
+              icon="trash"
+            />
+          </td>
         </tr>
       );
     });
@@ -77,6 +140,7 @@ class SportVoucher extends Component {
               <th>Sähköposti</th>
               <th>Liikuntaseteli</th>
               <th>Hyväksy maksu </th>
+              <th>Hylkää maksu</th>
             </tr>
           </thead>
           <tbody>{arr}</tbody>

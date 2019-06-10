@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Elevation, Button, Icon } from "@blueprintjs/core";
+import { Card, Elevation, Button, Icon, HTMLSelect } from "@blueprintjs/core";
 import { checkJwtToken } from "../utils/auth";
 
 class Participants extends Component {
@@ -7,17 +7,39 @@ class Participants extends Component {
     super(props);
     this.state = {
       pariticipantrows: [],
-      groups: []
+      groupoptions: [],
+      moveGroup: 0,
+      moveParticipant: ""
     };
     this.getParticipants = this.getParticipants.bind(this);
     this.getRowElements = this.getRowElements.bind(this);
     this.removeParticipant = this.removeParticipant.bind(this);
     this.movePariticipant = this.movePariticipant.bind(this);
     this.getGroups = this.getGroups.bind(this);
+    this.getGroupsOptions = this.getGroupsOptions.bind(this);
+    this.getGroupData = this.getGroupData.bind(this);
+    this.updateTargetGroup = this.updateTargetGroup.bind(this);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.getParticipants(this.props.id);
+    this.getGroupData(this.props.id);
+  }
+  updateTargetGroup(evt, id) {
+    this.setState({ moveGroup: id, moveParticipant: evt.target.value });
+  }
+  getGroupData(id) {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + id, {
+      method: "GET"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        this.setState({
+          groupoptions: this.getGroupsOptions(response.groups)
+        });
+      });
   }
   getParticipants(id) {
     let logged = checkJwtToken(localStorage.getItem("jyps-jwt"));
@@ -30,7 +52,10 @@ class Participants extends Component {
           return result.json();
         })
         .then(r => {
-          this.setState({ participantrows: this.getRowElements(r), groups: this.getGroups(r) });
+          this.setState({
+            participantrows: this.getRowElements(r),
+            groups: this.getGroups(r)
+          });
         });
     } else {
       fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/events/" + id + "/participants_pos", {
@@ -41,7 +66,10 @@ class Participants extends Component {
           return result.json();
         })
         .then(r => {
-          this.setState({ participantrows: this.getRowElements(r), groups: this.getGroups(r) });
+          this.setState({
+            participantrows: this.getRowElements(r),
+            groups: this.getGroups(r)
+          });
         });
     }
   }
@@ -57,7 +85,25 @@ class Participants extends Component {
         this.setState({ participantrows: this.getParticipants(this.props.id) });
       });
   }
-  movePariticipant() {}
+  movePariticipant() {
+    fetch(
+      process.env.REACT_APP_JYPSAPI +
+        "/api/events/v1/events/movegroup/" +
+        this.state.moveGroup +
+        "/" +
+        this.state.moveParticipant,
+      {
+        method: "PATCH",
+        headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+      }
+    )
+      .then(response => {
+        return response;
+      })
+      .then(response => {
+        this.getParticipants(this.props.id);
+      });
+  }
   getGroups(json) {
     let groups = [];
     json.forEach(group => {
@@ -68,6 +114,13 @@ class Participants extends Component {
           </a>
         );
       }
+    });
+    return groups;
+  }
+  getGroupsOptions(json) {
+    let groups = [];
+    json.forEach(group => {
+      groups.push(<option value={group.id}>{group.name}</option>);
     });
     return groups;
   }
@@ -110,15 +163,29 @@ class Participants extends Component {
                       }}
                       icon="trash"
                     />
-                    {item.payment_confirmed ? (
-                      <Icon className="paid-icon" icon="tick-circle" />
-                    ) : (
-                      <Icon className="paid-icon" icon="error" />
-                    )}
                   </td>
                 ) : (
                   ""
                 )}
+                <td>
+                  {" "}
+                  {item.payment_confirmed ? (
+                    <Icon className="paid-icon" icon="tick-circle" />
+                  ) : (
+                    <Icon className="paid-icon" icon="error" />
+                  )}
+                </td>
+                <td>
+                  <HTMLSelect onChange={e => this.updateTargetGroup(e, item.id)}>{this.state.groupoptions}</HTMLSelect>
+                  <Button
+                    id={item.id}
+                    className="app-icon-button"
+                    onClick={() => {
+                      this.movePariticipant();
+                    }}
+                    icon="arrow-right"
+                  />
+                </td>
               </tr>
             );
           }
@@ -140,7 +207,9 @@ class Participants extends Component {
                     <th>Joukkue</th>
                     <th>Sarja</th>
                     <th>Alustava kilpailunumero</th>
-                    <th />
+                    <th>Poista</th>
+                    <th>Maksun tila</th>
+                    <th>Sarjan vaihto</th>
                   </tr>
                 </thead>
                 <tbody>{arr}</tbody>
