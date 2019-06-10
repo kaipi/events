@@ -225,7 +225,6 @@ class Participants extends Component {
                       <th>Alustava kilpailunumero</th>
                     </tr>
                   )}
-                  ;
                 </thead>
                 <tbody>{arr}</tbody>
               </table>
