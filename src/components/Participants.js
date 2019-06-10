@@ -154,38 +154,42 @@ class Participants extends Component {
                   {item.number}
                 </td>
                 {this.props.loggedin ? (
-                  <td>
-                    <Button
-                      id={item.id}
-                      className="app-icon-button"
-                      onClick={() => {
-                        this.removeParticipant(item.id);
-                      }}
-                      icon="trash"
-                    />
-                  </td>
+                  <>
+                    <td>
+                      <Button
+                        id={item.id}
+                        className="app-icon-button"
+                        onClick={() => {
+                          this.removeParticipant(item.id);
+                        }}
+                        icon="trash"
+                      />
+                    </td>
+                    <td>
+                      {" "}
+                      {item.payment_confirmed ? (
+                        <Icon className="paid-icon" icon="tick-circle" />
+                      ) : (
+                        <Icon className="paid-icon" icon="error" />
+                      )}
+                    </td>
+                    <td>
+                      <HTMLSelect onChange={e => this.updateTargetGroup(e, item.id)}>
+                        {this.state.groupoptions}
+                      </HTMLSelect>
+                      <Button
+                        id={item.id}
+                        className="app-icon-button"
+                        onClick={() => {
+                          this.movePariticipant();
+                        }}
+                        icon="arrow-right"
+                      />
+                    </td>
+                  </>
                 ) : (
                   ""
                 )}
-                <td>
-                  {" "}
-                  {item.payment_confirmed ? (
-                    <Icon className="paid-icon" icon="tick-circle" />
-                  ) : (
-                    <Icon className="paid-icon" icon="error" />
-                  )}
-                </td>
-                <td>
-                  <HTMLSelect onChange={e => this.updateTargetGroup(e, item.id)}>{this.state.groupoptions}</HTMLSelect>
-                  <Button
-                    id={item.id}
-                    className="app-icon-button"
-                    onClick={() => {
-                      this.movePariticipant();
-                    }}
-                    icon="arrow-right"
-                  />
-                </td>
               </tr>
             );
           }
@@ -201,16 +205,27 @@ class Participants extends Component {
               </h5>
               <table className="bp3-html-table pt-interactive event-table">
                 <thead>
-                  <tr>
-                    <th>Nimi</th>
-                    <th>Seura</th>
-                    <th>Joukkue</th>
-                    <th>Sarja</th>
-                    <th>Alustava kilpailunumero</th>
-                    <th>Poista</th>
-                    <th>Maksun tila</th>
-                    <th>Sarjan vaihto</th>
-                  </tr>
+                  {this.props.loggedin ? (
+                    <tr>
+                      <th>Nimi</th>
+                      <th>Seura</th>
+                      <th>Joukkue</th>
+                      <th>Sarja</th>
+                      <th>Alustava kilpailunumero</th>
+                      <th>Poista</th>
+                      <th>Maksun tila</th>
+                      <th>Sarjan vaihto</th>
+                    </tr>
+                  ) : (
+                    <tr>
+                      <th>Nimi</th>
+                      <th>Seura</th>
+                      <th>Joukkue</th>
+                      <th>Sarja</th>
+                      <th>Alustava kilpailunumero</th>
+                    </tr>
+                  )}
+                  ;
                 </thead>
                 <tbody>{arr}</tbody>
               </table>

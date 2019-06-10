@@ -12,13 +12,13 @@ class SportVoucher extends Component {
     this.getRowElements = this.getRowElements.bind(this);
     this.approveParticipant = this.approveParticipant.bind(this);
     this.getGroupData = this.getGroupData.bind(this);
+    this.getEventData = this.getEventData.bind(this);
   }
 
   componentDidMount() {
     this.getParticipants(this.props.id);
     this.getGroupData(this.props.id);
   }
-
   getGroupData(id) {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + id, {
       method: "GET"
@@ -27,7 +27,6 @@ class SportVoucher extends Component {
         return response.json();
       })
       .then(response => {
-        console.log(response);
         this.setState({
           groups: response.groups
         });
