@@ -7,6 +7,7 @@ class EventInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      event_active: false,
       eventdata: {
         groups_description: "",
         payment_description: "",
@@ -15,8 +16,7 @@ class EventInfo extends Component {
         general_description: "",
         name: "",
         groups: [],
-        close_date: "",
-        event_active: false
+        close_date: ""
       },
       participantdata: {
         firstname: "",
@@ -497,7 +497,7 @@ class EventInfo extends Component {
               </RadioGroup>{" "}
             </div>{" "}
             {validationMessage}{" "}
-            {this.state.eventdata.event_active ? (
+            {this.state.event_active ? (
               <div className="event-enroll-button">
                 <Button onClick={this.addParticipant} disabled={!this.state.submitAllowed}>
                   Ilmoittaudu ja maksa{" "}
