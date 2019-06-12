@@ -32,7 +32,7 @@ class EventTable extends Component {
         fileDownload(resp, "chrono_input_" + id + "_" + Date.now() + ".csv");
       })
       .catch(r => {
-        console.log(r);
+        console.error(r);
       });
   }
   getEventsRows(prop) {

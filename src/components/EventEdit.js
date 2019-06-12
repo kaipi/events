@@ -40,6 +40,7 @@ class EventEdit extends Component {
     this.getAllEvents = this.getAllEvents.bind(this);
     this.getDropdownEvents = this.getDropdownEvents.bind(this);
     this.copyGroups = this.copyGroups.bind(this);
+    this.recalculateNumbers = this.recalculateNumbers.bind(this);
   }
   componentDidMount() {
     let loginboolean = false;
@@ -98,7 +99,6 @@ class EventEdit extends Component {
     this.setState({ eventdata: newevent });
   }
   handleChange(evt) {
-    console.log(evt.target.id);
     if (evt.target.id === "dropdown-copy") {
       this.setState({ sourceid: evt.target.value });
     } else {
@@ -138,6 +138,21 @@ class EventEdit extends Component {
         console.warn(error);
       });
   }
+  recalculateNumbers(groupid) {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/recalculate/" + groupid, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => {
+        this.getEventData();
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
   getGroups() {
     let groups = [];
     this.state.eventdata.groups.forEach(group => {
@@ -148,6 +163,7 @@ class EventEdit extends Component {
           removeGroup={this.removeGroup}
           handleGroupChange={this.handleGroupChange}
           groupdata={group}
+          recalculateNumbers={this.recalculateNumbers}
         />
       );
     });

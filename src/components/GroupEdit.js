@@ -166,6 +166,13 @@ class GroupEdit extends Component {
           }}
           icon="trash"
         />
+        <Button
+          className="app-icon-button"
+          onClick={() => {
+            this.props.recalculateNumbers(this.props.id);
+          }}
+          icon="refresh"
+        />
       </div>
     );
     return result;
