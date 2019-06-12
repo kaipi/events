@@ -96,8 +96,8 @@ class Settings extends Component {
       });
   }
   updateExistingSetting(evt) {
-    let set = this.state.settings;
-    let res = set.find(arr => arr.id === evt.target.id);
+    // let set = this.state.settings;
+    //let res = set.find(arr => arr.id === evt.target.id);
 
     //set[set.indexOf(res)][evt.target.id] = evt.target.value;
 
