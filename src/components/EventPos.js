@@ -237,7 +237,7 @@ class EventPos extends Component {
 
       let p = group.price;
       if (this.state.participantdata.jyps_member === true) {
-        p = group.price - this.state.paymentdata.discount;
+        p = group.price - group.discount;
       }
       g.push(
         <Radio
