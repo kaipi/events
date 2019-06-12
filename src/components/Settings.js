@@ -98,10 +98,8 @@ class Settings extends Component {
   updateExistingSetting(evt) {
     // let set = this.state.settings;
     //let res = set.find(arr => arr.id === evt.target.id);
-
     //set[set.indexOf(res)][evt.target.id] = evt.target.value;
-
-    this.setState({ settings: set });
+    //this.setState({ settings: set });
   }
   addSettings() {
     fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/settings/add", {
