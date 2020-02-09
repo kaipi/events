@@ -388,7 +388,7 @@ class EventInfo extends Component {
         <h5> Tapahtuman nimi </h5> {this.state.eventdata.name}{" "}
         <h5> Tapahtuman kuvaus </h5>
         {this.state.eventdata.general_description} <h5> Aika ja paikka </h5>{" "}
-        {this.state.eventdata.date}/{this.state.eventdata.location}{" "}
+        {this.state.eventdata.date} {this.state.eventdata.location}{" "}
         <h5> Maksutavat </h5> {this.state.eventdata.payment_description}
         <h5> Sarjat ja matkat </h5> {this.state.eventdata.groups_description}
         {this.state.registration ? (
