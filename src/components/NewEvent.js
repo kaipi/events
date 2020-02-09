@@ -56,7 +56,12 @@ class NewEvent extends Component {
     });
     let g = Object.assign([], this.state.groups);
     g.push(
-      <Group id={g.length} key={g.length} removeGroup={this.removeGroup} handleGroupChange={this.handleGroupChange} />
+      <Group
+        id={g.length}
+        key={g.length}
+        removeGroup={this.removeGroup}
+        handleGroupChange={this.handleGroupChange}
+      />
     );
     this.setState({ groups: g, eventdata: newevent });
   }
@@ -78,7 +83,7 @@ class NewEvent extends Component {
     this.setState({ eventdata: newevent });
   }
   updateData() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/createevent", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event", {
       method: "POST",
       body: JSON.stringify(this.state.eventdata),
       headers: {
@@ -234,10 +239,18 @@ class NewEvent extends Component {
             </p>
             {this.state.groups}
             <div className="new-event-create-buttons">
-              <Button className="app-icon-button" onClick={this.addGroup} icon="add">
+              <Button
+                className="app-icon-button"
+                onClick={this.addGroup}
+                icon="add"
+              >
                 Lisää sarja
               </Button>
-              <Button className="app-icon-button" onClick={this.updateData} icon="add">
+              <Button
+                className="app-icon-button"
+                onClick={this.updateData}
+                icon="add"
+              >
                 Luo tapahtuma
               </Button>
             </div>

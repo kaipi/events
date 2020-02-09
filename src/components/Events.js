@@ -14,11 +14,13 @@ class Events extends Component {
   }
   componentDidMount() {
     this.getEvents();
-    this.setState({ loggedin: checkJwtToken(localStorage.getItem("jyps-jwt")) });
+    this.setState({
+      loggedin: checkJwtToken(localStorage.getItem("jyps-jwt"))
+    });
   }
 
   getEvents() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/allevents", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/v1/event/", {
       method: "GET"
     })
       .then(response => {
@@ -48,7 +50,11 @@ class Events extends Component {
     let result = (
       <div className="content">
         <div className="navigation">
-          <Navigation logout={this.logout} addEvent={this.addEvent} history={this.props.history} />
+          <Navigation
+            logout={this.logout}
+            addEvent={this.addEvent}
+            history={this.props.history}
+          />
         </div>
         <div className="event-content">
           <Card interactive={false} elevation={Elevation.TWO}>

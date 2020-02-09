@@ -11,7 +11,7 @@ class Login extends Component {
   loginHandler() {
     const { history } = this.props;
 
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/login", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/v1/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -70,7 +70,11 @@ class Login extends Component {
                 value={this.state.password}
               />
             </p>
-            <Button className="app-icon-button" onClick={this.loginHandler} icon="log-in">
+            <Button
+              className="app-icon-button"
+              onClick={this.loginHandler}
+              icon="log-in"
+            >
               Login
             </Button>
             <div className="login-errormessage">{this.state.errorMessage}</div>

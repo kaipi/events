@@ -1,9 +1,16 @@
 import React, { Component } from "react";
-import { Button, Card, Elevation, Intent, HTMLSelect, Switch } from "@blueprintjs/core";
+import {
+  Button,
+  Card,
+  Elevation,
+  Intent,
+  HTMLSelect,
+  Switch
+} from "@blueprintjs/core";
 import Navigation from "./Navigation";
 import GroupEdit from "./GroupEdit";
 import GroupAdd from "./GroupAdd";
-
+import DiscountAdd from "./DiscountAdd";
 class EventEdit extends Component {
   constructor(props) {
     super(props);
@@ -23,12 +30,14 @@ class EventEdit extends Component {
         open_date: "",
         event_active: false,
         sport_voucher_email: "",
-        sport_voucher_confirmed_email: ""
+        sport_voucher_confirmed_email: "",
+        discount_steps: []
       },
       allEvents: [],
       groups: [],
       loggedin: false,
-      sourceid: null
+      sourceid: null,
+      discounts: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.updateData = this.updateData.bind(this);
@@ -37,10 +46,11 @@ class EventEdit extends Component {
     this.getEventData = this.getEventData.bind(this);
     this.getGroups = this.getGroups.bind(this);
     this.removeEvent = this.removeEvent.bind(this);
-    this.getAllEvents = this.getAllEvents.bind(this);
     this.getDropdownEvents = this.getDropdownEvents.bind(this);
     this.copyGroups = this.copyGroups.bind(this);
     this.recalculateNumbers = this.recalculateNumbers.bind(this);
+    this.getAllEvents = this.getAllEvents.bind(this);
+    this.getDiscounts = this.getDiscounts.bind(this);
   }
   componentDidMount() {
     let loginboolean = false;
@@ -52,19 +62,8 @@ class EventEdit extends Component {
     this.getEventData();
     this.getAllEvents();
   }
-  getEventData() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + this.props.match.params.id, {
-      method: "GET"
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(response => {
-        this.setState({ eventdata: response });
-      });
-  }
   getAllEvents() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/allevents", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/v1/event/", {
       method: "GET"
     })
       .then(response => {
@@ -77,8 +76,37 @@ class EventEdit extends Component {
         console.warn(error);
       });
   }
+  getEventData() {
+    fetch(
+      process.env.REACT_APP_JYPSAPI +
+        "/api/events/v1/event/" +
+        this.props.match.params.id,
+      {
+        method: "GET"
+      }
+    )
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        this.setState({ eventdata: response });
+      });
+  }
+  getDiscounts() {
+    let discounts = [];
+    this.state.eventdata.discount_steps.forEach(discount => {
+      discounts.push(
+        <tr>
+          <td>{discount.discount_amount}</td>
+          <td>{discount.valid_from}</td>
+          <td>{discount.valid_to}</td>
+        </tr>
+      );
+    });
+    return discounts;
+  }
   removeGroup(groupId) {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deletegroup/" + groupId, {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + groupId, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
@@ -95,7 +123,9 @@ class EventEdit extends Component {
   handleGroupChange(id, evt) {
     let result = this.state.eventdata.groups.find(group => group.id === id);
     let newevent = Object.assign({}, this.state.eventdata);
-    newevent.groups[this.state.eventdata.groups.indexOf(result)][evt.target.id] = evt.target.value;
+    newevent.groups[this.state.eventdata.groups.indexOf(result)][
+      evt.target.id
+    ] = evt.target.value;
     this.setState({ eventdata: newevent });
   }
   handleChange(evt) {
@@ -108,14 +138,19 @@ class EventEdit extends Component {
     }
   }
   updateData() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/update/" + this.props.match.params.id, {
-      method: "POST",
-      body: JSON.stringify(this.state.eventdata),
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
-        "Content-Type": "application/json"
+    fetch(
+      process.env.REACT_APP_JYPSAPI +
+        "/api/events/v1/event/" +
+        this.props.match.params.id,
+      {
+        method: "PUT",
+        body: JSON.stringify(this.state.eventdata),
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
+          "Content-Type": "application/json"
+        }
       }
-    })
+    )
       .then(response => {
         this.getEventData();
       })
@@ -124,13 +159,18 @@ class EventEdit extends Component {
       });
   }
   removeEvent() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deleteevent/" + this.props.match.params.id, {
-      method: "DELETE",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
-        "Content-Type": "application/json"
+    fetch(
+      process.env.REACT_APP_JYPSAPI +
+        "/api/events/v1/event/" +
+        this.props.match.params.id,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
+          "Content-Type": "application/json"
+        }
       }
-    })
+    )
       .then(response => {
         this.props.history.push("/");
       })
@@ -139,13 +179,16 @@ class EventEdit extends Component {
       });
   }
   recalculateNumbers(groupid) {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/recalculate/" + groupid, {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
-        "Content-Type": "application/json"
+    fetch(
+      process.env.REACT_APP_JYPSAPI + "/api/events/v1/recalculate/" + groupid,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
+          "Content-Type": "application/json"
+        }
       }
-    })
+    )
       .then(response => {
         this.getEventData();
       })
@@ -365,20 +408,54 @@ class EventEdit extends Component {
               label="Tapahtuma aktiivinen"
               onChange={this.handleChange}
             />{" "}
-            Olethan varovainen poistaessasi ryhmiä, jos ryhmässä on jäseniä myös jäsenet poistuvat!
+            Olethan varovainen poistaessasi ryhmiä, jos ryhmässä on jäseniä myös
+            jäsenet poistuvat!
             {this.getGroups()}
             <br />
             <h5>Lisää uusi sarja</h5>
-            <GroupAdd eventId={this.props.match.params.id} getEventData={this.getEventData} />
+            <GroupAdd
+              eventId={this.props.match.params.id}
+              getEventData={this.getEventData}
+            />
+            <h5>Alennukset</h5>
+            <table>
+              <tr>
+                <th>Summa</th>
+                <th>Alkaen</th>
+                <th>Loppuen</th>
+              </tr>
+              {this.getDiscounts()}
+            </table>
+            <h5>Lisää uusi alennus</h5>
+            <DiscountAdd
+              eventId={this.props.match.params.id}
+              getEventData={this.getEventData}
+            />
             <div className="new-event-create-buttons">
-              <Button className="app-icon-button" onClick={this.updateData} icon="add">
+              <Button
+                className="app-icon-button"
+                onClick={this.updateData}
+                icon="add"
+              >
                 Tallenna muutokset
               </Button>
-              <Button className="app-icon-button" onClick={this.removeEvent} icon="remove">
+              <Button
+                className="app-icon-button"
+                onClick={this.removeEvent}
+                icon="remove"
+              >
                 Poista tapahtuma
               </Button>
-              <HTMLSelect id="dropdown-copy" options={this.getDropdownEvents()} onChange={this.handleChange} />
-              <Button className="app-icon-button" onClick={this.copyGroups} icon="remove">
+              <HTMLSelect
+                id="dropdown-copy"
+                options={this.getDropdownEvents()}
+                onChange={this.handleChange}
+              />
+              <Button
+                className="app-icon-button"
+                onClick={this.copyGroups}
+                icon="remove"
+              >
                 Kopioi sarjat
               </Button>
             </div>
