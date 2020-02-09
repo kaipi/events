@@ -51,6 +51,7 @@ class EventEdit extends Component {
     this.recalculateNumbers = this.recalculateNumbers.bind(this);
     this.getAllEvents = this.getAllEvents.bind(this);
     this.getDiscounts = this.getDiscounts.bind(this);
+    this.removeDiscount = this.removeDiscount.bind(this);
   }
   componentDidMount() {
     let loginboolean = false;
@@ -99,7 +100,16 @@ class EventEdit extends Component {
         <tr>
           <td>{discount.discount_amount}</td>
           <td>{discount.valid_from}</td>
-          <td>{discount.valid_to}</td>
+          <td>
+            {discount.valid_to}{" "}
+            <Button
+              className="app-icon-button"
+              onClick={() => {
+                this.removeDiscount(discount.id);
+              }}
+              icon="trash"
+            />
+          </td>
         </tr>
       );
     });
@@ -121,6 +131,7 @@ class EventEdit extends Component {
       });
   }
   handleGroupChange(id, evt) {
+    console.log(evt.target);
     let result = this.state.eventdata.groups.find(group => group.id === id);
     let newevent = Object.assign({}, this.state.eventdata);
     newevent.groups[this.state.eventdata.groups.indexOf(result)][
@@ -183,6 +194,28 @@ class EventEdit extends Component {
       process.env.REACT_APP_JYPSAPI + "/api/events/v1/recalculate/" + groupid,
       {
         method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
+          "Content-Type": "application/json"
+        }
+      }
+    )
+      .then(response => {
+        this.getEventData();
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
+  removeDiscount(discountid) {
+    fetch(
+      process.env.REACT_APP_JYPSAPI +
+        "/api/events/v1/event/" +
+        this.props.match.params.id +
+        "/discount/" +
+        discountid,
+      {
+        method: "DELETE",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("jyps-jwt"),
           "Content-Type": "application/json"

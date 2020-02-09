@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Button, Card, Elevation, Switch, Radio, RadioGroup } from "@blueprintjs/core";
+import {
+  Button,
+  Card,
+  Elevation,
+  Switch,
+  Radio,
+  RadioGroup
+} from "@blueprintjs/core";
 import qs from "query-string";
 import { withRouter } from "react-router";
 import Navigation from "./Navigation";
@@ -58,9 +65,14 @@ class EventPos extends Component {
   }
 
   getEventData() {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/event/" + this.props.match.params.id, {
-      method: "GET"
-    })
+    fetch(
+      process.env.REACT_APP_JYPSAPI +
+        "/api/events/v1/event/" +
+        this.props.match.params.id,
+      {
+        method: "GET"
+      }
+    )
       .then(response => {
         return response.json();
       })
@@ -93,7 +105,7 @@ class EventPos extends Component {
       team: "",
       jyps_member: false
     };
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/addparticipant_pos", {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/pos/participant", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -155,22 +167,27 @@ class EventPos extends Component {
 
       if (e.jyps_member) {
         evtData.groups.forEach(group => {
-          group.price_prepay = parseInt(group.price_prepay) - parseInt(group.discount);
+          group.price_prepay =
+            parseInt(group.price_prepay) - parseInt(group.discount);
         });
       } else {
         evtData.groups.forEach(group => {
-          group.price_prepay = parseInt(group.price_prepay) + parseInt(group.discount);
+          group.price_prepay =
+            parseInt(group.price_prepay) + parseInt(group.discount);
         });
       }
 
-      let result = this.state.eventdata.groups.find(group => group.id === parseInt(e.groupid));
+      let result = this.state.eventdata.groups.find(
+        group => group.id === parseInt(e.groupid)
+      );
       if (!this.state.participantdata.sport_voucher) {
         data.name = result.name;
         data.paymentMethodName = "Paytrail verkkomaksu";
         data.price = result.price_prepay;
       } else if (this.state.participantdata.sport_voucher) {
         data.name = result.name;
-        data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) paikanpäällä";
+        data.paymentMethodName =
+          "Liikuntasetelit (smartum, epassi...) paikanpäällä";
         data.price = result.price_prepay;
       }
       // e[evt.target.id] = parseInt(evt.target.value);
@@ -189,14 +206,17 @@ class EventPos extends Component {
       return;
     } else if (evt.target.id === "groupid") {
       // calc price
-      let result = this.state.eventdata.groups.find(group => group.id === parseInt(evt.target.value, 10));
+      let result = this.state.eventdata.groups.find(
+        group => group.id === parseInt(evt.target.value, 10)
+      );
       if (!this.state.participantdata.sport_voucher) {
         data.name = result.name;
         data.paymentMethodName = "Paytrail verkkomaksu";
         data.price = result.price_prepay;
       } else if (this.state.participantdata.sport_voucher) {
         data.name = result.name;
-        data.paymentMethodName = "Liikuntasetelit (smartum, epassi...) paikanpäällä";
+        data.paymentMethodName =
+          "Liikuntasetelit (smartum, epassi...) paikanpäällä";
         data.price = result.price_prepay;
       }
 
@@ -243,7 +263,14 @@ class EventPos extends Component {
         <Radio
           key={group.id}
           label={
-            group.name + ", Matka: " + group.distance + "km, Hinta: " + p + " euroa (" + left_now + " paikkaa jäljellä)"
+            group.name +
+            ", Matka: " +
+            group.distance +
+            "km, Hinta: " +
+            p +
+            " euroa (" +
+            left_now +
+            " paikkaa jäljellä)"
           }
           id="groupid"
           value={group.id}
@@ -459,7 +486,10 @@ class EventPos extends Component {
               </div>
               {validationMessage}
               <div className="event-enroll-button">
-                <Button onClick={this.addParticipant} disabled={!this.state.submitAllowed}>
+                <Button
+                  onClick={this.addParticipant}
+                  disabled={!this.state.submitAllowed}
+                >
                   Lisää kilpailija
                 </Button>
               </div>
