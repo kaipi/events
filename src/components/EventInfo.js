@@ -358,9 +358,7 @@ class EventInfo extends Component {
           Voit jatkaa maksamiseen.Maksu hoidetaan verkkomaksuna Paytrail Oy: n
           palvelun välityksellä. <br />
           <b>
-            Olet ilmoittautumassa sarjaan: {this.state.paymentdata.name}, Hinta:{" "}
-            {this.state.paymentdata.price}
-            euroa.{" "}
+            Olet ilmoittautumassa sarjaan: {this.state.paymentdata.name}
           </b>{" "}
         </div>
       );
@@ -380,9 +378,7 @@ class EventInfo extends Component {
           sähköpostin, kun ilmoittautumisesi on hyväksytty
           <br />
           <b>
-            Olet ilmoittautumassa sarjaan: {this.state.paymentdata.name}, Hinta:{" "}
-            {this.state.paymentdata.price}
-            euroa.{" "}
+            Olet ilmoittautumassa sarjaan: {this.state.paymentdata.name}
           </b>{" "}
         </div>
       );
@@ -518,13 +514,6 @@ class EventInfo extends Component {
               />{" "}
             </div>{" "}
             <Switch
-              checked={this.state.participantdata.public}
-              value={this.state.participantdata.public}
-              id="public"
-              label="Tapahtuman järjestäjät saavat julkaista tietojani (Osallistuja- ja tuloslistat) sekä kisan aikana tuotettua materiaalia nettisivuilla (kuvat, videot tmv.)"
-              onChange={this.handleChange}
-            />{" "}
-            <Switch
               checked={this.state.participantdata.jyps_member}
               value={this.state.participantdata.jyps_member}
               id="jyps_member"
@@ -535,7 +524,7 @@ class EventInfo extends Component {
               checked={this.state.participantdata.sport_voucher}
               value={this.state.participantdata.sport_voucher}
               id="sport_voucher"
-              label="Maksan liikuntaseteleillä"
+              label="Maksan liikuntaedulla"
               onChange={this.handleChange}
             />{" "}
             {this.state.participantdata.sport_voucher ? (
