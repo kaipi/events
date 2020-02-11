@@ -42,7 +42,7 @@ class Participants extends Component {
       });
   }
   getParticipants(id) {
-    let logged = checkJwtToken(localStorage.getItem("jyps-jwt"));
+    // let logged = checkJwtToken(localStorage.getItem("jyps-jwt"));
 
     //if (logged === true) {
     fetch(
