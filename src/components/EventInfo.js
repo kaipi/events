@@ -154,7 +154,10 @@ class EventInfo extends Component {
           });
           this.props.history.push("/");
         } else {
-          window.location = response.url;
+          window.location =
+            "/event/" +
+            this.props.id +
+            "/eventinfo/?sport_voucher_received=true";
         }
       })
       .catch(error => {
