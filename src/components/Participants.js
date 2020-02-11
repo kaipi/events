@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Card, Elevation, Button, Icon, HTMLSelect } from "@blueprintjs/core";
-import { checkJwtToken } from "../utils/auth";
 
 class Participants extends Component {
   constructor(props) {
