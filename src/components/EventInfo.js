@@ -255,7 +255,6 @@ class EventInfo extends Component {
         data.price =
           result.price_prepay - data.discount - result.discount_amount;
       }
-      console.log(result);
       data.price = data.price - result.discount_amount;
       this.setState({
         paymentdata: data,

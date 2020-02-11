@@ -44,10 +44,38 @@ class Participants extends Component {
   getParticipants(id) {
     let logged = checkJwtToken(localStorage.getItem("jyps-jwt"));
 
-    if (logged === false) {
-      fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/events/" + id + "/participants", {
+    //if (logged === true) {
+    fetch(
+      process.env.REACT_APP_JYPSAPI +
+        "/api/events/v1/events/" +
+        id +
+        "/participants",
+      {
         method: "GET"
+      }
+    )
+      .then(result => {
+        return result.json();
       })
+      .then(r => {
+        this.setState({
+          participantrows: this.getRowElements(r),
+          groups: this.getGroups(r)
+        });
+      });
+    /*} else {
+      fetch(
+        process.env.REACT_APP_JYPSAPI +
+          "/api/events/v1/events/" +
+          id +
+          "/participants_pos",
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("jyps-jwt")
+          }
+        }
+      )
         .then(result => {
           return result.json();
         })
@@ -57,24 +85,10 @@ class Participants extends Component {
             groups: this.getGroups(r)
           });
         });
-    } else {
-      fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/events/" + id + "/participants_pos", {
-        method: "GET",
-        headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
-      })
-        .then(result => {
-          return result.json();
-        })
-        .then(r => {
-          this.setState({
-            participantrows: this.getRowElements(r),
-            groups: this.getGroups(r)
-          });
-        });
-    }
+    }*/
   }
   removeParticipant(id) {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deleteparticipant/" + id, {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/participant/" + id, {
       method: "DELETE",
       headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
     })
@@ -174,7 +188,9 @@ class Participants extends Component {
                       )}
                     </td>
                     <td>
-                      <HTMLSelect onChange={e => this.updateTargetGroup(e, item.id)}>
+                      <HTMLSelect
+                        onChange={e => this.updateTargetGroup(e, item.id)}
+                      >
                         {this.state.groupoptions}
                       </HTMLSelect>
                       <Button

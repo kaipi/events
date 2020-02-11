@@ -58,10 +58,15 @@ class SportVoucher extends Component {
       });
   }
   getParticipants(id) {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/sportvoucherpending/" + this.props.id, {
-      method: "GET",
-      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
-    })
+    fetch(
+      process.env.REACT_APP_JYPSAPI +
+        "/api/events/v1/sportvoucherpending/" +
+        this.props.id,
+      {
+        method: "GET",
+        headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+      }
+    )
       .then(result => {
         return result.json();
       })
@@ -70,10 +75,13 @@ class SportVoucher extends Component {
       });
   }
   approveParticipant(id) {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/approvevoucher/" + id, {
-      method: "GET",
-      headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
-    })
+    fetch(
+      process.env.REACT_APP_JYPSAPI + "/api/events/v1/approvevoucher/" + id,
+      {
+        method: "GET",
+        headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
+      }
+    )
       .then(result => {
         return result;
       })
@@ -82,7 +90,7 @@ class SportVoucher extends Component {
       });
   }
   removeParticipant(id) {
-    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/deleteparticipant/" + id, {
+    fetch(process.env.REACT_APP_JYPSAPI + "/api/events/v1/participant/" + id, {
       method: "DELETE",
       headers: { Authorization: "Bearer " + localStorage.getItem("jyps-jwt") }
     })

@@ -131,7 +131,6 @@ class EventEdit extends Component {
       });
   }
   handleGroupChange(id, evt) {
-    console.log(evt.target);
     let result = this.state.eventdata.groups.find(group => group.id === id);
     let newevent = Object.assign({}, this.state.eventdata);
     newevent.groups[this.state.eventdata.groups.indexOf(result)][
