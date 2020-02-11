@@ -152,12 +152,13 @@ class EventInfo extends Component {
           this.setState({
             registration: true
           });
-          this.props.history.push("/");
-        } else {
-          window.location =
+          window.location = 
             "/event/" +
-            this.props.id +
-            "/eventinfo/?sport_voucher_received=true";
+              this.props.id +
+              "/eventinfo/?sport_voucher_received=true"
+          ;
+        } else {
+          window.location = response.url;
         }
       })
       .catch(error => {
